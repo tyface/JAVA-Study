@@ -1,4 +1,3 @@
-import java.util.Arrays;
 
 public class ArrayEx {
 	public static void main(String[] args) {
@@ -12,14 +11,14 @@ public class ArrayEx {
 
 		// 정수형 데이터 3개를 저장할 수 있는 배열 생성하기
 		// 1. 배열의 주소를 저장할 수 있는 참조 변수 만들기
-		// 	만들 배열의 종류는 정수형 배열
-		
-		int[] array = new int[3];
+		// 만들 배열의 종류는 정수형 배열
+
+		int[] array = null ;
 		array[0] = 1;
 		array[1] = 2;
 		array[2] = 3;
 		
-		for (int i = 0 ; i < array.length ; i++) {
+		for (int i = 0; i < array.length; i++) {
 			System.out.println(array[i]);
 		}
 	}
