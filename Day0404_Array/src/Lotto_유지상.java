@@ -22,7 +22,7 @@ public class Lotto_유지상 {
 					continue outFor; 	// 되돌린 인덱스부터 재시작
 				}
 			} 	// for end
-			lotto[i] = num; // 중복검사 이상없을시 배열에 난수 삽입
+			lotto[i] = num; // 중복검사 이상 없을시 배열에 난수 삽입
 		} 	// outFor end
 
 		for (int e : lotto) { 
