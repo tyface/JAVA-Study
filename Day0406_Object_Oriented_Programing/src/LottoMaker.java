@@ -26,4 +26,6 @@ public class LottoMaker {
 			System.out.print(e + " "); // 출력
 		}
 	}
+	
+	
 }
