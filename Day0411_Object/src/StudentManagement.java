@@ -37,10 +37,12 @@ public class StudentManagement {
 	}
 
 	public void showMenu() { // 메뉴 목록을 띄우는 메소드
-		System.out.println("원하는 메뉴의 번호를 선택해주세요.");
+		System.out.println("*****************  메뉴를 선택하세요   *********************");
+		System.out.print("*  ");
 		for (int i = 0; i < menuArr.length; i++) {
 			System.out.printf("%d.%s   ", i + 1, menuArr[i]);
 		}
+		System.out.println("*\r\n******************************************************");
 	}
 
 	public void selectMenu() { // 인풋으로 입력받은 값대로 해당하는 메소드를 실행하는 컨트롤러
