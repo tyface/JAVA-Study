@@ -101,13 +101,15 @@ public class StudentManagement {
 	}
 
 	public void addStudent(Student student) { //student 객체를 받아서 현제 students 배열에 추가하는 메소드
-		maxStudent += 1;
-		Student[] temp = new Student[maxStudent];
+		maxStudent ++; // 학생을 추가할때마다 전체학생수 증가
+		Student[] temp = new Student[maxStudent]; //증가된 전체학생수 크기만큼의 임시 배열 생성
+		
+		//크기가 증가된 임시배열에 기존 Students배열 에있는 정보들을 삽입하는 반복문
 		for (int i = 0; i < students.length; i++) {
 			temp[i] = this.students[i];
 		}
-		temp[maxStudent - 1] = student;
-		students = temp;
+		temp[maxStudent - 1] = student; //임시배열 마지막 인덱스에 새로운 Student객체를 추가
+		students = temp; //임시배열을 기존 Studentㄴ배열 변수에 삽입
 	}
 
 	public void searchStudent() {  //학생의 이름을 입력받아 해당하는 학생을 출력하는 메소드
