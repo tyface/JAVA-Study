@@ -18,6 +18,6 @@ public class Gugudan {
 			rs = i * num;
 			System.out.printf("%d X %d = %d\r\n", num, i, rs);
 		}
-
+		sc.close();
 	}
 }

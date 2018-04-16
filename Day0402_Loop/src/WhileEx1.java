@@ -21,7 +21,7 @@ public class WhileEx1 {
 		while (num <= maxNum) {
 			rs += num++;
 		}
-
+		sc.close();
 		System.out.printf("숫자 %d부터 %d까지의 합은 %d입니다.", MIN_NUM, maxNum, rs);
 	}
 }

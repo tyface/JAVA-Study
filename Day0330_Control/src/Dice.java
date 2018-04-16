@@ -43,6 +43,6 @@ public class Dice {
 		default :
 			System.out.println("오류가 발생하였습니다.");
 		}
-
+		sc.close();
 	}
 }

@@ -29,5 +29,6 @@ public class Multiply2 {
 			
 			break;
 		}
+		scan.close();
 	}
 }

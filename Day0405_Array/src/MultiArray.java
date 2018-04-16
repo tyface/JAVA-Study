@@ -6,10 +6,10 @@ public class MultiArray {
 		// 크기 4인 정수형 배열 6개를 저장하는 배열 c선언 및 생성
 		
 		int[] a = new int[6];
-		int[][] b = new int[5][];
+//		int[][] b = new int[5][];
 		int[][] c = new int[6][4];
 		
-		double[][] d = new double[1][];
+//		double[][] d = new double[1][];
 		c[0] = a;
 		a[0] = 10;
 		for(int i = 0; i<c.length;i++) {

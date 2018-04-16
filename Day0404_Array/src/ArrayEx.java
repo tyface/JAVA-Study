@@ -13,13 +13,13 @@ public class ArrayEx {
 		// 1. 배열의 주소를 저장할 수 있는 참조 변수 만들기
 		// 만들 배열의 종류는 정수형 배열
 
-		int[] array = null ;
-		array[0] = 1;
-		array[1] = 2;
-		array[2] = 3;
-		
-		for (int i = 0; i < array.length; i++) {
-			System.out.println(array[i]);
-		}
+//		int[] array = null ;
+////		array[0] = 1;
+//		array[1] = 2;
+//		array[2] = 3;
+//		
+//		for (int i = 0; i < array.length; i++) {
+//			System.out.println(array[i]);
+//		}
 	}
 }

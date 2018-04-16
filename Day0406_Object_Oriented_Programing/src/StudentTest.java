@@ -31,6 +31,7 @@ public class StudentTest {
 		s2.math = sc.nextInt();
 		System.out.println("영어점수을 입력하세요.");
 		s2.eng = sc.nextInt();
+		sc.close();
 	}
 
 }

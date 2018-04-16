@@ -26,6 +26,7 @@ public class CircleArea {
 		System.out.println("반지름 " + radius + "인 원의 넓이는 " + clArea + "입니다.");
 		System.out.printf("반지름 %d인 원의 넓이는 %.2f입니다.",radius,clArea);
 		//printf >>출력시 포맷을 결정해놓고 출력하는 메서드
+		sc.close();
 	}
 
 }

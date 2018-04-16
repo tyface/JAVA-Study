@@ -40,7 +40,7 @@ public class Salary {
 
 		// 아웃풋
 		System.out.printf("급여는 %.2f원 입니다.", totalPAY);
-
+		sc.close();
 	}
 
 }

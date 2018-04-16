@@ -14,25 +14,24 @@ public class Salary {
 		// 1000000
 		// 10년동안의 저축액 : ~~~원.
 
-		Scanner scan = new Scanner(System.in);; // 인풋 선언
+		Scanner scan = new Scanner(System.in);
+		; // 인풋 선언
 		int save; // 저축액 변수
 		int year = 10; // 저축할 연수
 
 		System.out.println("저축액을 입력하세요");
 
-		
-
 		while (!scan.hasNextInt()) {
-			 scan.next(); // 잘못된 입력 값 버리기
-		      System.out.print("정수를 입력해주세요.");
+			scan.next(); // 잘못된 입력 값 버리기
+			System.out.print("정수를 입력해주세요.");
 		}
-		
+
 		save = scan.nextInt();
-		 
+
 		int totalSave = save * year * 12; // 저축액 * 연수
 
 		System.out.println(year + "년동안의 저축액 : " + totalSave + "원 입니다.");
-
+		scan.close();
 	}
 
 }

@@ -26,6 +26,6 @@ public class LeafYear {
 		rs = temp1 || temp2 ? "윤년" : "평년";
 
 		System.out.printf("%d년은 %s입니다.", year, rs); // 아웃풋
-
+		sc.close();
 	}
 }

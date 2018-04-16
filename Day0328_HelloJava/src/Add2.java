@@ -22,7 +22,7 @@ public class Add2 {
 		sum = a + b;
 
 		System.out.println("a + b의 결과는 " + sum + "입니다.");
-		
+		scan.close();
 	}
 
 }

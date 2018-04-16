@@ -34,6 +34,6 @@ public class WhileEx2 {
 			System.out.println("입니다.1");
 		else 
 			System.out.println("없습니다.");
-
+		sc.close();
 	}
 }

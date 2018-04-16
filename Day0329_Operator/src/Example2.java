@@ -48,7 +48,7 @@ public class Example2 {
 
 		//출력
 		System.out.println("값은 : " + rs);
-
+		sc.close();
 	}
 
 }

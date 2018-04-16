@@ -25,7 +25,7 @@ public class DoWhileEx2 {
 			}
 
 		} while (answer != num);
-
+		sc.close();
 	}
 
 }

@@ -32,7 +32,7 @@ public class ControlEx1 {
 		} else {
 			System.out.printf("%d는 홀수입니다.", num);
 		}
-
+		sc.close();
 	}
 
 }

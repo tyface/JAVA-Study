@@ -64,6 +64,6 @@ public class MonthDays {
 		}
 
 		System.out.printf("%d년 %d월의 일수는 %d일 입니다.",year , month, days);
-
+		sc.close();
 	}
 }

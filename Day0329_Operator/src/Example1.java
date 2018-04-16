@@ -24,6 +24,7 @@ public class Example1 {
 		} else {
 			System.out.println("두개의 숫자가 중복 되었습니다.");
 		}
+		sc.close();
 	}
 
 }

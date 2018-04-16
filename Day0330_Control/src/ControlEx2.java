@@ -45,5 +45,6 @@ public class ControlEx2 {
 
 		// 아웃풋
 		System.out.printf("당신의 점수는 %d 등급은 %C 입니다.", score, grade);
+		sc.close();
 	}
 }

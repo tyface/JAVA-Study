@@ -32,6 +32,7 @@ public class StudentTest2 {
 		s1.printVeiw();
 		s2.getAvg();
 		s2.printVeiw();
+		sc.close();
 	}
 
 }

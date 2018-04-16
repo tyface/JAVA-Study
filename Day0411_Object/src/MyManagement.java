@@ -44,6 +44,7 @@ public class MyManagement {
 			System.out.println("잘못입력하셨습니다.");
 			break;
 		}
+		sc.close();
 	}
 
 }

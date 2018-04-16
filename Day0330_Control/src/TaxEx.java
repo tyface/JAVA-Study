@@ -49,7 +49,7 @@ public class TaxEx {
 		
 		//아웃풋
 		System.out.printf("연봉 %d만원의 소득세는 %.2f (만원) 입니다.",salary,tax);
-		
+		sc.close();
 	}
 
 }

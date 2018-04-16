@@ -19,5 +19,6 @@ public class BreakEx1 {
 				break;
 			}
 		}
+		sc.close();
 	}
 }

@@ -29,6 +29,7 @@ public class ArrayEx2 {
 			System.out.printf("%d ", scores[i]);
 		}
 		System.out.printf("(%d개) ", scores.length);
+		sc.close();
 	}
 }
 

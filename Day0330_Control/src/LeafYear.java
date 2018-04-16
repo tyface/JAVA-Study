@@ -36,6 +36,6 @@ public class LeafYear {
 		} else {
 			System.out.printf("%d년은 평년입니다.", year);
 		}
-
+		sc.close();
 	}
 }
