@@ -13,6 +13,9 @@ public class Circle extends Shape {
 		super(0, 1, "원");
 		this.radius = radius;
 	}
+	public void c1() {
+		System.out.println("c1테스트");
+	}
 
 	@Override
 	public void draw() {

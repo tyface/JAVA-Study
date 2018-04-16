@@ -35,12 +35,11 @@ public class FootballPlayer extends SportsPlayer {
 
 	@Override
 	public String toString() {
-		return "FootballPlayer [totalScore=" + totalScore + ", mainFoot=" + mainFoot + ", totalRedCard="
-				+ totalRedCard + "]" + super.toString();
+		return "FootballPlayer [totalScore=" + totalScore + ", mainFoot=" + mainFoot + ", totalRedCard=" + totalRedCard
+				+ "]" + super.toString();
 	}
 
-	//getter,setter
-	
+	// getter,setter
 	public int getTotalScore() {
 		return totalScore;
 	}
@@ -64,6 +63,5 @@ public class FootballPlayer extends SportsPlayer {
 	public void setTotalRedCard(int totalRedCard) {
 		this.totalRedCard = totalRedCard;
 	}
-	
 
 }

@@ -24,14 +24,15 @@ public class SportsPlayer {
 		System.out.println("운동을 시작합니다.");
 	}
 
-	public void viewBaseInfo() {
-		System.out.printf("┎ < 이름 : %s >< 종목 : %s >< 나이 : %d >< 신장 : %.1f >< 체중 : %.1f > \r\n", 
-				this.name,this.event,this.age,this.height,this.weight);
+	public void viewBaseInfo() { //기본정보를 출력
+		System.out.printf("┎ < 이름 : %s >< 종목 : %s >< 나이 : %d >< 신장 : %.1f >< 체중 : %.1f > \r\n", this.name, this.event,
+				this.age, this.height, this.weight);
 	}
 
-	public void viewInfo() {
+	public void viewInfo() { //상속받은 객체들이 Override할 메서드 
 	}
-	
+
+	// getter,setter
 	public String getName() {
 		return name;
 	}

@@ -214,6 +214,7 @@ public class SportsAgency {
 			if (players[i].getName().equals(inputValue)) { // 이름 비교
 				players[i].viewBaseInfo(); // 기본정보 출력
 				this.players[i].viewInfo(); // 해당선수의 정보 출력
+				count++;
 			}
 		}
 

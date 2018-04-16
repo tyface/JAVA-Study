@@ -66,6 +66,4 @@ public class BilliardPlayer extends SportsPlayer {
 		this.strokeClass = strokeClass;
 	}
 
-	
-
 }

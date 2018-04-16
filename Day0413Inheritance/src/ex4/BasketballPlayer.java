@@ -1,12 +1,12 @@
 package ex4;
 
 public class BasketballPlayer extends SportsPlayer {
-	private int totalScore; //누적점수
-	private int totalAassist; //누적어시스트
-	private int totalRebound; //누적리바운드
-	private int totalThreePoint; //누적 3점슛
+	private int totalScore; // 누적점수
+	private int totalAassist; // 누적어시스트
+	private int totalRebound; // 누적리바운드
+	private int totalThreePoint; // 누적 3점슛
 
-	public BasketballPlayer() { //기본생성자
+	public BasketballPlayer() { // 기본생성자
 		super();
 	}
 
@@ -40,8 +40,7 @@ public class BasketballPlayer extends SportsPlayer {
 				+ totalRebound + ", totalThreePoint=" + totalThreePoint + "]" + super.toString();
 	}
 
-	
-	//getter,setter
+	// getter,setter
 	public int getTotalScore() {
 		return totalScore;
 	}
