@@ -24,11 +24,14 @@ public class SportsPlayer {
 		System.out.println("운동을 시작합니다.");
 	}
 
-	public void viewInfo() {
-		System.out.printf("이름 : %s / 종목 : %s / 나이 : %d / 신장 : %d / 체중 : %d \r\n", 
+	public void viewBaseInfo() {
+		System.out.printf("┎ < 이름 : %s >< 종목 : %s >< 나이 : %d >< 신장 : %.1f >< 체중 : %.1f > \r\n", 
 				this.name,this.event,this.age,this.height,this.weight);
 	}
 
+	public void viewInfo() {
+	}
+	
 	public String getName() {
 		return name;
 	}

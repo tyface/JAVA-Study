@@ -32,7 +32,7 @@ public class BilliardPlayer extends SportsPlayer {
 
 	@Override
 	public void viewInfo() {
-		System.out.printf("┖ 평균점수 : %.2f / 당구종목 : %s / 제구능력 : %s \r\n\n", avgGrade, billiardEvent, strokeClass);
+		System.out.printf("┖ < 평균점수 : %.2f >< 당구종목 : %s >< 제구능력 : %s > \r\n", avgGrade, billiardEvent, strokeClass);
 	}
 
 	@Override

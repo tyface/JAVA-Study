@@ -5,7 +5,7 @@ public class SportsAgencyTest {
 	public static void main(String[] args) {
 		// 테스트용 데이터 입력
 		SportsAgency sa = new SportsAgency();
-		sa.setCount(5);
+		sa.setMaxCount(5);
 		sa.setPlayers(new SportsPlayer[] { 
 				new BilliardPlayer("유지상", "당구", 29, 171.2, 58.1, 120, "4구", "중급"),
 				new FootballPlayer("정성재", "축구", 28, 177, 59.6, 140, "오른발", 1),

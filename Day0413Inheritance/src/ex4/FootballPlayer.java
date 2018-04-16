@@ -30,7 +30,7 @@ public class FootballPlayer extends SportsPlayer {
 
 	@Override
 	public void viewInfo() {
-		System.out.printf("┖ 누적득점 : %d / 주발 : %S / 누적레드카드 : %d \r\n\n", totalScore, mainFoot, totalRedCard);
+		System.out.printf("┖ < 누적득점 : %d >< 주발 : %S >< 누적레드카드 : %d > \r\n", totalScore, mainFoot, totalRedCard);
 	}
 
 	@Override

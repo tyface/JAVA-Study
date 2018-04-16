@@ -1,12 +1,12 @@
 package ex4;
 
 public class BasketballPlayer extends SportsPlayer {
-	private int totalScore;
-	private int totalAassist;
-	private int totalRebound;
-	private int totalThreePoint;
+	private int totalScore; //누적점수
+	private int totalAassist; //누적어시스트
+	private int totalRebound; //누적리바운드
+	private int totalThreePoint; //누적 3점슛
 
-	public BasketballPlayer() {
+	public BasketballPlayer() { //기본생성자
 		super();
 	}
 
@@ -30,7 +30,7 @@ public class BasketballPlayer extends SportsPlayer {
 
 	@Override
 	public void viewInfo() {
-		System.out.printf("┖ 누적득점 : %d / 누적어시스트 : %d / 누적리바운드 : %d / 누적3점득점 : %d \r\n\n", totalScore, totalAassist,
+		System.out.printf("┖ < 누적득점 : %d >< 누적어시스트 : %d >< 누적리바운드 : %d >< 누적3점득점 : %d > \r\n", totalScore, totalAassist,
 				totalRebound, totalThreePoint);
 	}
 
@@ -40,6 +40,8 @@ public class BasketballPlayer extends SportsPlayer {
 				+ totalRebound + ", totalThreePoint=" + totalThreePoint + "]" + super.toString();
 	}
 
+	
+	//getter,setter
 	public int getTotalScore() {
 		return totalScore;
 	}
@@ -71,7 +73,4 @@ public class BasketballPlayer extends SportsPlayer {
 	public void setTotalThreePoint(int totalThreePoint) {
 		this.totalThreePoint = totalThreePoint;
 	}
-
-	//getter,setter
-	
 }
