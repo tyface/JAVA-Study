@@ -1,21 +1,21 @@
 package ex4;
 
-public class FootballPlayer extends SportsPlayer {
+public class FootballPlayer_지상 extends SportsPlayer_지상 {
 	private int totalScore;
 	private String mainFoot;
 	private int totalRedCard;
 
-	public FootballPlayer() {
+	public FootballPlayer_지상() {
 		super();
 		mainFoot = "없음";
 	}
 
-	public FootballPlayer(String name, String event, int age, double height, double weight) {
+	public FootballPlayer_지상(String name, String event, int age, double height, double weight) {
 		super(name, event, age, height, weight);
 		mainFoot = "없음";
 	}
 
-	public FootballPlayer(String name, String event, int age, double height, double weight, int totalScore,
+	public FootballPlayer_지상(String name, String event, int age, double height, double weight, int totalScore,
 			String mainFoot, int totalRedCard) {
 		super(name, event, age, height, weight);
 		this.totalScore = totalScore;

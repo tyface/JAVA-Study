@@ -2,7 +2,7 @@ package ex4;
 
 import java.util.Scanner;
 
-public class SportsAgency {
+public class SportsAgency_지상 {
 	// 운동선수 등록 조회 검색 하기 검색해서 play 시키기
 	// 운동선수 종류 최소 3개이상 만들기
 	// SportsPlayer
@@ -13,8 +13,8 @@ public class SportsAgency {
 	// 나머지 서브 클래스는 이름알아서 만들고 서브클래스만 가지는 속성값 3개씩 추가\
 	// play 메서드는 오버라이딩 하기
 
-	private SportsPlayer player; // 선수 객체
-	private SportsPlayer[] players; // 선수을 담을 배열 객채
+	private SportsPlayer_지상 player; // 선수 객체
+	private SportsPlayer_지상[] players; // 선수을 담을 배열 객채
 	private String[] handlingEvent; // 관리중인 운동 종목을 담을 배역
 	private int maxCount; // player 객체의 총개수를 저장
 
@@ -22,10 +22,10 @@ public class SportsAgency {
 	private boolean isRun; // 프로그램 실행 상태
 	private Scanner sc; // 스캐너 객체를 담을 변수
 
-	public SportsAgency() { // 기본 생성자_정보를 기본값으로 초기화
+	public SportsAgency_지상() { // 기본 생성자_정보를 기본값으로 초기화
 		this.maxCount = 0;
-		this.player = new SportsPlayer();
-		this.players = new SportsPlayer[maxCount];
+		this.player = new SportsPlayer_지상();
+		this.players = new SportsPlayer_지상[maxCount];
 		this.handlingEvent = new String[] { "축구", "농구", "당구" };
 
 		this.menuArr = new String[] { "선수정보보기", "선수정보추가", "선수검색", "선수삭제", "종료" };
@@ -89,7 +89,7 @@ public class SportsAgency {
 		System.out.println();
 	}
 
-	public SportsPlayer createPlayer() { // 데이터를 입력받아 player객체를 만들고 반환하는 메소드
+	public SportsPlayer_지상 createPlayer() { // 데이터를 입력받아 player객체를 만들고 반환하는 메소드
 		// 입력받을 값을 저장할 변수
 		String name;
 		String event;
@@ -99,7 +99,7 @@ public class SportsAgency {
 		int selectMenu = 0;
 
 		sc = new Scanner(System.in); // 스캐너 생성
-		player = new SportsPlayer(); // player 객체 생성
+		player = new SportsPlayer_지상(); // player 객체 생성
 
 		System.out.println("이름을 입력해주세요.");
 		name = sc.nextLine();
@@ -137,7 +137,7 @@ public class SportsAgency {
 		// 입력을받아 해당객체 생성
 		switch (selectMenu) {
 		case 1:
-			FootballPlayer footballP = new FootballPlayer(name, event, age, height, weight);
+			FootballPlayer_지상 footballP = new FootballPlayer_지상(name, event, age, height, weight);
 
 			System.out.println("누적득점을 입력해주세요");
 			footballP.setTotalScore(sc.nextInt());
@@ -152,7 +152,7 @@ public class SportsAgency {
 			player = footballP;
 			break;
 		case 2:
-			BasketballPlayer basketballP = new BasketballPlayer(name, event, age, height, weight);
+			BasketballPlayer_지상 basketballP = new BasketballPlayer_지상(name, event, age, height, weight);
 
 			System.out.println("누적득점을 입력해주세요");
 			basketballP.setTotalScore(sc.nextInt());
@@ -169,7 +169,7 @@ public class SportsAgency {
 			player = basketballP;
 			break;
 		case 3:
-			BilliardPlayer billiardP = new BilliardPlayer(name, event, age, height, weight);
+			BilliardPlayer_지상 billiardP = new BilliardPlayer_지상(name, event, age, height, weight);
 
 			System.out.println("평균점수를 입력해주세요");
 			billiardP.setAvgGrade(sc.nextDouble());
@@ -190,9 +190,9 @@ public class SportsAgency {
 		return player; // 생성된 player객체를 반환
 	}
 
-	public void addPlayer(SportsPlayer player) { // player 객체를 받아서 현제 players 배열에 추가하는 메소드
+	public void addPlayer(SportsPlayer_지상 player) { // player 객체를 받아서 현제 players 배열에 추가하는 메소드
 		maxCount++; // 선수을 추가할때마다 maxCount 증가
-		SportsPlayer[] temp = new SportsPlayer[maxCount]; // 증가된 maxCount 크기만큼의 임시 배열 생성
+		SportsPlayer_지상[] temp = new SportsPlayer_지상[maxCount]; // 증가된 maxCount 크기만큼의 임시 배열 생성
 
 		// 크기가 증가된 임시배열에 기존 Players배열 에있는 정보들을 삽입하는 반복문
 		for (int i = 0; i < players.length; i++) {
@@ -245,7 +245,7 @@ public class SportsAgency {
 		}
 
 		maxCount -= count; // 전체 선수를 뜻하는 maxCount 에서 count 만큼을 감소시킴
-		SportsPlayer[] temp = new SportsPlayer[maxCount];// 감소된 크기만큼의 임시배열생성
+		SportsPlayer_지상[] temp = new SportsPlayer_지상[maxCount];// 감소된 크기만큼의 임시배열생성
 
 		// 임시배열temp에 players배열에 있는 정보들을 옮기면서 이름이 같을경우 정보를 입력하지 않고 패스
 		int tempIndex = 0;
@@ -261,19 +261,19 @@ public class SportsAgency {
 	}
 
 	// getter,setter
-	public SportsPlayer getPlayer() {
+	public SportsPlayer_지상 getPlayer() {
 		return player;
 	}
 
-	public void setPlayer(SportsPlayer player) {
+	public void setPlayer(SportsPlayer_지상 player) {
 		this.player = player;
 	}
 
-	public SportsPlayer[] getPlayers() {
+	public SportsPlayer_지상[] getPlayers() {
 		return players;
 	}
 
-	public void setPlayers(SportsPlayer[] players) {
+	public void setPlayers(SportsPlayer_지상[] players) {
 		this.players = players;
 	}
 

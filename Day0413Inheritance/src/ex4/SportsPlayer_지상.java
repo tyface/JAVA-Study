@@ -1,18 +1,18 @@
 package ex4;
 
-public class SportsPlayer {
+public class SportsPlayer_지상 {
 	private String name;
 	private String event;
 	private int age;
 	private double height;
 	private double weight;
 
-	public SportsPlayer() {
+	public SportsPlayer_지상() {
 		this.name = "무명";
 		this.event = "없음";
 	}
 
-	public SportsPlayer(String name, String event, int age, double height, double weight) {
+	public SportsPlayer_지상(String name, String event, int age, double height, double weight) {
 		this.name = name;
 		this.event = event;
 		this.age = age;

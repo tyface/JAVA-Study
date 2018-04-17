@@ -1,23 +1,23 @@
 package ex4;
 
-public class BilliardPlayer extends SportsPlayer {
+public class BilliardPlayer_지상 extends SportsPlayer_지상 {
 	private double avgGrade;
 	private String billiardEvent;
 	private String strokeClass;
 
-	public BilliardPlayer() {
+	public BilliardPlayer_지상() {
 		super();
 		billiardEvent = "없음";
 		strokeClass = "보통";
 	}
 
-	public BilliardPlayer(String name, String event, int age, double height, double weight) {
+	public BilliardPlayer_지상(String name, String event, int age, double height, double weight) {
 		super(name, event, age, height, weight);
 		billiardEvent = "없음";
 		strokeClass = "보통";
 	}
 
-	public BilliardPlayer(String name, String event, int age, double height, double weight, double avgGrade,
+	public BilliardPlayer_지상(String name, String event, int age, double height, double weight, double avgGrade,
 			String billiardEvent, String strokeClass) {
 		super(name, event, age, height, weight);
 		this.avgGrade = avgGrade;
