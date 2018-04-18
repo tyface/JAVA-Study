@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class StudentManagement {
@@ -71,7 +72,7 @@ public class StudentManagement {
 		}
 	}
 
-	public void showAllStudeunt() { //모든 학생의 정보를 출력하는 메소드
+	public void showAllStudeunt() { // 모든 학생의 정보를 출력하는 메소드
 		System.out.println("\r\n=============================================================================");
 		for (int i = 0; i < this.students.length; i++) {
 
@@ -82,37 +83,61 @@ public class StudentManagement {
 		System.out.println("=============================================================================\r\n");
 	}
 
-	public Student createStudent() { //데이터를 입력받아 student객체를 만들고 반환하는 메소드
+	public Student createStudent() { // 데이터를 입력받아 student객체를 만들고 반환하는 메소드
 
 		student = new Student();
 		sc = new Scanner(System.in);
 		System.out.println("이름을 입력해주세요.");
 		student.setName(sc.nextLine());
-		System.out.println("학년을 입력해주세요.");
-		student.setGrade(sc.nextInt());
-		System.out.println("국어점수를 입력해주세요.");
-		student.setKor(sc.nextInt());
-		System.out.println("영어점수를 입력해주세요.");
-		student.setEng(sc.nextInt());
-		System.out.println("수학점수를 입력해주세요.");
-		student.setMath(sc.nextInt());
+		try {
+			System.out.println("학년을 입력해주세요.");
+			student.setGrade(sc.nextInt());
+		} catch (InputMismatchException e) {
+			System.out.println("잘못입력하셨습니다.");
+			student.setGrade(1);
+			sc.next();
+		}
+		try {
+			System.out.println("국어점수를 입력해주세요.");
+			student.setKor(sc.nextInt());
+		} catch (InputMismatchException e) {
+			System.out.println("잘못입력하셨습니다.");
+			student.setKor(1);
+			sc.next();
+		}
+		try {
+			System.out.println("영어점수를 입력해주세요.");
+			student.setEng(sc.nextInt());
+		} catch (InputMismatchException e) {
+			System.out.println("잘못입력하셨습니다.");
+			student.setEng(1);
+			sc.next();
+		}
+		try {
+			System.out.println("수학점수를 입력해주세요.");
+			student.setMath(sc.nextInt());
+		} catch (InputMismatchException e) {
+			System.out.println("잘못입력하셨습니다.");
+			student.setMath(1);
+			sc.next();
+		}
 		System.out.println("등록 되었습니다.");
 		return student;
 	}
 
-	public void addStudent(Student student) { //student 객체를 받아서 현제 students 배열에 추가하는 메소드
-		maxStudent ++; // 학생을 추가할때마다 전체학생수 증가
-		Student[] temp = new Student[maxStudent]; //증가된 전체학생수 크기만큼의 임시 배열 생성
-		
-		//크기가 증가된 임시배열에 기존 Students배열 에있는 정보들을 삽입하는 반복문
+	public void addStudent(Student student) { // student 객체를 받아서 현제 students 배열에 추가하는 메소드
+		maxStudent++; // 학생을 추가할때마다 전체학생수 증가
+		Student[] temp = new Student[maxStudent]; // 증가된 전체학생수 크기만큼의 임시 배열 생성
+
+		// 크기가 증가된 임시배열에 기존 Students배열 에있는 정보들을 삽입하는 반복문
 		for (int i = 0; i < students.length; i++) {
 			temp[i] = this.students[i];
 		}
-		temp[maxStudent - 1] = student; //임시배열 마지막 인덱스에 새로운 Student객체를 추가
-		students = temp; //임시배열을 기존 Studentㄴ배열 변수에 삽입
+		temp[maxStudent - 1] = student; // 임시배열 마지막 인덱스에 새로운 Student객체를 추가
+		students = temp; // 임시배열을 기존 Studentㄴ배열 변수에 삽입
 	}
 
-	public void searchStudent() {  //학생의 이름을 입력받아 해당하는 학생을 출력하는 메소드
+	public void searchStudent() { // 학생의 이름을 입력받아 해당하는 학생을 출력하는 메소드
 		System.out.println("검색하고싶은 학생의 이름을 입력해주세요.");
 		sc = new Scanner(System.in);
 		String inputName = sc.nextLine();
@@ -157,7 +182,7 @@ public class StudentManagement {
 		System.out.println("삭제되었습니다.");
 	}
 
-	//아래로  getter , setter 메소드
+	// 아래로 getter , setter 메소드
 	public Student getStudent() {
 		return student;
 	}
