@@ -37,8 +37,7 @@ public class MyLinkedList_JiSang {
 
 		if (index == 1) {
 			head = head.next();
-		} else if (index > size) {
-			System.out.println("해당하는 인덱스가 존재하지 않습니다.");
+		} else if (get(index) == null) {
 			return;
 		} else {
 			get(index - 1).setNext(get(index).next());
@@ -46,12 +45,21 @@ public class MyLinkedList_JiSang {
 		size--;
 	}
 
-	public void set(int index,String date) {
+	public void set(int index, String date) {
+
+		if (get(index) == null) {
+			return;
+		}
 		get(index).setData(date);
-		
 	}
+
 	public Node_JiSang get(int index) {
 		Node_JiSang node = head;
+
+		if (index < 1 || index > size) {
+			System.out.println("해당하는 인덱스가 존재하지 않습니다.");
+			return null;
+		}
 
 		for (int i = 1; i < index; i++) {
 			node = node.next();
@@ -61,7 +69,7 @@ public class MyLinkedList_JiSang {
 
 	public Node_JiSang getTail() {
 		// Node_JiSang tail = head;
-		// while(tail.next() != null) {
+		// while (tail.next() != null) {
 		// tail = tail.next();
 		// }
 		return get(size);

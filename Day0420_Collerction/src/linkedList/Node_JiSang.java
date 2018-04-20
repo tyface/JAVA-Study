@@ -30,7 +30,7 @@ public class Node_JiSang {
 	public Node_JiSang next() {
 		return next;
 	}
-	
+
 	public void setNext(Node_JiSang next) {
 		this.next = next;
 	}
