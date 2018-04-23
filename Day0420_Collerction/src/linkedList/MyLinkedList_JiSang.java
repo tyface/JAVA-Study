@@ -22,7 +22,7 @@ public class MyLinkedList_JiSang {
 		this.head = head;
 	}
 
-	public void add(String str) {
+	public void add(String str) { // 노드 추가
 		Node_JiSang newNode = new Node_JiSang(str);
 
 		if (head == null) {
@@ -33,19 +33,21 @@ public class MyLinkedList_JiSang {
 		size++;
 	}
 
-	public void remove(int index) {
+	public Node_JiSang get(int index) { // 노드 가져오기
+		Node_JiSang node = head;
 
-		if (index == 1) {
-			head = head.next();
-		} else if (get(index) == null) {
-			return;
-		} else {
-			get(index - 1).setNext(get(index).next());
+		if (index < 1 || index > size) { // 인덱스 유효성 검사
+			System.out.println("해당하는 인덱스가 존재하지 않습니다.");
+			return null;
 		}
-		size--;
+
+		for (int i = 1; i < index; i++) { // 해당하는 인덱스의 노드 찾기
+			node = node.next();
+		}
+		return node;
 	}
 
-	public void set(int index, String date) {
+	public void set(int index, String date) { // 노드 변경
 
 		if (get(index) == null) {
 			return;
@@ -53,21 +55,7 @@ public class MyLinkedList_JiSang {
 		get(index).setData(date);
 	}
 
-	public Node_JiSang get(int index) {
-		Node_JiSang node = head;
-
-		if (index < 1 || index > size) {
-			System.out.println("해당하는 인덱스가 존재하지 않습니다.");
-			return null;
-		}
-
-		for (int i = 1; i < index; i++) {
-			node = node.next();
-		}
-		return node;
-	}
-
-	public Node_JiSang getTail() {
+	public Node_JiSang getTail() { // 마지막 노드 가져오기
 		// Node_JiSang tail = head;
 		// while (tail.next() != null) {
 		// tail = tail.next();
@@ -75,7 +63,19 @@ public class MyLinkedList_JiSang {
 		return get(size);
 	}
 
-	public int size() {
+	public void remove(int index) { // 노드 삭제
+
+		if (index == 1) { // 첫번째인덱스(헤드) 삭제시 다음값을 헤더에 삽입
+			head = head.next();
+		} else if (get(index) == null) { // 인덱스 유효성 검사
+			return;
+		} else { // 해당 인덱스의 전의 노드를 다음노드와 연결
+			get(index - 1).setNext(get(index).next());
+		}
+		size--;
+	}
+
+	public int size() { // 저장된 노드의 개수를 반환
 		return size;
 	}
 
