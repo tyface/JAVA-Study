@@ -14,13 +14,11 @@ public class ObjectIOManagement {
 	private String filePath;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
-	private FileInputStream fis;
 
 	public ObjectIOManagement() {
 		this.filePath = "src/studentEx/StudentList.dat";
 		this.in = null;
 		this.out = null;
-		this.fis = null;
 	}
 
 	public MyList<Student> getList() {
