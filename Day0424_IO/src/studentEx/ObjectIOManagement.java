@@ -11,7 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class ObjectIOManagement {
-	private String filePath;
+	private String filePath; // 파일 경로
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 
@@ -21,12 +21,12 @@ public class ObjectIOManagement {
 		this.out = null;
 	}
 
-	public MyList<Student> getList() {
+	public MyList<Student> getList() { // 학생 리스트 객체를 불러와서 반환
 		MyList<Student> list = null;
 
 		try {
 			in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(filePath)));
-			list = (MyList<Student>) in.readObject();
+			list = (MyList<Student>) in.readObject(); // 학생 리스트 객체를 불러와서 list변수에 삽입
 
 		} catch (FileNotFoundException e) {
 			System.out.println("파일이 없습니다.");
@@ -37,7 +37,6 @@ public class ObjectIOManagement {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {
-
 			try {
 				if (in != null)
 					in.close();
@@ -49,14 +48,13 @@ public class ObjectIOManagement {
 		return list;
 	}
 
-	public void pushList(MyList<Student> students) {
+	public void pushList(MyList<Student> students) { // 학생 리스트 객체를 지정 파일에 삽입
 
 		try {
-
 			out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(filePath)));
 
-			out.writeObject(students);
-			out.flush();
+			out.writeObject(students); // 학생 리스트 객체를 지정 파일에 삽입
+			out.flush(); // Output 초기화
 
 		} catch (FileNotFoundException e) {
 			System.out.println("파일이 없습니다.");

@@ -15,9 +15,9 @@ public class StudentManagement {
 	// 필요한 메서드, 필요한 변수는 마음대로 선언해서 사용하셔도 됩니다.
 
 	private Student student; // 학생 객체
-	private MyList<Student> students;
+	private MyList<Student> students; // 학생을 담을 리스트 배열 객체
 
-	private ObjectIOManagement oio;
+	private ObjectIOManagement oio; // 인,아웃풋 스트림
 	private String[] menuArr; // 메뉴를 담을 배열
 	private boolean isRun; // 종료키가 입력되기 전까지 true를 표출
 	private Scanner sc; // 스캐너 객체를 담을 변수
@@ -56,16 +56,16 @@ public class StudentManagement {
 
 		switch (menuNum) {
 		case 1:
-			showAllStudeunt();
+			showAllStudeunt(); // 모든 학생의 정보를 출력
 			break;
 		case 2:
-			createStudent();
+			createStudent(); // 학생 객체 생성
 			break;
 		case 3:
-			searchStudent();
+			searchStudent(); // 학생 찾기
 			break;
 		case 4:
-			deleteStudent();
+			deleteStudent(); // 학생 삭제
 			break;
 		case 5:
 			isRun = false;
@@ -77,7 +77,7 @@ public class StudentManagement {
 	}
 
 	public void showAllStudeunt() { // 모든 학생의 정보를 출력하는 메소드
-		students = oio.getList();
+		students = oio.getList(); // 해당 파일에서 리스트 받아오기
 		System.out.println("\r\n=============================================================================");
 		for (int i = 0; i < students.size(); i++) {
 
@@ -91,9 +91,10 @@ public class StudentManagement {
 	}
 
 	public void createStudent() { // 데이터를 입력받아 student객체를 만들고 반환하는 메소드
-		students = oio.getList();
+		students = oio.getList(); // 해당 파일에서 리스트 받아오기
 		student = new Student();
 		sc = new Scanner(System.in);
+		
 		System.out.println("이름을 입력해주세요.");
 		student.setName(sc.nextLine());
 		try {
@@ -129,7 +130,7 @@ public class StudentManagement {
 			sc.next();
 		}
 		students.add(student);
-		oio.pushList(students);
+		oio.pushList(students); //최신화된 객체리스트를 
 		System.out.println("등록 되었습니다.");
 
 	}
@@ -155,8 +156,9 @@ public class StudentManagement {
 		System.out.println("\r\n=============================================================================");
 		for (int i = 0; i < students.size(); i++) {
 			if (students.get(i).getName().equals(inputName)) {
-				System.out.printf("이름 : %s / 학년 : %d / 평균 : %.2f / 국어 : %d / 영어 : %d / 수학 : %d \r\n", students.get(i).getName(),
-						students.get(i).getGrade(), students.get(i).getAverage(), students.get(i).getScore().getKor(), students.get(i).getScore().getEng(),
+				System.out.printf("이름 : %s / 학년 : %d / 평균 : %.2f / 국어 : %d / 영어 : %d / 수학 : %d \r\n",
+						students.get(i).getName(), students.get(i).getGrade(), students.get(i).getAverage(),
+						students.get(i).getScore().getKor(), students.get(i).getScore().getEng(),
 						students.get(i).getScore().getMath());
 			}
 		}
@@ -168,8 +170,8 @@ public class StudentManagement {
 		sc = new Scanner(System.in);
 		String inputName = sc.nextLine();
 		students = oio.getList();
-		for (int i = 0 ; i < students.size(); i++) {
-			if(students.get(i).getName().equals(inputName)) {
+		for (int i = 0; i < students.size(); i++) {
+			if (students.get(i).getName().equals(inputName)) {
 				students.remove(i);
 			}
 		}
