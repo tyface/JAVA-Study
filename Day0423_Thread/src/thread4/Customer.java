@@ -12,7 +12,7 @@ public class Customer implements Runnable {
 		for (int i = 0; i < 10; i++) {
 			data = bf.get();
 			System.out.println("소비자가 데이터 " + data + "를 소비하였습니다.");
-			
+
 			try {
 				Thread.sleep((int) (Math.random() * 100));
 			} catch (InterruptedException e) {
