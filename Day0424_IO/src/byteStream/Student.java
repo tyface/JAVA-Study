@@ -1,6 +1,10 @@
-package ex;
+package byteStream;
 
-public class Student {
+import java.io.Serializable;
+
+public class Student implements Serializable{
+	//클래스의 버전정보를 저장하는 변수를 둬서 객체가 업데이트 되었는지 확인
+	private static final long serialVersionUID = 5213444470558484388L;
 	private String name;
 	private int grade;
 	private int point;

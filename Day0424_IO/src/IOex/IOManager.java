@@ -1,4 +1,4 @@
-package ex;
+package IOex;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,37 +10,37 @@ import java.util.StringTokenizer;
 
 public class IOManager {
 	String filePath;
-	FileInputStream fis;
-	FileOutputStream fos;
+	FileInputStream in;
+	FileOutputStream out;
 	StringBuilder sb;
 	Student student;
 
 	public IOManager() {
-		this.filePath = "src/ex/Student.txt";
-		this.fis = null;
-		this.fos = null;
+		this.filePath = "src/IOex/Student.txt";
+		this.in = null;
+		this.out = null;
 		this.sb = new StringBuilder();
 		this.student = new Student();
 	}
 
-	public List<String> getStr() {
+	public List<String> getInfo() {
 		List<String> result = new ArrayList<>();
 
 		try {
 
-			fis = new FileInputStream(filePath);
+			in = new FileInputStream(filePath);
 
 			int data;
 
-			while ((data = fis.read()) != -1) {
+			while ((data = in.read()) != -1) {
 				sb.append((char) data);
 			}
 
-			StringTokenizer str = new StringTokenizer(sb.toString(), "/");
-			int countTokens = str.countTokens();
-
+			StringTokenizer st = new StringTokenizer(sb.toString(), "/");
+			
+			int countTokens = st.countTokens();
 			for (int i = 0; i < countTokens; i++) {
-				result.add(str.nextToken());
+				result.add(st.nextToken());
 			}
 
 		} catch (FileNotFoundException e) {
@@ -49,8 +49,8 @@ public class IOManager {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (fis != null)
-					fis.close();
+				if (in != null)
+					in.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -59,15 +59,15 @@ public class IOManager {
 		return result;
 	}
 
-	public void setStr(String str) {
+	public void setInfo(String str) {
 
 		try {
 
-			fos = new FileOutputStream(filePath);
+			out = new FileOutputStream(filePath);
 
 			byte[] bytes = str.getBytes();
 
-			fos.write(bytes);
+			out.write(bytes);
 
 		} catch (FileNotFoundException e) {
 			System.out.println("파일이 없습니다.");
@@ -75,8 +75,8 @@ public class IOManager {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (fos != null)
-					fos.close();
+				if (out != null)
+					out.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
