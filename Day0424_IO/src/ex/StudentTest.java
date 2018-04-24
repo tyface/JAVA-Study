@@ -2,13 +2,12 @@ package ex;
 
 import java.util.List;
 
-public class Test {
+public class StudentTest {
 
 	public static void main(String[] args) {
-		FileInputStreamEx fis = new FileInputStreamEx();
-		FileOutputStreamEx fos = new FileOutputStreamEx();
+		IOManager io = new IOManager();
 		Student student = new Student();
-		List<String> arrList =  fis.getStr();
+		List<String> arrList =  io.getStr();
 		
 		student.setName(arrList.get(0));
 		student.setGrade(Integer.parseInt(arrList.get(1)));
@@ -22,7 +21,7 @@ public class Test {
 
 		System.out.println(student.toString());
 		
-		fos.setStr(student.toString());
+		io.setStr(student.toString());
 		
 	}
 
