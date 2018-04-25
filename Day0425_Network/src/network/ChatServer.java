@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class ChatServer {
+public class ChatServer implements Runnable {
 	// 채팅서버
 	private DatagramSocket socket; // 소켓
 	private DatagramPacket packet; // 페킷
@@ -17,13 +17,14 @@ public class ChatServer {
 	private byte[] buf; // 버퍼
 	private int serverPort; // 채팅서버의 리스브 포트
 	private int sendPort; // send 받을곳의 포트
+	private static final String MY_IP = "192.168.0.87";
 
 	public ChatServer(int serverPort, int sendPort) {
 		this.serverPort = serverPort;
 		this.sendPort = sendPort;
 	}
 
-	public void runServer() {
+	public void run() {
 		try {
 			socket = new DatagramSocket(serverPort); // 소켓생성(포트번호)
 			packet = null; // 패킷 준비
@@ -56,14 +57,19 @@ public class ChatServer {
 
 	public void send() throws IOException { // 센드 기능
 		Iterator<String> it = list.iterator(); // list가 set이기때문에 모든값에 접속하기 위해 Iterator 사용
+		
 		while (it.hasNext()) {
 			String ip = it.next(); // ip변수에 list에서 ip주소를 꺼내와서 삽입
-			InetAddress ia = InetAddress.getByName(ip); // ia객체에 해당 ip주소로 셋팅??
-			// 메세지앞에 해당 사용자의 ip붙이기
-			String msg = "[" + packet.getAddress().getHostAddress() + "] : " + new String(buf).trim();
-			buf = msg.getBytes(); // ip를 붙인 메세지를 다시 byte타입으로 변환
-			packet = new DatagramPacket(buf, buf.length, ia, sendPort); // packet에 InetAddress객체를 넘겨주고 받을사람의 포트를 입력
-			socket.send(packet);// 소캣을 통해서 전송
+
+			if (!ip.equals(MY_IP)) { //보내는 IP가 자신의 IP가 아닐때만 send
+				InetAddress ia = InetAddress.getByName(ip); // ia객체에 해당 ip주소로 셋팅??
+				// 메세지앞에 해당 사용자의 ip붙이기
+				String msg = "[" + packet.getAddress().getHostAddress() + "] : " + new String(buf).trim();
+				buf = msg.getBytes(); // ip를 붙인 메세지를 다시 byte타입으로 변환
+				packet = new DatagramPacket(buf, buf.length, ia, sendPort); // packet에 InetAddress객체를 넘겨주고 받을사람의 포트를 입력
+				socket.send(packet);// 소캣을 통해서 전송
+			}
+
 		}
 	}
 }

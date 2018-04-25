@@ -3,8 +3,10 @@ package network;
 public class ChatServerTest {
 
 	public static void main(String[] args) {
-		ChatServer server = new ChatServer(5000,5000);
-		server.runServer();
+		Thread server = new Thread(new ChatServer(5000,5000));
+		Thread mySender = new Thread(new UDPSenderThread());
+		server.start();
+		mySender.start();
 	}
 
 }
