@@ -17,7 +17,7 @@ public class ChatServer implements Runnable {
 	private byte[] buf; // 버퍼
 	private int serverPort; // 채팅서버의 리스브 포트
 	private int sendPort; // send 받을곳의 포트
-	private static final String MY_IP = "192.168.0.87";
+	private String myAdress;
 
 	public ChatServer(int serverPort, int sendPort) {
 		this.serverPort = serverPort;
@@ -26,6 +26,7 @@ public class ChatServer implements Runnable {
 
 	public void run() {
 		try {
+			myAdress = InetAddress.getLocalHost().getHostAddress();
 			socket = new DatagramSocket(serverPort); // 소켓생성(포트번호)
 			packet = null; // 패킷 준비
 			list = new HashSet<String>(); // ip주소를 저장한 HashSet생성
@@ -61,7 +62,7 @@ public class ChatServer implements Runnable {
 		while (it.hasNext()) {
 			String ip = it.next(); // ip변수에 list에서 ip주소를 꺼내와서 삽입
 
-			if (!ip.equals(MY_IP)) { //보내는 IP가 자신의 IP가 아닐때만 send
+			if (!ip.equals(myAdress)) { //보내는 IP가 자신의 IP가 아닐때만 send
 				InetAddress ia = InetAddress.getByName(ip); // ia객체에 해당 ip주소로 셋팅??
 				// 메세지앞에 해당 사용자의 ip붙이기
 				String msg = "[" + packet.getAddress().getHostAddress() + "] : " + new String(buf).trim();
