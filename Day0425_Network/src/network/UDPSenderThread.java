@@ -19,7 +19,7 @@ public class UDPSenderThread implements Runnable {
 			// UDP 방식에서 소켓은 DatagramSocket
 			DatagramSocket socket = new DatagramSocket();
 			// 데이터를 보낼목적지의 ip주소를 저장할 객체
-			InetAddress ia = InetAddress.getByName("192.168.0.70");
+			InetAddress ia = InetAddress.getByName("192.168.0.39");
 			DatagramPacket packet = null;
 			byte[] buf;
 			Scanner sc = new Scanner(System.in);
