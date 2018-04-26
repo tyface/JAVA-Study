@@ -1,7 +1,10 @@
 package multiChating;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -49,17 +52,21 @@ public class ChatServer {
 			Iterator<Socket> it = socketSet.iterator();
 			int data;
 			Socket temp;
-			InputStream is;
+			BufferedReader reader = null;
+			BufferedWriter writer = null;
+			String msg;
 			try {
-				is = socket.getInputStream();
-				data = is.read();
-				System.out.println(data);
+				reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+				msg = reader.readLine();
+				System.out.println(msg);
 				while (it.hasNext()) {
 					temp = it.next();
-					if(temp == socket) {
+					if (temp == socket) {
 						continue;
 					}
-					temp.getOutputStream().write(data);
+					writer = new BufferedWriter(new OutputStreamWriter(temp.getOutputStream()));
+					writer.write(msg);
 				}
 			} catch (SocketException e) {
 				try {
