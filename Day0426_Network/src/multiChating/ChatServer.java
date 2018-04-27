@@ -14,32 +14,36 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class ChatServer {
+	// 멀티 채팅 서버
+	ServerSocket severSocket; // 서버 소켓
+	Set<Socket> socketSet; // 접속자들의 소켓객체를 담을 SET변수
+	Socket socket; // 접속자들을 담을 소켓변수
+	int serverPort; // 서버 포트
 
-	ServerSocket severSocket = null;
-	Set<Socket> socketSet = new HashSet<Socket>();
-	Socket socket = null;
+	public ChatServer(int serverPort) { // 포트번호를 받아오는 생성자
+		this.severSocket = null;
+		this.socket = null;
+		this.socketSet = new HashSet<Socket>();
+		this.serverPort = serverPort;
+	}
 
-	public void runServer() {
-
-		// 서버는 메시지를 받아서 상대방에게주는 동작을 동시에 진행 해야한다.
-		// 서버는 각 소켓으로부터 메시지를 받아서 처리하는 기능이 병렬적으로 수행되어야 한다.
-		// "192.168.0.17"; //유진35 광민26 성재41 39도희 성지17
+	public void runServer() { // 서버시작 메서드
 
 		try {
-			severSocket = new ServerSocket(5000);
+			severSocket = new ServerSocket(serverPort); // 서버소켓 생성
 
+			// 서버로의 접속을 계속 체크하면서 접속이 일어날경우 socketSet에 추가하고, 스레드를 만드는 반복문
 			while (true) {
-				socket = severSocket.accept();
-				socketSet.add(socket);
+				socket = severSocket.accept(); // 대기 상태로 외부에서 서버로의 접속이 일어날때 실행된다
+				socketSet.add(socket); // 소켓이 생성되면 socketSet에 추가
 
-				Runnable run = () -> {
-					toss(socket);
+				Runnable run = () -> { // Runnable 선언
+					sendAllMsg(socket); // toss 메서드 실행
 				};
 
 				Thread t1 = new Thread(run);
-				t1.start();
-
-			}
+				t1.start(); // 스레드 시작
+			} // while end
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -47,44 +51,54 @@ public class ChatServer {
 
 	}
 
-	public void toss(Socket socket) {
-
-		while (true) {
-			Iterator<Socket> it;
-			Socket temp;
-			BufferedReader reader = null;
-			BufferedWriter writer = null;
-			String msg;
-			try {
+	// 접속자의 소켓정보를 받고 현제 socketSet에 저장되어있는 모두에게 접속자의 메세지를 전달하는 메서드
+	public void sendAllMsg(Socket socket) {
+		try {
+			while (true) {
+				Iterator<Socket> it; // socketSet 모든 값에 접근하기위한 Iterator객체변수
+				Socket temp; // 소켓을 담을 임시변수
+				BufferedReader reader = null; // 리더
+				BufferedWriter writer = null; // 라이터
+				String msg; // 메세지를 담을 변수
+				// 접속자의 메세지를 읽어오는 리더생성
 				reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-				msg = reader.readLine();
-				it = socketSet.iterator();
-				synchronized (it) {
+				msg = reader.readLine(); // 접속자의 메세지 한줄을 읽어옴
+				it = socketSet.iterator(); // socketSet을 Iterator로 변환
+				synchronized (it) { // Iterator 객체를 사용하는동안 변동이 없게하기위한 synchronized
 					while (it.hasNext()) {
-						temp = it.next();
-						if (temp == socket) {
+						temp = it.next(); // 소켓 객체를 임시변수에 삽입
+						if (temp == socket) { // 메세지를 보낼때 접속자 본인에게는 메세지를 보내지 않게하기위한 조건문
 							continue;
 						}
+
+						// 메세지를 보내기위한 라이터 생성
 						writer = new BufferedWriter(new OutputStreamWriter(temp.getOutputStream()));
+
+						// 메세지 보내기
 						writer.write(msg);
 						writer.newLine();
 						writer.flush();
 					}
 				}
-			} catch (SocketException e) {
-				System.out.println("소켓 종료");
-				try {
+			}
+		} catch (SocketException e) {
+			System.out.println("소켓 오류");
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ConcurrentModificationException e) {
+			System.out.println("리스트 변경");
+			e.printStackTrace();
+		} finally {
+			try {
+				if (socket != null) {
+					System.out.println(socket.getInetAddress() + " : 소켓 종료");
+					socketSet.remove(socket); // socketSet에서 소켓 삭제
 					socket.close();
-					break;
-				} catch (IOException e1) {
-					e1.printStackTrace();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
-			} catch (ConcurrentModificationException e) {
-				System.out.println("리스트 변경");
-				continue;
 			}
 		}
 	}

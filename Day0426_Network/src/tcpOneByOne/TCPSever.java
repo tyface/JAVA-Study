@@ -44,21 +44,21 @@ public class TCPSever {
 	}
 
 	static void toss(Socket socket1, Socket socket2) {
-		while (true) {
-			try {
+		try {
+			while (true) {
 				socket1.getOutputStream().write(socket2.getInputStream().read());
 				socket1.getOutputStream().flush();
-			} catch (SocketException e) {
-				try {
-					socket1.close();
-					socket2.close();
-					break;
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
+
+		} catch (SocketException e) {
+			try {
+				socket1.close();
+				socket2.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
