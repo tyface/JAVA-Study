@@ -33,7 +33,7 @@ public class ChatServer {
 				socketSet.add(socket);
 
 				Runnable run = () -> {
-					toss(socket, socketSet);
+					toss(socket);
 				};
 
 				Thread t1 = new Thread(run);
@@ -47,10 +47,10 @@ public class ChatServer {
 
 	}
 
-	public void toss(Socket socket, Set<Socket> socketSet) {
+	public void toss(Socket socket) {
+
 		while (true) {
-			Iterator<Socket> it = socketSet.iterator();
-			int data;
+			Iterator<Socket> it;
 			Socket temp;
 			BufferedReader reader = null;
 			BufferedWriter writer = null;
@@ -59,16 +59,21 @@ public class ChatServer {
 				reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
 				msg = reader.readLine();
-				System.out.println(msg);
-				while (it.hasNext()) {
-					temp = it.next();
-					if (temp == socket) {
-						continue;
+				it = socketSet.iterator();
+				synchronized (it) {
+					while (it.hasNext()) {
+						temp = it.next();
+						if (temp == socket) {
+							continue;
+						}
+						writer = new BufferedWriter(new OutputStreamWriter(temp.getOutputStream()));
+						writer.write(msg);
+						writer.newLine();
+						writer.flush();
 					}
-					writer = new BufferedWriter(new OutputStreamWriter(temp.getOutputStream()));
-					writer.write(msg);
 				}
 			} catch (SocketException e) {
+				System.out.println("소켓 종료");
 				try {
 					socket.close();
 					break;
@@ -78,6 +83,7 @@ public class ChatServer {
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ConcurrentModificationException e) {
+				System.out.println("리스트 변경");
 				continue;
 			}
 		}

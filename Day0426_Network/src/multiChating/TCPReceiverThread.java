@@ -23,10 +23,7 @@ public class TCPReceiverThread implements Runnable {
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			while (true) {
 				msg = reader.readLine();
-				
-				if (msg == null) {
-					break;
-				}
+
 				System.out.println("상대방 : " + msg);
 			}
 		} catch (SocketException e) {
@@ -36,7 +33,7 @@ public class TCPReceiverThread implements Runnable {
 		} finally {
 			try {
 				if (reader != null) {
-					System.out.println("Receiver End");
+					System.out.println("Sender Exit");
 					reader.close();
 				}
 			} catch (IOException e) {
