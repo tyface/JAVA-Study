@@ -1,4 +1,4 @@
-package tcpChating;
+package tcpOneByOne;
 
 import java.io.IOException;
 import java.net.ServerSocket;
