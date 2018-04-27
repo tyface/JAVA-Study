@@ -13,7 +13,7 @@ public class TcpClient {
 		// 프로그램이 시작되면 server에 연결 요청 > 연결이 되면 데이터 준비 및 전송
 
 		Socket socket = null;
-		String host = "192.168.0.87";
+		String host = "192.168.0.34";
 		int port = 5000;
 
 		try {

@@ -35,8 +35,10 @@ public class ChatServer {
 			// 서버로의 접속을 계속 체크하면서 접속이 일어날경우 socketSet에 추가하고, 스레드를 만드는 반복문
 			while (true) {
 				socket = severSocket.accept(); // 대기 상태로 외부에서 서버로의 접속이 일어날때 실행된다
+				System.out.println("연결 완료 : " + socket);
 				socketSet.add(socket); // 소켓이 생성되면 socketSet에 추가
-
+				System.out.println("현제 인원 : " + socketSet.size());
+				
 				Runnable run = () -> { // Runnable 선언
 					sendAllMsg(socket); // toss 메서드 실행
 				};
@@ -65,7 +67,8 @@ public class ChatServer {
 
 				msg = reader.readLine(); // 접속자의 메세지 한줄을 읽어옴
 				it = socketSet.iterator(); // socketSet을 Iterator로 변환
-				synchronized (it) { // Iterator 객체를 사용하는동안 변동이 없게하기위한 synchronized
+				// Iterator 객체를 사용하는동안 변동이 없게하기위한 synchronized
+				synchronized (it) { // TODO 확실하게 필요한지 잘 모르겠음..
 					while (it.hasNext()) {
 						temp = it.next(); // 소켓 객체를 임시변수에 삽입
 						if (temp == socket) { // 메세지를 보낼때 접속자 본인에게는 메세지를 보내지 않게하기위한 조건문
@@ -83,18 +86,17 @@ public class ChatServer {
 				}
 			}
 		} catch (SocketException e) {
-			System.out.println("소켓 오류");
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ConcurrentModificationException e) {
-			System.out.println("리스트 변경");
+			System.out.println("리스트 변경 오류");
 			e.printStackTrace();
 		} finally {
 			try {
 				if (socket != null) {
-					System.out.println(socket.getInetAddress() + " : 소켓 종료");
+					System.out.println("소켓 종료 : " + socket);
 					socketSet.remove(socket); // socketSet에서 소켓 삭제
+					System.out.println("현제 인원 : " + socketSet.size());
 					socket.close();
 				}
 			} catch (IOException e) {
