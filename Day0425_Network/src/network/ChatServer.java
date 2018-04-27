@@ -13,7 +13,7 @@ public class ChatServer implements Runnable {
 	// 채팅서버
 	private DatagramSocket socket; // 소켓
 	private DatagramPacket packet; // 페킷
-	private Set<String> list; // 접속자들의 ip저장할 리스트
+	private Set<InetAddress> ipSet; // 접속자들의 ip저장할 리스트
 	private byte[] buf; // 버퍼
 	private int serverPort; // 채팅서버의 리스브 포트
 	private int sendPort; // send 받을곳의 포트
@@ -29,17 +29,18 @@ public class ChatServer implements Runnable {
 			myAdress = InetAddress.getLocalHost().getHostAddress();
 			socket = new DatagramSocket(serverPort); // 소켓생성(포트번호)
 			packet = null; // 패킷 준비
-			list = new HashSet<String>(); // ip주소를 저장한 HashSet생성
+			ipSet = new HashSet<InetAddress>(); // ip주소를 저장한 HashSet생성
 
 			while (true) { // 서버무한 구동
 				receive(); // 리시브
 				send(); // 샌드
 			}
-
 		} catch (SocketException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			socket.close();
 		}
 	}
 
@@ -50,27 +51,25 @@ public class ChatServer implements Runnable {
 		packet = new DatagramPacket(buf, buf.length); // 버퍼 크기만큼의 데이터를 전송할 packet 생성
 		socket.receive(packet); // 만들어둔 소켓에 packet틀??로 데이터를 받아옴
 
-		list.add(packet.getAddress().getHostAddress());// packet에 있는정보중 보낸사람의 ip주소를 list에 저장
+		ipSet.add(packet.getAddress());// packet에 있는정보중 inetAdress 정보를 ipSet에 저장
 
 		System.out.println(packet.getAddress() + " : " + new String(buf).trim()); // 출력
-
 	}
 
 	public void send() throws IOException { // 센드 기능
-		Iterator<String> it = list.iterator(); // list가 set이기때문에 모든값에 접속하기 위해 Iterator 사용
+		Iterator<InetAddress> it = ipSet.iterator(); // list가 set이기때문에 모든값에 접속하기 위해 Iterator 사용
+		InetAddress ia;
 		
 		while (it.hasNext()) {
-			String ip = it.next(); // ip변수에 list에서 ip주소를 꺼내와서 삽입
+			ia = it.next(); // ia변수에 ia객체를 삽입
 
-			if (!ip.equals(myAdress)) { //보내는 IP가 자신의 IP가 아닐때만 send
-				InetAddress ia = InetAddress.getByName(ip); // ia객체에 해당 ip주소로 셋팅??
+			if (!ia.getHostAddress().equals(myAdress)) { //보내는 IP가 자신의 IP가 아닐때만 send
 				// 메세지앞에 해당 사용자의 ip붙이기
 				String msg = "[" + packet.getAddress().getHostAddress() + "] : " + new String(buf).trim();
 				buf = msg.getBytes(); // ip를 붙인 메세지를 다시 byte타입으로 변환
 				packet = new DatagramPacket(buf, buf.length, ia, sendPort); // packet에 InetAddress객체를 넘겨주고 받을사람의 포트를 입력
 				socket.send(packet);// 소캣을 통해서 전송
 			}
-
 		}
 	}
 }

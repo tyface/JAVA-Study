@@ -11,6 +11,7 @@ public class InetAddressTest {
 		
 		try {
 			ia = InetAddress.getLocalHost();
+			System.out.println();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
