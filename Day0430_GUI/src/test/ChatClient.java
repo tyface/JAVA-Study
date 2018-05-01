@@ -1,6 +1,7 @@
 package test;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -8,16 +9,20 @@ import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -25,174 +30,154 @@ import javax.swing.JTextField;
 
 public class ChatClient extends JFrame implements KeyListener {
 
-	private JTextField textField;
+	private JTextArea textView;
 	private JButton btnSend;
-	private JTextArea textArea;
-	private JTextField textFieldIp;
-	private JLabel label;
+	private JTextField textInput;
+	private JScrollPane scrollPane;
+	private JTextField textIP;
+	private JLabel lblServerIp;
 	private JButton btnConnect;
-	private JLabel lblNick;
-	private JTextField tfNick;
-	private JButton btnNickSave;
-	
-	
-	// 서버로 메시지 전송을 위한, socket, writer(스트림) 선언
+	private JLabel lblId;
+	private JTextField idField;
+	private JButton btnJoin;
+	private JTextField passField;
+	private JLabel lblPass;
+	private JButton btnSign;
+	private JScrollPane scrollPane_1;
+	private JLabel lblConnList;
+	private JTextField NickField;
+
 	private Socket socket;
-//	private BufferedWriter writer;
 	private ObjectOutputStream out;
-	
+	private boolean isLogin;
+	private JList<Account> onlineList;
+
 	public ChatClient() {
-		this.setTitle("채팅");
-		this.setSize(453, 422);
+		isLogin = false;
+		this.setTitle("GUI 채팅");
+		this.setSize(884, 582);
+		new Vector<Account>();
 
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 10, 210, 313);
-		panel.add(scrollPane);
-
-		textArea = new JTextArea();
-		scrollPane.setViewportView(textArea);
-
-		textField = new JTextField();
-		textField.setBounds(12, 333, 289, 35);
-		panel.add(textField);
-		textField.addKeyListener(this);
-
-		btnSend = new JButton("전송");
-		btnSend.setBounds(313, 333, 112, 35);
-
-		// 채팅 보내기
-		btnSend.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				sendMessage();
-			}
-		});
+		btnSend = new JButton("Send");
+		btnSend.setBounds(765, 484, 75, 39);
 		panel.add(btnSend);
 
-		textFieldIp = new JTextField();
-		textFieldIp.setBounds(234, 179, 180, 21);
-		panel.add(textFieldIp);
-		textFieldIp.setText("192.168.0.87");
-		textFieldIp.addKeyListener(this);
+		btnSend.addActionListener(new ActionListener() {
 
-		label = new JLabel("서버아이피");
-		label.setBounds(234, 154, 106, 15);
-		panel.add(label);
-
-		btnConnect = new JButton("접속");
-		btnConnect.setBounds(234, 211, 180, 23);
-		panel.add(btnConnect);
-		
-		lblNick = new JLabel("닉네임");
-		lblNick.setBounds(234, 71, 106, 15);
-		panel.add(lblNick);
-		
-		tfNick = new JTextField();
-		tfNick.setBounds(234, 96, 180, 21);
-		panel.add(tfNick);
-		tfNick.setText("이름없음");
-		tfNick.addKeyListener(this);
-		
-		
-		btnNickSave = new JButton("저장");
-		btnNickSave.setBounds(234, 121, 180, 23);
-		panel.add(btnNickSave);
-		btnNickSave.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				sendNick();
+				sendMsg();
 			}
 		});
-	
+
+		textInput = new JTextField();
+		textInput.setBounds(14, 484, 737, 39);
+		panel.add(textInput);
+		textInput.setColumns(10);
+		textInput.addKeyListener(this);
+
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(14, 45, 602, 427);
+		panel.add(scrollPane);
+
+		textView = new JTextArea();
+		scrollPane.setViewportView(textView);
+
+		textIP = new JTextField();
+		textIP.setText("192.168.0.87");
+		textIP.setBounds(90, 9, 127, 24);
+		panel.add(textIP);
+		textIP.setColumns(10);
+
+		lblServerIp = new JLabel("Server IP");
+		lblServerIp.setBounds(14, 12, 62, 18);
+		panel.add(lblServerIp);
+
+		btnConnect = new JButton("connect");
+		btnConnect.setBounds(231, 8, 85, 27);
+		panel.add(btnConnect);
+
 		btnConnect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// 서버로 연결
 				makeConnection();
 			}
 		});
 
+		lblId = new JLabel("ID");
+		lblId.setBounds(330, 12, 62, 18);
+		panel.add(lblId);
+
+		idField = new JTextField();
+		idField.setBounds(354, 9, 116, 24);
+		panel.add(idField);
+		idField.setColumns(10);
+
+		passField = new JTextField();
+		passField.setBounds(539, 9, 116, 24);
+		panel.add(passField);
+		passField.setColumns(10);
+
+		lblPass = new JLabel("pass");
+		lblPass.setBounds(486, 12, 39, 18);
+		panel.add(lblPass);
+
+		btnJoin = new JButton("Join");
+		btnJoin.setBounds(751, 8, 72, 27);
+		panel.add(btnJoin);
+
+		btnJoin.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// join();
+			}
+		});
+
+		btnSign = new JButton("Sign");
+		btnSign.setBounds(665, 8, 72, 26);
+		panel.add(btnSign);
+
+		btnSign.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (isLogin) {
+					textView.append("< 이미 로그인 되었습니다. >\n");
+				} else {
+					// sign();
+				}
+			}
+		});
+
+		scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(630, 75, 210, 397);
+		panel.add(scrollPane_1);
+
+		onlineList = new JList<Account>();
+		scrollPane_1.setViewportView(onlineList);
+
+		lblConnList = new JLabel("접속자 리스트");
+		lblConnList.setFont(new Font("굴림", Font.PLAIN, 17));
+		lblConnList.setBounds(630, 48, 121, 24);
+		panel.add(lblConnList);
+
+		// ss
 		this.setVisible(true);
-	}// 생성자 end
-	
-	public void sendNick() {
-		 //textfield에 있는 문자열을 writer 를 이용해서 보내면 됨
-		try {
-			String msg = tfNick.getText();
-			
-			Protocol p = new Protocol();
-			Map<String, Object> data
-			 = new HashMap<String,Object>();
-			p.setType("#01");
-			data.put("nick", msg);
-			p.setData(data);
-			
-			out.writeObject(p);
-			
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-	}
-	
-	
-	
-	
-	
-	
-	
-	public void sendMessage() {
-		// textfield에 있는 문자열을 writer 를 이용해서 보내면 됨
-		try {
-			String msg = textField.getText();
-			
-			//Protocol 객체 만들어서 쓰기
-			Protocol p = new Protocol();
-			p.setType("#02");
-			//p에다가 데이터를 넣기 위해서 Map이 필요
-			Map<String, Object> data
-			 = new HashMap<String,Object>();
-			//채팅 메시지 넣어주기
-			data.put("msg",msg);
-			//전송할 프로토콜 객체에 데이터 셋팅
-			p.setData(data);
-			
-			out.writeObject(p);
-			
-			//객체쓰기 : ObjectStream 
-			//writer.write("02##"+msg);
-//			writer.newLine();
-//			writer.flush();
-
-			// 보내고 나서 해야할 일: 내가 작성한 내용을 textArea(채팅 내용화면)에 갖다 붙이기
-			textArea.append("나: " + msg + "\n");
-			// 채팅 작성창 비워주기
-			textField.setText("");
-
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
 	}
 
 	private void makeConnection() {
-		// 서버로 연결하기 : IP(textfield에서 가져오기), Port (8000)는 고정
-		InetAddress ip = null;
-		// ip 입력받는 textfield에서 ip 얻어와서 inetAddress 객체 얻기
+		InetAddress ia = null;
 		try {
-
-			ip = InetAddress.getByName(textFieldIp.getText());
-			socket = new Socket(ip, 8000);
-			// 소켓얻어왔으니.. 데이터 전송을 위해서 스트림 얻어오기
-			//writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+			ia = InetAddress.getByName(textIP.getText());
+			socket = new Socket(ia, 8000);
 			out = new ObjectOutputStream(socket.getOutputStream());
-			
-			//서버로 부터 오는 메시지를 처리하기 위한 스레드 생성 및 시작
-			Thread receiver = new Thread(new Receiver());
+
+			Thread receiver = new Thread(new TCPReceiverThread());
 			receiver.start();
-			
+
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -202,9 +187,64 @@ public class ChatClient extends JFrame implements KeyListener {
 		}
 
 	}
-	
-	public static void main(String[] args) {
-		ChatClient client = new ChatClient();
+
+	private void sendMsg() {
+		Protocol ptc;
+		Map<String, Object> data;
+		try {
+			String msg = textInput.getText();
+
+			ptc = new Protocol();
+			data = new HashMap<String, Object>();
+			ptc.setType("#02");
+			data.put("msg", msg);
+			ptc.setData(data);
+			out.writeObject(ptc);
+			out.flush();
+
+			textView.append("나 : " + msg + "\n");
+			textInput.setText("");
+		} catch (NullPointerException e) {
+			if (socket == null) {
+				System.out.println("채팅서버에 접속되어있지 않습니다.");
+			} else {
+				e.printStackTrace();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	private void sendNick() {
+		Protocol ptc;
+		Map<String, Object> data;
+		try {
+			String msg = NickField.getText();
+			ptc = new Protocol();
+			data = new HashMap<String, Object>();
+			ptc.setType("#01");
+			data.put("nick", msg);
+			ptc.setData(data);
+			out.writeObject(ptc);
+
+		} catch (NullPointerException e) {
+			if (socket == null) {
+				System.out.println("채팅서버에 접속되어있지 않습니다.");
+			} else {
+				e.printStackTrace();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
@@ -216,42 +256,49 @@ public class ChatClient extends JFrame implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			
-			System.out.println(tfNick.isFocusOwner());
-			sendMessage();
+			sendMsg();
 		}
 	}
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
+	class TCPReceiverThread implements Runnable {
 
-	}
-
-	// Sender Thread가 필요 없는 이유는 보내기가 버튼이벤트로 처리 되기 때문에 필요없음
-	// Receiver Thread는 화면을 보여주는 것과 동시에...
-	// 서버로 부터 메시지를 계속 해서 받아와야 함 thread가 필요함
-
-	class Receiver implements Runnable {
-		
 		public void run() {
-			// 소켓으로 부터 메시지 받아서 출력
-			// System.out.println("receiver");
-			BufferedReader reader = null;
+			// 소켓으로 부터 들어오는 데이터를 계속해서 출력
+			ObjectInputStream in = null;
+			// BufferedReader reader = null;
+			Protocol ptc = null;
 			String msg = null;
-
-			// 데이터를 소켓으로부터 읽어오기 위해서 스트림을 얻어옴
 			try {
-				reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				
+				in = new ObjectInputStream(socket.getInputStream());
+				// reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				while (true) {
-					msg = reader.readLine();
-					textArea.append(msg+"\n");
+					System.out.println("**1");
+					ptc = (Protocol) in.readObject();
+					System.out.println("**2");
+					msg = (String) ptc.getData("msg");
+					textView.append(msg + "\n");
 				}
+			} catch (SocketException e) {
+				System.out.println("채팅서버가 종료 되었습니다.");
 			} catch (IOException e) {
-				System.out.println("상대방이 연결을 종료했습니다.");
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					if (in != null) {
+						System.out.println("Sender Exit");
+						in.close();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
 
+	public static void main(String[] args) {
+		ChatClient chatClient = new ChatClient();
+	}
 }

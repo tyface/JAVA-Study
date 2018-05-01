@@ -3,6 +3,7 @@ package guiChat3;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -18,12 +19,13 @@ public class ChatServer {
 	private Set<Socket> socketSet; // 접속자들의 소켓객체를 담을 SET변수
 	private Socket socket; // 접속자들을 담을 소켓변수
 	private int serverPort; // 서버 포트
-
+	private BufferedWriter out;
 	public ChatServer(int serverPort) { // 포트번호를 받아오는 생성자
 		this.severSocket = null;
 		this.socket = null;
 		this.socketSet = new HashSet<Socket>();
 		this.serverPort = serverPort;
+		this.out = null;
 	}
 
 	public void runServer() { // 서버시작 메서드
@@ -37,7 +39,10 @@ public class ChatServer {
 				System.out.println("연결 완료 : " + socket);
 				socketSet.add(socket); // 소켓이 생성되면 socketSet에 추가
 				System.out.println("현제 인원 : " + socketSet.size());
-
+				out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+				out.write("11111");
+				out.newLine();
+				out.flush();
 				Runnable run = () -> { // Runnable 선언
 					sendAllMsg(socket); // toss 메서드 실행
 				};

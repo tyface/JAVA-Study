@@ -301,8 +301,8 @@ public class ChatClient extends JFrame implements KeyListener {
 			Protocol ptc = null;
 
 			try {
-				in = new ObjectInputStream(socket.getInputStream());
 				while (true) {
+					in = new ObjectInputStream(socket.getInputStream());
 					System.out.println("**1");
 					ptc = (Protocol) in.readObject();
 					System.out.println("**2");
@@ -314,7 +314,7 @@ public class ChatClient extends JFrame implements KeyListener {
 						msg = (String) ptc.getData("msg");
 					}
 					textView.append(msg + "\n");
-					
+					in.close();
 				}
 			} catch (SocketException e) {
 				System.out.println("채팅서버가 종료 되었습니다.");
