@@ -9,8 +9,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ObjectIOManagement {
 	private static final String FILE_PATH = "src/guiChatEx/account.dat"; // 파일 경로
@@ -22,18 +22,18 @@ public class ObjectIOManagement {
 		this.out = null;
 	}
 
-	public Map<String, String> getList() { // 리스트 객체를 불러와서 반환
-		Map<String, String> accountList = null;
+	public List<Account> getList() { // 리스트 객체를 불러와서 반환
+		List<Account> accountList = null;
 
 		try {
 			in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(FILE_PATH)));
-			accountList = (HashMap<String, String>) in.readObject(); //리스트 객체를 불러와서 list변수에 삽입
+			accountList = (List<Account>) in.readObject(); //리스트 객체를 불러와서 list변수에 삽입
 
 		} catch (FileNotFoundException e) {
 			System.out.println("파일이 없습니다.");
-			accountList = new HashMap<String, String>();
+			accountList = new ArrayList<Account>();
 		} catch (EOFException e) {
-			accountList = new HashMap<String, String>();
+			accountList = new ArrayList<Account>();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -50,7 +50,7 @@ public class ObjectIOManagement {
 		return accountList;
 	}
 
-	public void pushList(Map<String, String> accountList) { // 학생 리스트 객체를 지정 파일에 삽입
+	public void pushList(List<Account> accountList) { // 학생 리스트 객체를 지정 파일에 삽입
 
 		try {
 			out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(FILE_PATH)));

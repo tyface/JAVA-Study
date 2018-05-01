@@ -15,10 +15,12 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -41,16 +43,17 @@ public class ChatClient extends JFrame implements KeyListener {
 	private JButton btnSign;
 	private JScrollPane scrollPane_1;
 	private JLabel lblConnList;
-	private JTextArea textArea;
 
 	private Socket socket;
 	private ObjectOutputStream out;
 	private boolean isLogin;
+	private JList<Account> onlineList;
 
 	public ChatClient() {
 		isLogin = false;
 		this.setTitle("GUI 채팅");
 		this.setSize(884, 582);
+		new Vector<Account>();
 
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.CENTER);
@@ -64,7 +67,7 @@ public class ChatClient extends JFrame implements KeyListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (loginCheck()) {
+				if (isLogin) {
 					sendMsg();
 				} else {
 					textView.append("< 로그인후 이용해주세요 >\n");
@@ -154,8 +157,8 @@ public class ChatClient extends JFrame implements KeyListener {
 		scrollPane_1.setBounds(630, 75, 210, 397);
 		panel.add(scrollPane_1);
 
-		textArea = new JTextArea();
-		scrollPane_1.setViewportView(textArea);
+		onlineList = new JList<Account>();
+		scrollPane_1.setViewportView(onlineList);
 
 		lblConnList = new JLabel("접속자 리스트");
 		lblConnList.setFont(new Font("굴림", Font.PLAIN, 17));
@@ -173,7 +176,7 @@ public class ChatClient extends JFrame implements KeyListener {
 			ia = InetAddress.getByName(textIP.getText());
 			socket = new Socket(ia, 8000);
 			out = new ObjectOutputStream(socket.getOutputStream());
-			
+
 			Thread receiver = new Thread(new TCPReceiverThread());
 			receiver.start();
 
@@ -185,13 +188,6 @@ public class ChatClient extends JFrame implements KeyListener {
 			e.printStackTrace();
 		}
 
-	}
-
-	private boolean loginCheck() {
-		if (isLogin == false) {
-			return false;
-		}
-		return true;
 	}
 
 	private void sendMsg() {
@@ -301,17 +297,24 @@ public class ChatClient extends JFrame implements KeyListener {
 		public void run() {
 			// 소켓으로 부터 들어오는 데이터를 계속해서 출력
 			ObjectInputStream in = null;
-			Map<String, Object> data;
 			String msg = null;
 			Protocol ptc = null;
+
 			try {
 				in = new ObjectInputStream(socket.getInputStream());
-				// reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				while (true) {
+					System.out.println("**1");
 					ptc = (Protocol) in.readObject();
-					
-					msg = (String) ptc.getData("msg");
+					System.out.println("**2");
+					if (ptc.getType().equals("#00")) {
+						msg = (String) ptc.getData("signOK");
+						isLogin = true;
+						Vector<Account> onList = (Vector<Account>) ptc.getData("onList");
+					} else {
+						msg = (String) ptc.getData("msg");
+					}
 					textView.append(msg + "\n");
+					
 				}
 			} catch (SocketException e) {
 				System.out.println("채팅서버가 종료 되었습니다.");
