@@ -1,13 +1,13 @@
 package guiChatEx;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -33,42 +33,53 @@ public class ChatClient extends JFrame implements KeyListener {
 	private JTextField textIP;
 	private JLabel lblServerIp;
 	private JButton btnConnect;
-	private JLabel lblNick;
-	private JTextField NickField;
-	private JButton btnNickSave;
+	private JLabel lblId;
+	private JTextField idField;
+	private JButton btnJoin;
+	private JTextField passField;
+	private JLabel lblPass;
+	private JButton btnSign;
+	private JScrollPane scrollPane_1;
+	private JLabel lblConnList;
+	private JTextArea textArea;
 
 	private Socket socket;
-	// private BufferedWriter writer;
 	private ObjectOutputStream out;
+	private boolean isLogin;
 
 	public ChatClient() {
+		isLogin = false;
 		this.setTitle("GUI 채팅");
-		this.setSize(512, 379);
+		this.setSize(884, 582);
 
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 
 		btnSend = new JButton("Send");
-		btnSend.setBounds(405, 281, 75, 39);
+		btnSend.setBounds(765, 484, 75, 39);
 		panel.add(btnSend);
 
 		btnSend.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				sendMsg();
+				if (loginCheck()) {
+					sendMsg();
+				} else {
+					textView.append("< 로그인후 이용해주세요 >\n");
+				}
 			}
 		});
 
 		textInput = new JTextField();
-		textInput.setBounds(14, 281, 377, 39);
+		textInput.setBounds(14, 484, 737, 39);
 		panel.add(textInput);
 		textInput.setColumns(10);
 		textInput.addKeyListener(this);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(14, 12, 308, 257);
+		scrollPane.setBounds(14, 45, 602, 427);
 		panel.add(scrollPane);
 
 		textView = new JTextArea();
@@ -76,37 +87,17 @@ public class ChatClient extends JFrame implements KeyListener {
 
 		textIP = new JTextField();
 		textIP.setText("192.168.0.87");
-		textIP.setBounds(336, 143, 144, 24);
+		textIP.setBounds(90, 9, 127, 24);
 		panel.add(textIP);
 		textIP.setColumns(10);
 
 		lblServerIp = new JLabel("Server IP");
-		lblServerIp.setBounds(336, 113, 62, 18);
+		lblServerIp.setBounds(14, 12, 62, 18);
 		panel.add(lblServerIp);
 
 		btnConnect = new JButton("connect");
-		btnConnect.setBounds(336, 179, 105, 27);
+		btnConnect.setBounds(231, 8, 85, 27);
 		panel.add(btnConnect);
-
-		lblNick = new JLabel("닉네임");
-		lblNick.setBounds(336, 15, 62, 18);
-		panel.add(lblNick);
-
-		NickField = new JTextField();
-		NickField.setBounds(336, 39, 116, 24);
-		panel.add(NickField);
-		NickField.setColumns(10);
-
-		btnNickSave = new JButton("닉네임 저장");
-		btnNickSave.setBounds(336, 75, 116, 24);
-		panel.add(btnNickSave);
-
-		btnNickSave.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				sendNick();
-			}
-		});
 
 		btnConnect.addActionListener(new ActionListener() {
 			@Override
@@ -115,17 +106,74 @@ public class ChatClient extends JFrame implements KeyListener {
 			}
 		});
 
+		lblId = new JLabel("ID");
+		lblId.setBounds(330, 12, 62, 18);
+		panel.add(lblId);
+
+		idField = new JTextField();
+		idField.setBounds(354, 9, 116, 24);
+		panel.add(idField);
+		idField.setColumns(10);
+
+		passField = new JTextField();
+		passField.setBounds(539, 9, 116, 24);
+		panel.add(passField);
+		passField.setColumns(10);
+
+		lblPass = new JLabel("pass");
+		lblPass.setBounds(486, 12, 39, 18);
+		panel.add(lblPass);
+
+		btnJoin = new JButton("Join");
+		btnJoin.setBounds(751, 8, 72, 27);
+		panel.add(btnJoin);
+
+		btnJoin.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				join();
+			}
+		});
+
+		btnSign = new JButton("Sign");
+		btnSign.setBounds(665, 8, 72, 26);
+		panel.add(btnSign);
+
+		btnSign.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (isLogin) {
+					textView.append("< 이미 로그인 되었습니다. >\n");
+				} else {
+					sign();
+				}
+			}
+		});
+
+		scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(630, 75, 210, 397);
+		panel.add(scrollPane_1);
+
+		textArea = new JTextArea();
+		scrollPane_1.setViewportView(textArea);
+
+		lblConnList = new JLabel("접속자 리스트");
+		lblConnList.setFont(new Font("굴림", Font.PLAIN, 17));
+		lblConnList.setBounds(630, 48, 121, 24);
+		panel.add(lblConnList);
+
 		// ss
 		this.setVisible(true);
 	}
 
 	private void makeConnection() {
 		InetAddress ia = null;
+		Protocol ptc = new Protocol();
 		try {
 			ia = InetAddress.getByName(textIP.getText());
 			socket = new Socket(ia, 8000);
 			out = new ObjectOutputStream(socket.getOutputStream());
-
+			
 			Thread receiver = new Thread(new TCPReceiverThread());
 			receiver.start();
 
@@ -139,22 +187,44 @@ public class ChatClient extends JFrame implements KeyListener {
 
 	}
 
+	private boolean loginCheck() {
+		if (isLogin == false) {
+			return false;
+		}
+		return true;
+	}
+
 	private void sendMsg() {
-		Protocol ptc;
-		Map<String, Object> data;
 		try {
 			String msg = textInput.getText();
 
-			ptc = new Protocol();
-			data = new HashMap<String, Object>();
-			ptc.setType("#02");
-			data.put("msg", msg);
-			ptc.setData(data);
-			out.writeObject(ptc);
-			out.flush();
-			
+			sendProtocol("#03", "msg", msg);
+
 			textView.append("나 : " + msg + "\n");
 			textInput.setText("");
+		} catch (NullPointerException e) {
+			if (socket == null) {
+				System.out.println("채팅서버에 접속되어있지 않습니다.");
+			} else {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	private void sendProtocol(String type, String key, Object data) {
+		Protocol ptc;
+		Map<String, Object> dataMap;
+		try {
+			ptc = new Protocol();
+			ptc.setType(type);
+
+			dataMap = new HashMap<String, Object>();
+			dataMap.put(key, data);
+
+			ptc.setData(dataMap);
+			out.writeObject(ptc);
+			out.flush();
 		} catch (NullPointerException e) {
 			if (socket == null) {
 				System.out.println("채팅서버에 접속되어있지 않습니다.");
@@ -165,20 +235,19 @@ public class ChatClient extends JFrame implements KeyListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
-	private void sendNick() {
-		Protocol ptc;
-		Map<String, Object> data;
+	private void join() {
+		Account account = null;
 		try {
-			String msg = NickField.getText();
-			ptc = new Protocol();
-			data = new HashMap<String, Object>();
-			ptc.setType("#01");
-			data.put("nick", msg);
-			ptc.setData(data);
-			out.writeObject(ptc);
+			String id = idField.getText();
+			String pass = passField.getText();
+
+			account = new Account();
+			account.setId(id);
+			account.setPass(pass);
+
+			sendProtocol("#01", "join", account);
 
 		} catch (NullPointerException e) {
 			if (socket == null) {
@@ -186,9 +255,25 @@ public class ChatClient extends JFrame implements KeyListener {
 			} else {
 				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}
+	}
+
+	public void sign() {
+		Account account = null;
+		try {
+			String id = idField.getText();
+			String pass = passField.getText();
+			account = new Account();
+			account.setId(id);
+			account.setPass(pass);
+
+			sendProtocol("#02", "sign", account);
+		} catch (NullPointerException e) {
+			if (socket == null) {
+				System.out.println("채팅서버에 접속되어있지 않습니다.");
+			} else {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -215,24 +300,31 @@ public class ChatClient extends JFrame implements KeyListener {
 
 		public void run() {
 			// 소켓으로 부터 들어오는 데이터를 계속해서 출력
-			BufferedReader reader = null;
+			ObjectInputStream in = null;
+			Map<String, Object> data;
 			String msg = null;
+			Protocol ptc = null;
 			try {
-				reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				in = new ObjectInputStream(socket.getInputStream());
+				// reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				while (true) {
-					msg = reader.readLine();
-
+					ptc = (Protocol) in.readObject();
+					
+					msg = (String) ptc.getData("msg");
 					textView.append(msg + "\n");
 				}
 			} catch (SocketException e) {
 				System.out.println("채팅서버가 종료 되었습니다.");
 			} catch (IOException e) {
 				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			} finally {
 				try {
-					if (reader != null) {
+					if (in != null) {
 						System.out.println("Sender Exit");
-						reader.close();
+						in.close();
 					}
 				} catch (IOException e) {
 					e.printStackTrace();

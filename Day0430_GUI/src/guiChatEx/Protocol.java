@@ -29,8 +29,8 @@ public class Protocol implements Serializable {
 		this.type = type;
 	}
 
-	public String getData(String msg) {
-		return (String) data.get(msg);
+	public Object getData(String key) {
+		return data.get(key);
 	}
 
 	public void setData(Map<String, Object> data) {

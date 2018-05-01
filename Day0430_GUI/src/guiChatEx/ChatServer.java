@@ -1,15 +1,17 @@
 package guiChatEx;
 
-import java.io.BufferedWriter;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.OutputStreamWriter;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ConcurrentModificationException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 public class ChatServer {
@@ -27,19 +29,31 @@ public class ChatServer {
 	}
 
 	public void runServer() { // 서버시작 메서드
-
+		ObjectOutputStream out;
+		Protocol ptc = null;
+		Map<String, Object> dataMap;
 		try {
 			severSocket = new ServerSocket(serverPort); // 서버소켓 생성
-
+			ptc = new Protocol();
 			// 서버로의 접속을 계속 체크하면서 접속이 일어날경우 socketSet에 추가하고, 스레드를 만드는 반복문
 			while (true) {
 				socket = severSocket.accept(); // 대기 상태로 외부에서 서버로의 접속이 일어날때 실행된다
 				System.out.println("연결 완료 : " + socket);
+				out = new ObjectOutputStream(socket.getOutputStream());
+				ptc.setType("#00");
+				dataMap = new HashMap<String, Object>();
+				dataMap.put("msg", "채팅서버에 접속 셨습니다.");
+				ptc.setData(dataMap);
+
+
+				out.writeObject(ptc);
+				out.flush();
+
 				socketSet.add(socket); // 소켓이 생성되면 socketSet에 추가
 				System.out.println("현제 인원 : " + socketSet.size());
 
 				Runnable run = () -> { // Runnable 선언
-					sendAllMsg(socket); // toss 메서드 실행
+					sendAllMsg(socket); // sendAllMsg 메서드 실행
 				};
 
 				Thread t1 = new Thread(run);
@@ -52,29 +66,76 @@ public class ChatServer {
 
 	}
 
+	public Protocol join(Account ac) {
+		Protocol ptc = new Protocol();
+		ObjectIOManagement io = new ObjectIOManagement();
+		Map<String, String> acList = io.getList();
+		Map<String, Object> data = new HashMap<String, Object>();
+
+		if (acList.get(ac.getId()) == null) {
+			acList.put(ac.getId(), ac.getPass());
+			io.pushList(acList);
+			data.put("msg", "< 회원가입 완료 >");
+		} else {
+			data.put("msg", "< 중복된 ID입니다. >");
+		}
+		ptc.setType("#00");
+		ptc.setData(data);
+		return ptc;
+	}
+
+	public Protocol sign(Account ac) {
+		Protocol ptc = new Protocol();
+		ObjectIOManagement io = new ObjectIOManagement();
+		Map<String, String> acList = io.getList();
+		Map<String, Object> data = new HashMap<String, Object>();
+
+		if (acList.get(ac.getId()) == null) {
+			data.put("msg", "< 해당 ID가 존재하지 안습니다. >");
+		} else if (!acList.get(ac.getId()).equals(ac.getPass())) {
+			data.put("msg", "< PASSWORD가 일치하지 않습니다. >");
+		} else {
+			data.put("signOK", "< 로그인 되었습니다. >");
+		}
+		ptc.setType("#00");
+		ptc.setData(data);
+		return ptc;
+	}
+
 	// 접속자의 소켓정보를 받고 현제 socketSet에 저장되어있는 모두에게 접속자의 메세지를 전달하는 메서드
 	public void sendAllMsg(Socket socket) {
 		ObjectInputStream in = null; // 리더
-		BufferedWriter writer = null; // 라이터
+		ObjectOutputStream out = null; // 라이터
+		ObjectOutputStream tmpOut = null;
 		Protocol ptc;
 		Socket temp; // 소켓을 담을 임시변수
-		String nick = "이름없음";
 		Iterator<Socket> it; // socketSet 모든 값에 접근하기위한 Iterator객체변수
-		String outMsg;
 		try {
-			int i = 0;
 			in = new ObjectInputStream(socket.getInputStream());
+			out = new ObjectOutputStream(socket.getOutputStream());
 			while (true) {
 				// 접속자의 메세지를 읽어오는 리더생성
-				ptc = (Protocol) in.readObject(); // 접속자의 메세지 한줄을 읽어옴
-				
+
+				ptc = (Protocol) in.readObject();
+
 				switch (ptc.getType()) {
 				case "#01":
-					nick = ptc.getData("nick");
+					System.out.println("#01");
+					ptc = join((Account) ptc.getData("join"));
+
+					out.writeObject(ptc);
+					out.flush();
 					break;
 				case "#02":
+					System.out.println("#02");
+					ptc = sign((Account) ptc.getData("sign"));
+
+					out.writeObject(ptc);
+					out.flush();
+					break;
+				case "#03":
+					System.out.println("#03");
 					it = socketSet.iterator(); // socketSet을 Iterator로 변환
-					outMsg = ptc.getData("msg");
 
 					// Iterator 객체를 사용하는동안 변동이 없게하기위한 synchronized
 					synchronized (it) { // TODO 확실하게 필요한지 잘 모르겠음..
@@ -85,21 +146,22 @@ public class ChatServer {
 							}
 
 							// 메세지를 보내기위한 라이터 생성
-							writer = new BufferedWriter(new OutputStreamWriter(temp.getOutputStream()));
+							tmpOut = new ObjectOutputStream(temp.getOutputStream());
 
 							// 메세지 보내기
-							writer.write(nick + " : " + outMsg);
-							writer.newLine();
-							writer.flush();
+							tmpOut.writeObject(ptc);
+							tmpOut.flush();
 						}
 					}
 					break;
 				default:
+					System.out.println("default");
 					break;
 				}
 
 			}
-		} catch (SocketException e) {
+		} catch (EOFException e) {
+			sendAllMsg(socket);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ConcurrentModificationException e) {
