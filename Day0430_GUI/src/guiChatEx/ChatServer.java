@@ -22,13 +22,13 @@ public class ChatServer {
 	private Set<Socket> socketSet; // 접속자들의 소켓객체를 담을 SET변수
 	private int serverPort; // 서버 포트
 	private Socket socket;
-	private Map<Socket, Account> onlineUserList;
+	private Map<ObjectOutputStream, Account> onlineUserList;
 
 	public ChatServer(int serverPort) { // 포트번호를 받아오는 생성자
 		this.severSocket = null;
 		this.socketSet = new HashSet<Socket>();
 		this.serverPort = serverPort;
-		this.onlineUserList = new HashMap<Socket, Account>();
+		this.onlineUserList = new HashMap<ObjectOutputStream, Account>();
 	}
 
 	public void runServer() { // 서버시작 메서드
@@ -86,7 +86,7 @@ public class ChatServer {
 
 	}
 
-	public Protocol sign(Account ac, Socket socket) {
+	public Protocol sign(Account ac, ObjectOutputStream out) {
 		Protocol ptc = new Protocol();
 		ObjectIOManagement io = new ObjectIOManagement();
 		List<Account> acList = io.getList();
@@ -105,7 +105,7 @@ public class ChatServer {
 		} else {
 			ptc.setType("#00");
 			data.put("signOK", "< 로그인 되었습니다. >");
-			onlineUserList.put(socket, searchAccount);
+			onlineUserList.put(out, searchAccount);
 			List<String> onlineIdList = new Vector<String>();
 			for (Account accounts : onlineUserList.values()) {
 				onlineIdList.add(accounts.getId());
@@ -115,6 +115,35 @@ public class ChatServer {
 		}
 		ptc.setData(data);
 		return ptc;
+	}
+
+	public void sendOnlineList() throws IOException {
+		Protocol ptc = new Protocol();
+		Map<String, Object> data = new HashMap<String, Object>();
+		List<String> onlineIdList = new Vector<String>();
+		Iterator<ObjectOutputStream> it = null;
+		ObjectOutputStream out = null;
+
+		for (Account accounts : onlineUserList.values()) {
+			onlineIdList.add(accounts.getId());
+		}
+
+		ptc.setType("#05");
+		data.put("onList", onlineIdList);
+		ptc.setData(data);
+		it = onlineUserList.keySet().iterator(); // socketSet을 Iterator로 변환
+
+		synchronized (it) { // TODO 확실하게 필요한지 잘 모르겠음..
+
+			while (it.hasNext()) {
+				out = it.next(); // 소켓 객체를 임시변수에 삽입
+
+				out.writeObject(ptc);
+				out.flush();
+				out.reset();
+			}
+		}
+
 	}
 
 	public boolean onlineCheck(String id) {
@@ -132,10 +161,9 @@ public class ChatServer {
 		ObjectInputStream in = null; // 리더
 		Map<String, Object> dataMap;
 		Protocol ptc;
-		Socket temp; // 소켓을 담을 임시변수
-		Iterator<Socket> it; // socketSet 모든 값에 접근하기위한 Iterator객체변수
+		Iterator<ObjectOutputStream> it; // socketSet 모든 값에 접근하기위한 Iterator객체변수
 		try {
-			
+
 			out = new ObjectOutputStream(socket.getOutputStream());
 			in = new ObjectInputStream(socket.getInputStream());
 
@@ -148,7 +176,6 @@ public class ChatServer {
 
 			out.writeObject(ptc);
 			out.flush();
-			out.close();
 			while (true) {
 				// 접속자의 메세지를 읽어오는 리더생성
 
@@ -156,43 +183,35 @@ public class ChatServer {
 
 				switch (ptc.getType()) {
 				case "#01":
-					
-					System.out.println("#01");
-					out = new ObjectOutputStream(socket.getOutputStream());
 					ptc = join((Account) ptc.getData("join"));
 
 					out.writeObject(ptc);
 					out.flush();
-					out.close();
 					break;
 				case "#02":
-					System.out.println("#02");
-					out = new ObjectOutputStream(socket.getOutputStream());
-					ptc = sign((Account) ptc.getData("sign"), socket);
-
+					ptc = sign((Account) ptc.getData("sign"), out);
+					sendOnlineList();
 					out.writeObject(ptc);
 					out.flush();
-					out.close();
 					break;
 				case "#03":
-					System.out.println("#03");
-					it = socketSet.iterator(); // socketSet을 Iterator로 변환
 
+					it = onlineUserList.keySet().iterator(); // socketSet을 Iterator로 변환
 					// Iterator 객체를 사용하는동안 변동이 없게하기위한 synchronized
 					synchronized (it) { // TODO 확실하게 필요한지 잘 모르겠음..
-						
+
 						while (it.hasNext()) {
-							temp = it.next(); // 소켓 객체를 임시변수에 삽입
-							if (temp == socket) { // 메세지를 보낼때 접속자 본인에게는 메세지를 보내지 않게하기위한 조건문
+							tmpOut = it.next(); // 소켓 객체를 임시변수에 삽입
+							if (tmpOut == out) { // 메세지를 보낼때 접속자 본인에게는 메세지를 보내지 않게하기위한 조건문
 								continue;
 							}
+							dataMap.clear();
+							dataMap.put("msg", onlineUserList.get(tmpOut) + " : " + ptc.getData("msg"));
+							ptc.setData(dataMap);
 
-							// 메세지를 보내기위한 라이터 생성
-							out = new ObjectOutputStream(temp.getOutputStream());
-							// 메세지 보내기
-							out.writeObject(ptc);
-							out.flush();
-							out.close();
+							tmpOut.writeObject(ptc);
+							tmpOut.flush();
+							tmpOut.reset();
 						}
 					}
 					break;
@@ -203,10 +222,9 @@ public class ChatServer {
 
 			}
 		} catch (SocketException e) {
-			System.out.println("여기?");
-			e.printStackTrace();
 		} catch (EOFException e) {
 			sendAllMsg(socket);
+			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ConcurrentModificationException e) {
@@ -218,10 +236,12 @@ public class ChatServer {
 		} finally {
 			try {
 				if (socket != null) {
+					onlineUserList.remove(out);
 					System.out.println("소켓 종료 : " + socket);
 					socketSet.remove(socket); // socketSet에서 소켓 삭제
-					System.out.println("현제 인원 : " + socketSet.size());
+					System.out.println("현제 인원 : " + onlineUserList.size());
 					socket.close();
+					sendOnlineList();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

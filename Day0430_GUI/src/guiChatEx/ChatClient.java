@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
 
 public class ChatClient extends JFrame implements KeyListener {
 
@@ -43,17 +45,18 @@ public class ChatClient extends JFrame implements KeyListener {
 	private JButton btnSign;
 	private JScrollPane scrollPane_1;
 	private JLabel lblConnList;
+	private JList<Account> onlineList;
 
 	private Socket socket;
 	private ObjectOutputStream out;
 	private boolean isLogin;
-	private JList<Account> onlineList;
+	private Vector<Account> onList;
 
 	public ChatClient() {
-		isLogin = false;
+		this.isLogin = false;
 		this.setTitle("GUI 채팅");
 		this.setSize(884, 582);
-		new Vector<Account>();
+		this.onList = new Vector<Account>();
 
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.CENTER);
@@ -157,7 +160,7 @@ public class ChatClient extends JFrame implements KeyListener {
 		scrollPane_1.setBounds(630, 75, 210, 397);
 		panel.add(scrollPane_1);
 
-		onlineList = new JList<Account>();
+		onlineList = new JList<Account>(onList);
 		scrollPane_1.setViewportView(onlineList);
 
 		lblConnList = new JLabel("접속자 리스트");
@@ -301,20 +304,22 @@ public class ChatClient extends JFrame implements KeyListener {
 			Protocol ptc = null;
 
 			try {
+				in = new ObjectInputStream(socket.getInputStream());
 				while (true) {
-					in = new ObjectInputStream(socket.getInputStream());
-					System.out.println("**1");
 					ptc = (Protocol) in.readObject();
-					System.out.println("**2");
 					if (ptc.getType().equals("#00")) {
 						msg = (String) ptc.getData("signOK");
 						isLogin = true;
-						Vector<Account> onList = (Vector<Account>) ptc.getData("onList");
+						onList = (Vector<Account>) ptc.getData("onList");
+						onlineList.setListData(onList);
+					} else if (ptc.getType().equals("#05")) {
+						onList = (Vector<Account>) ptc.getData("onList");
+						onlineList.setListData(onList);
+						continue;
 					} else {
 						msg = (String) ptc.getData("msg");
 					}
 					textView.append(msg + "\n");
-					in.close();
 				}
 			} catch (SocketException e) {
 				System.out.println("채팅서버가 종료 되었습니다.");

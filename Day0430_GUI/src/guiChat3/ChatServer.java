@@ -40,6 +40,7 @@ public class ChatServer {
 				socketSet.add(socket); // 소켓이 생성되면 socketSet에 추가
 				System.out.println("현제 인원 : " + socketSet.size());
 				out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+				
 				out.write("11111");
 				out.newLine();
 				out.flush();
@@ -60,7 +61,11 @@ public class ChatServer {
 	// 접속자의 소켓정보를 받고 현제 socketSet에 저장되어있는 모두에게 접속자의 메세지를 전달하는 메서드
 	public void sendAllMsg(Socket socket) {
 		ObjectInputStream in = null; // 리더
+		
+		
+		
 		BufferedWriter writer = null; // 라이터
+		BufferedWriter writer2 = null; // 라이터
 		Protocol ptc;
 		Socket temp; // 소켓을 담을 임시변수
 		String nick = "이름없음";
@@ -90,7 +95,8 @@ public class ChatServer {
 							}
 
 							// 메세지를 보내기위한 라이터 생성
-							writer = new BufferedWriter(new OutputStreamWriter(temp.getOutputStream()));
+//							writer = new BufferedWriter(new OutputStreamWriter(temp.getOutputStream()));
+//							writer2 = new BufferedWriter(new OutputStreamWriter(temp.getOutputStream()));
 
 							// 메세지 보내기
 							writer.write(nick + " : " + outMsg);
