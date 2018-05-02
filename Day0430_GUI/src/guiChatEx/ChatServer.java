@@ -161,6 +161,7 @@ public class ChatServer {
 		ObjectInputStream in = null; // 리더
 		Map<String, Object> dataMap;
 		Protocol ptc;
+		Protocol tempProc;
 		Iterator<ObjectOutputStream> it; // socketSet 모든 값에 접근하기위한 Iterator객체변수
 		try {
 
@@ -171,7 +172,7 @@ public class ChatServer {
 			ptc.setType("#03");
 
 			dataMap = new HashMap<String, Object>();
-			dataMap.put("msg", "채팅서버에 접속 셨습니다.");
+			dataMap.put("msg", "< 채팅서버에 접속 하셨습니다 >");
 			ptc.setData(dataMap);
 
 			out.writeObject(ptc);
@@ -206,10 +207,12 @@ public class ChatServer {
 								continue;
 							}
 							dataMap.clear();
-							dataMap.put("msg", onlineUserList.get(tmpOut) + " : " + ptc.getData("msg"));
-							ptc.setData(dataMap);
+							dataMap.put("msg", onlineUserList.get(out) + " : " + ptc.getData("msg"));
+							tempProc = new Protocol();
+							tempProc.setType("#03");
+							tempProc.setData(dataMap);
 
-							tmpOut.writeObject(ptc);
+							tmpOut.writeObject(tempProc);
 							tmpOut.flush();
 							tmpOut.reset();
 						}

@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
-public class ChatServer2 {
+public class ServerTread extends Thread{
 	// 멀티 채팅 서버
 	private ServerSocket severSocket; // 서버 소켓
 	private Set<Socket> socketSet; // 접속자들의 소켓객체를 담을 SET변수
@@ -24,14 +24,14 @@ public class ChatServer2 {
 	private Socket socket;
 	private Map<ObjectOutputStream, Account> onlineUserList;
 
-	public ChatServer2(int serverPort) { // 포트번호를 받아오는 생성자
+	public ServerTread(int serverPort) { // 포트번호를 받아오는 생성자
 		this.severSocket = null;
 		this.socketSet = new HashSet<Socket>();
 		this.serverPort = serverPort;
 		this.onlineUserList = new HashMap<ObjectOutputStream, Account>();
 	}
 
-	public void runServer() { // 서버시작 메서드
+	public void run() { // 서버시작 메서드
 
 		try {
 			severSocket = new ServerSocket(serverPort); // 서버소켓 생성
@@ -171,8 +171,9 @@ public class ChatServer2 {
 			ptc.setType("#conn");
 
 			dataMap = new HashMap<String, Object>();
-			dataMap.put("msg", "< 채팅서버에 접속 하셨습니다 >");
+			dataMap.put("msg", "채팅서버에 접속 셨습니다.");
 			ptc.setData(dataMap);
+			dataMap.clear(); //TODO
 			
 			out.writeObject(ptc);
 			out.flush();
@@ -184,26 +185,18 @@ public class ChatServer2 {
 
 				switch (ptc.getType()) {
 				case "#01":
-					System.out.println("#01");
-					System.out.println(out);
 					ptc = join((Account) ptc.getData("join"));
 
 					out.writeObject(ptc);
 					out.flush();
-					out.reset();
 					break;
 				case "#02":
-					System.out.println("#02");
-					System.out.println(out);
-					sendOnlineList();
 					ptc = sign((Account) ptc.getData("sign"), out);
+					sendOnlineList();
 					out.writeObject(ptc);
 					out.flush();
-					out.reset();
 					break;
 				case "#03":
-					System.out.println("#03");
-					System.out.println(out);
 					Protocol outPtc = new Protocol();
 					it = onlineUserList.keySet().iterator(); // socketSet을 Iterator로 변환
 					// Iterator 객체를 사용하는동안 변동이 없게하기위한 synchronized
@@ -214,7 +207,7 @@ public class ChatServer2 {
 							if (tmpOut == out) { // 메세지를 보낼때 접속자 본인에게는 메세지를 보내지 않게하기위한 조건문
 								continue;
 							}
-							dataMap = new HashMap<String, Object>();
+							dataMap.clear();
 							dataMap.put("msg", onlineUserList.get(out) + " : " + ptc.getData("msg"));
 							outPtc.setType("#03");
 							outPtc.setData(dataMap);
@@ -227,7 +220,6 @@ public class ChatServer2 {
 					break;
 				case "#06":
 					System.out.println("#06");
-					System.out.println(out);
 					onlineUserList.remove(out);
 					System.out.println("소켓 종료 : " + socket);
 					socketSet.remove(socket); // socketSet에서 소켓 삭제
