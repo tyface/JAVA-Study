@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -29,12 +28,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class ChatClient2 extends JFrame implements KeyListener, WindowListener {
+public class ChatClient3 extends JFrame implements KeyListener, WindowListener {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private JTextArea textView;
 	private JButton btnSend;
 	private JTextField textInput;
@@ -55,16 +50,13 @@ public class ChatClient2 extends JFrame implements KeyListener, WindowListener {
 	private Socket socket;
 	private ObjectOutputStream out;
 	private boolean isLogin;
-	private boolean isConn;
 	private Vector<Account> onList;
 
-	public ChatClient2() {
+	public ChatClient3() {
 		this.isLogin = false;
 		this.setTitle("GUI 채팅");
 		this.setSize(884, 582);
 		this.onList = new Vector<Account>();
-		this.isConn = false;
-		this.addWindowListener(this);
 
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.CENTER);
@@ -182,6 +174,7 @@ public class ChatClient2 extends JFrame implements KeyListener, WindowListener {
 
 	private void makeConnection() {
 		InetAddress ia = null;
+		Protocol ptc = new Protocol();
 		try {
 			ia = InetAddress.getByName(textIP.getText());
 			socket = new Socket(ia, 8000);
@@ -191,8 +184,10 @@ public class ChatClient2 extends JFrame implements KeyListener, WindowListener {
 			receiver.start();
 
 		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -213,6 +208,7 @@ public class ChatClient2 extends JFrame implements KeyListener, WindowListener {
 				e.printStackTrace();
 			}
 		}
+
 	}
 
 	private void sendProtocol(String type, String key, Object data) {
@@ -235,6 +231,7 @@ public class ChatClient2 extends JFrame implements KeyListener, WindowListener {
 				e.printStackTrace();
 			}
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -281,7 +278,6 @@ public class ChatClient2 extends JFrame implements KeyListener, WindowListener {
 
 	class TCPReceiverThread implements Runnable {
 
-		@SuppressWarnings("unchecked")
 		public void run() {
 			// 소켓으로 부터 들어오는 데이터를 계속해서 출력
 			ObjectInputStream in = null;
@@ -292,52 +288,52 @@ public class ChatClient2 extends JFrame implements KeyListener, WindowListener {
 				in = new ObjectInputStream(socket.getInputStream());
 				while (true) {
 					ptc = (Protocol) in.readObject();
-
-					// if (ptc.getType().equals("#00")) {
-					// msg = (String) ptc.getData("signOK");
-					// isLogin = true;
-					// onList = (Vector<Account>) ptc.getData("onList");
-					// onlineList.setListData(onList);
-					// } else if (ptc.getType().equals("#05")) {
-					// onList = (Vector<Account>) ptc.getData("onList");
-					// onlineList.setListData(onList);
-					// continue;
-					// } else {
-					// msg = (String) ptc.getData("msg");
-					// }
-					switch (ptc.getType()) {
-					case "#conn":
-						msg = (String) ptc.getData("msg");
-						break;
-					case "#00":
+					if (ptc.getType().equals("#00")) {
 						msg = (String) ptc.getData("signOK");
 						isLogin = true;
 						onList = (Vector<Account>) ptc.getData("onList");
 						onlineList.setListData(onList);
-						break;
-					case "#03":
-						msg = (String) ptc.getData("msg");
-						break;
-					case "#05":
+					} else if (ptc.getType().equals("#05")) {
 						onList = (Vector<Account>) ptc.getData("onList");
 						onlineList.setListData(onList);
-						break;
-					// case "#05": TODO
-					// onList = (Vector<Account>) ptc.getData("onList");
-					// onlineList.setListData(onList);
-					// break;
-					default:
-						System.out.println("프로토콜 타입");
-						break;
+						continue;
+					} else {
+						msg = (String) ptc.getData("msg");
 					}
+//					
+//					switch (ptc.getType()) {
+//					case "#conn":
+//						msg = (String) ptc.getData("msg");
+//						break;
+//					case "#00":
+//						msg = (String) ptc.getData("signOK");
+//						isLogin = true;
+//						onList = (Vector<Account>) ptc.getData("onList");
+//						onlineList.setListData(onList);
+//						break;
+//					case "#03":
+//						msg = (String) ptc.getData("msg");
+//						break;
+//					case "#05":
+//						onList = (Vector<Account>) ptc.getData("onList");
+//						onlineList.setListData(onList);
+//						break;
+//					// case "#05": TODO
+//					// onList = (Vector<Account>) ptc.getData("onList");
+//					// onlineList.setListData(onList);
+//					// break;
+//					default:
+//						System.out.println("프로토콜 타입");
+//						break;
+//					}
 					textView.append(msg + "\n");
 				}
-			} catch (EOFException E) {
 			} catch (SocketException e) {
 				System.out.println("채팅서버가 종료 되었습니다.");
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
 				try {
@@ -353,16 +349,18 @@ public class ChatClient2 extends JFrame implements KeyListener, WindowListener {
 	}
 
 	public static void main(String[] args) {
-		ChatClient2 chatClient = new ChatClient2();
+		ChatClient3 chatClient = new ChatClient3();
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
 
 	}
 
@@ -375,38 +373,44 @@ public class ChatClient2 extends JFrame implements KeyListener, WindowListener {
 
 	@Override
 	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-
 		sendProtocol("#06", "exit", "클라이언트종료");
 		System.exit(0);
+
 	}
 
 	@Override
 	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
 
 	}
 }

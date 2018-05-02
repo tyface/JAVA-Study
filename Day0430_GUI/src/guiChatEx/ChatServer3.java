@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
-public class ChatServer2 {
+public class ChatServer3 {
 	// 멀티 채팅 서버
 	private ServerSocket severSocket; // 서버 소켓
 	private Set<Socket> socketSet; // 접속자들의 소켓객체를 담을 SET변수
@@ -24,7 +24,7 @@ public class ChatServer2 {
 	private Socket socket;
 	private Map<ObjectOutputStream, Account> onlineUserList;
 
-	public ChatServer2(int serverPort) { // 포트번호를 받아오는 생성자
+	public ChatServer3(int serverPort) { // 포트번호를 받아오는 생성자
 		this.severSocket = null;
 		this.socketSet = new HashSet<Socket>();
 		this.serverPort = serverPort;
@@ -45,7 +45,7 @@ public class ChatServer2 {
 				System.out.println("현제 인원 : " + socketSet.size());
 
 				Runnable run = () -> { // Runnable 선언
-					serverTread(socket); // sendAllMsg 메서드 실행
+					sendAllMsg(socket); // sendAllMsg 메서드 실행
 				};
 
 				Thread t1 = new Thread(run);
@@ -155,12 +155,13 @@ public class ChatServer2 {
 	}
 
 	// 접속자의 소켓정보를 받고 현제 socketSet에 저장되어있는 모두에게 접속자의 메세지를 전달하는 메서드
-	public void serverTread(Socket socket) {
+	public void sendAllMsg(Socket socket) {
 		ObjectOutputStream out = null;
 		ObjectOutputStream tmpOut = null;
 		ObjectInputStream in = null; // 리더
 		Map<String, Object> dataMap;
 		Protocol ptc;
+		Protocol tempProc;
 		Iterator<ObjectOutputStream> it; // socketSet 모든 값에 접근하기위한 Iterator객체변수
 		try {
 
@@ -168,15 +169,14 @@ public class ChatServer2 {
 			in = new ObjectInputStream(socket.getInputStream());
 
 			ptc = new Protocol();
-			ptc.setType("#conn");
+			ptc.setType("#03");
 
 			dataMap = new HashMap<String, Object>();
 			dataMap.put("msg", "< 채팅서버에 접속 하셨습니다 >");
 			ptc.setData(dataMap);
-			
+
 			out.writeObject(ptc);
 			out.flush();
-			
 			while (true) {
 				// 접속자의 메세지를 읽어오는 리더생성
 
@@ -184,27 +184,19 @@ public class ChatServer2 {
 
 				switch (ptc.getType()) {
 				case "#01":
-					System.out.println("#01");
-					System.out.println(out);
 					ptc = join((Account) ptc.getData("join"));
 
 					out.writeObject(ptc);
 					out.flush();
-					out.reset();
 					break;
 				case "#02":
-					System.out.println("#02");
-					System.out.println(out);
-					sendOnlineList();
 					ptc = sign((Account) ptc.getData("sign"), out);
+					sendOnlineList();
 					out.writeObject(ptc);
 					out.flush();
-					out.reset();
 					break;
 				case "#03":
-					System.out.println("#03");
-					System.out.println(out);
-					Protocol outPtc = new Protocol();
+
 					it = onlineUserList.keySet().iterator(); // socketSet을 Iterator로 변환
 					// Iterator 객체를 사용하는동안 변동이 없게하기위한 synchronized
 					synchronized (it) { // TODO 확실하게 필요한지 잘 모르겠음..
@@ -214,26 +206,17 @@ public class ChatServer2 {
 							if (tmpOut == out) { // 메세지를 보낼때 접속자 본인에게는 메세지를 보내지 않게하기위한 조건문
 								continue;
 							}
-							dataMap = new HashMap<String, Object>();
+							dataMap.clear();
 							dataMap.put("msg", onlineUserList.get(out) + " : " + ptc.getData("msg"));
-							outPtc.setType("#03");
-							outPtc.setData(dataMap);
+							tempProc = new Protocol();
+							tempProc.setType("#03");
+							tempProc.setData(dataMap);
 
-							tmpOut.writeObject(outPtc);
+							tmpOut.writeObject(tempProc);
 							tmpOut.flush();
 							tmpOut.reset();
 						}
 					}
-					break;
-				case "#06":
-					System.out.println("#06");
-					System.out.println(out);
-					onlineUserList.remove(out);
-					System.out.println("소켓 종료 : " + socket);
-					socketSet.remove(socket); // socketSet에서 소켓 삭제
-					System.out.println("현제 인원 : " + onlineUserList.size());
-					socket.close();
-					sendOnlineList();
 					break;
 				default:
 					System.out.println("default");
@@ -243,6 +226,7 @@ public class ChatServer2 {
 			}
 		} catch (SocketException e) {
 		} catch (EOFException e) {
+			sendAllMsg(socket);
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -255,7 +239,6 @@ public class ChatServer2 {
 		} finally {
 			try {
 				if (socket != null) {
-					System.out.println("finally");
 					onlineUserList.remove(out);
 					System.out.println("소켓 종료 : " + socket);
 					socketSet.remove(socket); // socketSet에서 소켓 삭제

@@ -45,7 +45,7 @@ public class ChatServer {
 				System.out.println("현제 인원 : " + socketSet.size());
 
 				Runnable run = () -> { // Runnable 선언
-					sendAllMsg(socket); // sendAllMsg 메서드 실행
+					serverTread(socket); // sendAllMsg 메서드 실행
 				};
 
 				Thread t1 = new Thread(run);
@@ -80,7 +80,7 @@ public class ChatServer {
 		} else {
 			data.put("msg", "< 중복된 ID입니다. >");
 		}
-		ptc.setType("#03");
+		ptc.setType("#");
 		ptc.setData(data);
 		return ptc;
 
@@ -94,16 +94,16 @@ public class ChatServer {
 
 		Account searchAccount = searchId(acList, ac.getId());
 		if (searchAccount == null) {
-			ptc.setType("#03");
+			ptc.setType("#msg");
 			data.put("msg", "< 해당 ID가 존재하지 안습니다. >");
 		} else if (!searchAccount.getPass().equals(ac.getPass())) {
-			ptc.setType("#03");
+			ptc.setType("#msg");
 			data.put("msg", "< PASSWORD가 일치하지 않습니다. >");
 		} else if (onlineCheck(ac.getId())) {
-			ptc.setType("#03");
+			ptc.setType("#msg");
 			data.put("msg", "< 현제 로그인중인 계정입니다. >");
 		} else {
-			ptc.setType("#00");
+			ptc.setType("#signOK");
 			data.put("signOK", "< 로그인 되었습니다. >");
 			onlineUserList.put(out, searchAccount);
 			List<String> onlineIdList = new Vector<String>();
@@ -128,7 +128,7 @@ public class ChatServer {
 			onlineIdList.add(accounts.getId());
 		}
 
-		ptc.setType("#05");
+		ptc.setType("#onList");
 		data.put("onList", onlineIdList);
 		ptc.setData(data);
 		it = onlineUserList.keySet().iterator(); // socketSet을 Iterator로 변환
@@ -155,13 +155,12 @@ public class ChatServer {
 	}
 
 	// 접속자의 소켓정보를 받고 현제 socketSet에 저장되어있는 모두에게 접속자의 메세지를 전달하는 메서드
-	public void sendAllMsg(Socket socket) {
+	public void serverTread(Socket socket) {
 		ObjectOutputStream out = null;
 		ObjectOutputStream tmpOut = null;
 		ObjectInputStream in = null; // 리더
 		Map<String, Object> dataMap;
 		Protocol ptc;
-		Protocol tempProc;
 		Iterator<ObjectOutputStream> it; // socketSet 모든 값에 접근하기위한 Iterator객체변수
 		try {
 
@@ -169,34 +168,41 @@ public class ChatServer {
 			in = new ObjectInputStream(socket.getInputStream());
 
 			ptc = new Protocol();
-			ptc.setType("#03");
+			ptc.setType("#conn");
 
 			dataMap = new HashMap<String, Object>();
 			dataMap.put("msg", "< 채팅서버에 접속 하셨습니다 >");
 			ptc.setData(dataMap);
-
+			
 			out.writeObject(ptc);
 			out.flush();
+			
 			while (true) {
 				// 접속자의 메세지를 읽어오는 리더생성
 
 				ptc = (Protocol) in.readObject();
 
 				switch (ptc.getType()) {
-				case "#01":
+				case "#join":
+					System.out.println("#join");
+					System.out.println(out);
 					ptc = join((Account) ptc.getData("join"));
 
 					out.writeObject(ptc);
 					out.flush();
+					out.reset();
 					break;
-				case "#02":
+				case "#sign":
+					System.out.println("#sign");
+					System.out.println(out);
 					ptc = sign((Account) ptc.getData("sign"), out);
 					sendOnlineList();
 					out.writeObject(ptc);
 					out.flush();
+					out.reset();
 					break;
-				case "#03":
-
+				case "#msg":
+					Protocol outPtc = new Protocol();
 					it = onlineUserList.keySet().iterator(); // socketSet을 Iterator로 변환
 					// Iterator 객체를 사용하는동안 변동이 없게하기위한 synchronized
 					synchronized (it) { // TODO 확실하게 필요한지 잘 모르겠음..
@@ -206,17 +212,26 @@ public class ChatServer {
 							if (tmpOut == out) { // 메세지를 보낼때 접속자 본인에게는 메세지를 보내지 않게하기위한 조건문
 								continue;
 							}
-							dataMap.clear();
+							dataMap = new HashMap<String, Object>();
 							dataMap.put("msg", onlineUserList.get(out) + " : " + ptc.getData("msg"));
-							tempProc = new Protocol();
-							tempProc.setType("#03");
-							tempProc.setData(dataMap);
+							outPtc.setType("#msg");
+							outPtc.setData(dataMap);
 
-							tmpOut.writeObject(tempProc);
+							tmpOut.writeObject(outPtc);
 							tmpOut.flush();
 							tmpOut.reset();
 						}
 					}
+					break;
+				case "#exit":
+					System.out.println("#exit");
+					System.out.println(out);
+					onlineUserList.remove(out);
+					System.out.println("소켓 종료 : " + socket);
+					socketSet.remove(socket); // socketSet에서 소켓 삭제
+					System.out.println("현제 인원 : " + onlineUserList.size());
+					socket.close();
+					sendOnlineList();
 					break;
 				default:
 					System.out.println("default");
@@ -226,7 +241,6 @@ public class ChatServer {
 			}
 		} catch (SocketException e) {
 		} catch (EOFException e) {
-			sendAllMsg(socket);
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -239,6 +253,7 @@ public class ChatServer {
 		} finally {
 			try {
 				if (socket != null) {
+					System.out.println("finally");
 					onlineUserList.remove(out);
 					System.out.println("소켓 종료 : " + socket);
 					socketSet.remove(socket); // socketSet에서 소켓 삭제
