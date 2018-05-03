@@ -35,6 +35,7 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
 	private JTextArea textView;
 	private JButton btnSend;
 	private JTextField textInput;
@@ -52,18 +53,24 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 	private JLabel lblConnList;
 	private JList<Account> onlineList;
 
-	private Socket socket;
-	private ObjectOutputStream out;
-	private boolean isLogin;
-	private boolean isConn;
-	private Vector<Account> onList;
+	private Socket socket; // 클라이언트 소켓
+	private ObjectOutputStream out; // 출력 스트림
+	private boolean isLogin; // 로그인 여부
+	private boolean isConn; // 채팅서버 연결 여부
+	private Vector<Account> onList; // 접속자 리스트
 
 	public ChatClient() {
+		this.socket = null;
+		this.out = null;
 		this.isLogin = false;
+		this.isConn = false;
+		this.onList = new Vector<Account>();
+
+		///////////////////////////////////////////////////
+		///////////////////////////////////////////////////
+		// GUI TODO
 		this.setTitle("GUI 채팅");
 		this.setSize(884, 582);
-		this.onList = new Vector<Account>();
-		this.isConn = false;
 		this.addWindowListener(this);
 
 		JPanel panel = new JPanel();
@@ -78,10 +85,60 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (isLogin) {
-					sendMsg();
-				} else {
+				if (!isConn) {
+					textView.append("< 채팅서버에 연결되어있지 않습니다 >\n");
+				} else if (!isLogin) {
 					textView.append("< 로그인후 이용해주세요 >\n");
+				} else {
+					sendMsg();
+				}
+			}
+		});
+
+		btnConnect = new JButton("connect");
+		btnConnect.setBounds(231, 8, 85, 27);
+		panel.add(btnConnect);
+
+		btnConnect.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (isConn) {
+					textView.append("< 이미 채팅서버에 접속되어 있습니다 >\n");
+				} else {
+					makeConnection();
+				}
+
+			}
+		});
+
+		btnJoin = new JButton("Join");
+		btnJoin.setBounds(751, 8, 72, 27);
+		panel.add(btnJoin);
+
+		btnJoin.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!isConn) {
+					textView.append("< 채팅서버에 연결되어있지 않습니다 >\n");
+				} else {
+					join();
+				}
+			}
+		});
+
+		btnSign = new JButton("Sign");
+		btnSign.setBounds(665, 8, 72, 26);
+		panel.add(btnSign);
+
+		btnSign.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!isConn) {
+					textView.append("< 채팅서버에 연결되어있지 않습니다 >\n");
+				} else if (isLogin) {
+					textView.append("< 이미 로그인 되었습니다. >\n");
+				} else {
+					sign();
 				}
 			}
 		});
@@ -109,17 +166,6 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 		lblServerIp.setBounds(14, 12, 62, 18);
 		panel.add(lblServerIp);
 
-		btnConnect = new JButton("connect");
-		btnConnect.setBounds(231, 8, 85, 27);
-		panel.add(btnConnect);
-
-		btnConnect.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				makeConnection();
-			}
-		});
-
 		lblId = new JLabel("ID");
 		lblId.setBounds(330, 12, 62, 18);
 		panel.add(lblId);
@@ -138,32 +184,6 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 		lblPass.setBounds(486, 12, 39, 18);
 		panel.add(lblPass);
 
-		btnJoin = new JButton("Join");
-		btnJoin.setBounds(751, 8, 72, 27);
-		panel.add(btnJoin);
-
-		btnJoin.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				join();
-			}
-		});
-
-		btnSign = new JButton("Sign");
-		btnSign.setBounds(665, 8, 72, 26);
-		panel.add(btnSign);
-
-		btnSign.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (isLogin) {
-					textView.append("< 이미 로그인 되었습니다. >\n");
-				} else {
-					sign();
-				}
-			}
-		});
-
 		scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(630, 75, 210, 397);
 		panel.add(scrollPane_1);
@@ -176,18 +196,20 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 		lblConnList.setBounds(630, 48, 121, 24);
 		panel.add(lblConnList);
 
-		// ss
 		this.setVisible(true);
+		// End Gui TODO
+		//////////////////////////////////////////////
 	}
 
-	private void makeConnection() {
+	private void makeConnection() { // 서버 연결 메서드
 		InetAddress ia = null;
-		try {
-			ia = InetAddress.getByName(textIP.getText());
-			socket = new Socket(ia, 8000);
-			out = new ObjectOutputStream(socket.getOutputStream());
 
-			Thread receiver = new Thread(new TCPReceiverThread());
+		try {
+			ia = InetAddress.getByName(textIP.getText()); // InetAddress 객체 생성
+			socket = new Socket(ia, 8000); // 서버 접속
+			out = new ObjectOutputStream(socket.getOutputStream()); // 출력스트림 생성
+
+			Thread receiver = new Thread(new TCPReceiverThread()); // 리시버스레드
 			receiver.start();
 
 		} catch (UnknownHostException e) {
@@ -195,12 +217,35 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
-	private void sendMsg() {
+	// 프로토콜에 필요한 정보를 파라미터로 받아 서버에 출력하는 메서드
+	private void sendProtocol(String type, String key, Object data) {
+		Protocol proc; // 서버에 보낼 프로토콜
+		Map<String, Object> dataMap; // 프로토콜에 들어갈 데이터맵
+
 		try {
-			String msg = textInput.getText();
+			// 프로토콜 세팅
+			proc = new Protocol();
+			proc.setType(type);
+			dataMap = new HashMap<String, Object>();
+			dataMap.put(key, data);
+			proc.setData(dataMap);
+
+			// 서버에 출력
+			out.writeObject(proc);
+			out.flush();
+		} catch (NullPointerException e) {
+			System.out.println("< 채팅서버에 접속되어있지 않습니다. >");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void sendMsg() { // 서버에 나의 채팅내용을 출력하는 메서드
+
+		try {
+			String msg = textInput.getText(); // 텍스트 필드에 있는 내용을 msg변수에 삽입
 
 			sendProtocol("#msg", "msg", msg);
 
@@ -215,49 +260,24 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 		}
 	}
 
-	private void sendProtocol(String type, String key, Object data) {
-		Protocol ptc;
-		Map<String, Object> dataMap;
-		try {
-			ptc = new Protocol();
-			ptc.setType(type);
-
-			dataMap = new HashMap<String, Object>();
-			dataMap.put(key, data);
-
-			ptc.setData(dataMap);
-			out.writeObject(ptc);
-			out.flush();
-		} catch (NullPointerException e) {
-			if (socket == null) {
-				System.out.println("채팅서버에 접속되어있지 않습니다.");
-			} else {
-				e.printStackTrace();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	private void join() {
 		Account account = null;
-		try {
-			String id = idField.getText();
-			String pass = passField.getText();
 
+		String id = idField.getText();
+		String pass = passField.getText();
+
+		if (id.equals("")) {
+			textView.append("< 아이디를 입력해주세요 >\n");
+		} else if (pass.equals("")) {
+			textView.append("< 비밀번호를 입력해주세요 >\n");
+		} else {
 			account = new Account();
 			account.setId(id);
 			account.setPass(pass);
 
-			sendProtocol("#join", "join", account);
-
-		} catch (NullPointerException e) {
-			if (socket == null) {
-				System.out.println("채팅서버에 접속되어있지 않습니다.");
-			} else {
-				e.printStackTrace();
-			}
+			sendProtocol("#join", "account", account);
 		}
+
 	}
 
 	public void sign() {
@@ -286,36 +306,34 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 			// 소켓으로 부터 들어오는 데이터를 계속해서 출력
 			ObjectInputStream in = null;
 			String msg = null;
-			Protocol ptc = null;
+			Protocol proc = null;
 
 			try {
 				in = new ObjectInputStream(socket.getInputStream());
 				while (true) {
-					ptc = (Protocol) in.readObject();
+					proc = (Protocol) in.readObject();
 
-					switch (ptc.getType()) {
+					switch (proc.getType()) {
 					case "#conn":
-						msg = (String) ptc.getData("msg");
+						msg = (String) proc.getData("msg");
+						isConn = true;
 						break;
 					case "#signOK":
-						msg = (String) ptc.getData("signOK");
+						msg = (String) proc.getData("msg");
 						isLogin = true;
-						onList = (Vector<Account>) ptc.getData("onList");
-						onlineList.setListData(onList);
+						onList = (Vector<Account>) proc.getData("onList");
 						break;
 					case "#onList":
-						onList = (Vector<Account>) ptc.getData("onList");
+						onList = (Vector<Account>) proc.getData("onList");
 						onlineList.setListData(onList);
 						continue;
+					case "#join":
+					case "#signNot":
 					case "#msg":
-						msg = (String) ptc.getData("msg");
+						msg = (String) proc.getData("msg");
 						break;
-					// case "#onList": TODO
-					// onList = (Vector<Account>) ptc.getData("onList");
-					// onlineList.setListData(onList);
-					// break;
 					default:
-						System.out.println("프로토콜 타입 : " + ptc.getType());
+						System.out.println("프로토콜 타입 : " + proc.getType());
 						break;
 					}
 
