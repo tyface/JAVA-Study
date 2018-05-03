@@ -199,7 +199,7 @@ public class ChatServer {
 					break;
 				case "#sign": // 로그인
 					System.out.println("log : #sign - " + socket);
-					proc = sign((Account) proc.getData("sign"), out);
+					proc = sign((Account) proc.getData("account"), out);
 
 					out.writeObject(proc);
 					out.flush();

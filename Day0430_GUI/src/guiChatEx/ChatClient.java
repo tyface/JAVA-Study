@@ -25,12 +25,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class ChatClient extends JFrame implements KeyListener, WindowListener {
-
 	/**
 	 * 
 	 */
@@ -46,11 +46,11 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 	private JLabel lblId;
 	private JTextField idField;
 	private JButton btnJoin;
-	private JTextField passField;
 	private JLabel lblPass;
 	private JButton btnSign;
 	private JScrollPane scrollPane_1;
 	private JLabel lblConnList;
+	private JPasswordField passField;
 	private JList<Account> onlineList;
 
 	private Socket socket; // 클라이언트 소켓
@@ -81,17 +81,10 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 		btnSend.setBounds(765, 484, 75, 39);
 		panel.add(btnSend);
 
-		btnSend.addActionListener(new ActionListener() {
-
+		btnSend.addActionListener(new ActionListener() { // send
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!isConn) {
-					textView.append("< 채팅서버에 연결되어있지 않습니다 >\n");
-				} else if (!isLogin) {
-					textView.append("< 로그인후 이용해주세요 >\n");
-				} else {
-					sendMsg();
-				}
+				sendMsg();
 			}
 		});
 
@@ -99,15 +92,10 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 		btnConnect.setBounds(231, 8, 85, 27);
 		panel.add(btnConnect);
 
-		btnConnect.addActionListener(new ActionListener() {
+		btnConnect.addActionListener(new ActionListener() { // conn
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (isConn) {
-					textView.append("< 이미 채팅서버에 접속되어 있습니다 >\n");
-				} else {
-					makeConnection();
-				}
-
+				makeConnection();
 			}
 		});
 
@@ -115,14 +103,10 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 		btnJoin.setBounds(751, 8, 72, 27);
 		panel.add(btnJoin);
 
-		btnJoin.addActionListener(new ActionListener() {
+		btnJoin.addActionListener(new ActionListener() { // join
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!isConn) {
-					textView.append("< 채팅서버에 연결되어있지 않습니다 >\n");
-				} else {
-					join();
-				}
+				sendJoin();
 			}
 		});
 
@@ -130,16 +114,10 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 		btnSign.setBounds(665, 8, 72, 26);
 		panel.add(btnSign);
 
-		btnSign.addActionListener(new ActionListener() {
+		btnSign.addActionListener(new ActionListener() { // sign
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!isConn) {
-					textView.append("< 채팅서버에 연결되어있지 않습니다 >\n");
-				} else if (isLogin) {
-					textView.append("< 이미 로그인 되었습니다. >\n");
-				} else {
-					sign();
-				}
+				sendSign();
 			}
 		});
 
@@ -161,24 +139,20 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 		textIP.setBounds(90, 9, 127, 24);
 		panel.add(textIP);
 		textIP.setColumns(10);
+		textIP.addKeyListener(this);
 
 		lblServerIp = new JLabel("Server IP");
 		lblServerIp.setBounds(14, 12, 62, 18);
 		panel.add(lblServerIp);
 
 		lblId = new JLabel("ID");
-		lblId.setBounds(330, 12, 62, 18);
+		lblId.setBounds(330, 12, 25, 18);
 		panel.add(lblId);
 
 		idField = new JTextField();
 		idField.setBounds(354, 9, 116, 24);
 		panel.add(idField);
 		idField.setColumns(10);
-
-		passField = new JTextField();
-		passField.setBounds(539, 9, 116, 24);
-		panel.add(passField);
-		passField.setColumns(10);
 
 		lblPass = new JLabel("pass");
 		lblPass.setBounds(486, 12, 39, 18);
@@ -196,6 +170,10 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 		lblConnList.setBounds(630, 48, 121, 24);
 		panel.add(lblConnList);
 
+		passField = new JPasswordField();
+		passField.setBounds(539, 9, 112, 24);
+		panel.add(passField);
+
 		this.setVisible(true);
 		// End Gui TODO
 		//////////////////////////////////////////////
@@ -205,13 +183,16 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 		InetAddress ia = null;
 
 		try {
-			ia = InetAddress.getByName(textIP.getText()); // InetAddress 객체 생성
-			socket = new Socket(ia, 8000); // 서버 접속
-			out = new ObjectOutputStream(socket.getOutputStream()); // 출력스트림 생성
+			if (isConn) {
+				textView.append("< 이미 채팅서버에 접속되어 있습니다 >\n");
+			} else {
+				ia = InetAddress.getByName(textIP.getText()); // InetAddress 객체 생성
+				socket = new Socket(ia, 8000); // 서버 접속
+				out = new ObjectOutputStream(socket.getOutputStream()); // 출력스트림 생성
 
-			Thread receiver = new Thread(new TCPReceiverThread()); // 리시버스레드
-			receiver.start();
-
+				Thread receiver = new Thread(new TCPReceiverThread()); // 리시버스레드
+				receiver.start();
+			}
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -235,85 +216,83 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 			// 서버에 출력
 			out.writeObject(proc);
 			out.flush();
-		} catch (NullPointerException e) {
-			System.out.println("< 채팅서버에 접속되어있지 않습니다. >");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	private void sendMsg() { // 서버에 나의 채팅내용을 출력하는 메서드
-
-		try {
-			String msg = textInput.getText(); // 텍스트 필드에 있는 내용을 msg변수에 삽입
+		if (!isConn) { // 서버에 연결이 되어있다면 재연결 허용하지않음
+			textView.append("< 채팅서버에 연결되어있지 않습니다 >\n");
+		} else if (!isLogin) {
+			textView.append("< 로그인후 이용해주세요 >\n");
+		} else {
+			String msg = textInput.getText(); // 텍스트 필드에 있는 내용을 가져옴
 
 			sendProtocol("#msg", "msg", msg);
 
 			textView.append("나 : " + msg + "\n");
 			textInput.setText("");
-		} catch (NullPointerException e) {
-			if (socket == null) {
-				System.out.println("채팅서버에 접속되어있지 않습니다.");
-			} else {
-				e.printStackTrace();
-			}
 		}
 	}
 
-	private void join() {
+	private void sendJoin() { // 회원가입 메서드
 		Account account = null;
 
-		String id = idField.getText();
-		String pass = passField.getText();
+		String id = idField.getText(); // ID필드에 있는 값을 가져옴
+		char[] pass = passField.getPassword(); // PASS 필드에 있는 값을 가져옴
 
-		if (id.equals("")) {
+		if (!isConn) {
+			textView.append("< 채팅서버에 연결되어있지 않습니다 >\n");
+			return;
+		} else if (id.equals("")) {
 			textView.append("< 아이디를 입력해주세요 >\n");
-		} else if (pass.equals("")) {
+		} else if (pass.length == 0) {
 			textView.append("< 비밀번호를 입력해주세요 >\n");
 		} else {
+			// Account 객체 생성후 id,password 셋팅
 			account = new Account();
 			account.setId(id);
 			account.setPass(pass);
 
 			sendProtocol("#join", "account", account);
 		}
-
 	}
 
-	public void sign() {
+	public void sendSign() { // 로그인 메서드
 		Account account = null;
-		try {
-			String id = idField.getText();
-			String pass = passField.getText();
+		String id = idField.getText(); // ID필드에 있는 값을 가져옴
+		char[] pass = passField.getPassword(); // PASS 필드에 있는 값을 가져옴
+
+		if (!isConn) {
+			textView.append("< 채팅서버에 연결되어있지 않습니다 >\n");
+		} else if (isLogin) {
+			textView.append("< 이미 로그인 되었습니다. >\n");
+		} else {
+			// Account 객체 생성후 id,password 셋팅
 			account = new Account();
 			account.setId(id);
 			account.setPass(pass);
 
-			sendProtocol("#sign", "sign", account);
-		} catch (NullPointerException e) {
-			if (socket == null) {
-				System.out.println("채팅서버에 접속되어있지 않습니다.");
-			} else {
-				e.printStackTrace();
-			}
+			sendProtocol("#sign", "account", account);
 		}
 	}
 
-	class TCPReceiverThread implements Runnable {
+	class TCPReceiverThread implements Runnable { // 리시브 스레드
 
 		@SuppressWarnings("unchecked")
-		public void run() {
-			// 소켓으로 부터 들어오는 데이터를 계속해서 출력
-			ObjectInputStream in = null;
+		public void run() {// 소켓으로 부터 들어오는 데이터를 계속해서 출력
+			ObjectInputStream in = null; // 출력 스트림
+			Protocol proc = null; // 프로토콜
 			String msg = null;
-			Protocol proc = null;
 
 			try {
-				in = new ObjectInputStream(socket.getInputStream());
-				while (true) {
-					proc = (Protocol) in.readObject();
+				in = new ObjectInputStream(socket.getInputStream()); // 입력 스트림 생성
 
-					switch (proc.getType()) {
+				while (true) {
+					proc = (Protocol) in.readObject(); // 서버에서 들어오는 입력정보를 proc 변수에 삽입
+
+					switch (proc.getType()) { // 프로토콜의 타입별로 처리하는 분기점
 					case "#conn":
 						msg = (String) proc.getData("msg");
 						isConn = true;
@@ -339,7 +318,7 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 
 					textView.append(msg + "\n");
 				}
-			} catch (EOFException E) {
+			} catch (EOFException e) {
 			} catch (SocketException e) {
 				System.out.println("채팅서버가 종료 되었습니다.");
 			} catch (IOException e) {
@@ -360,7 +339,7 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 	}
 
 	public static void main(String[] args) {
-		ChatClient chatClient = new ChatClient();
+		ChatClient chatClient = new ChatClient(); // 클라이언트 실행
 	}
 
 	@Override
@@ -376,7 +355,13 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			sendMsg();
+			if (textInput.isFocusOwner()) {
+				sendMsg();
+			} else if (textIP.isFocusOwner()) {
+				makeConnection();
+			} else if (idField.isFocusOwner() || passField.isFocusOwner()) {
+				sendSign();
+			}
 		}
 	}
 
