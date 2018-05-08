@@ -153,11 +153,14 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 		idField.setBounds(354, 9, 116, 24);
 		panel.add(idField);
 		idField.setColumns(10);
+		idField.addKeyListener(this);
 
+		
 		lblPass = new JLabel("pass");
 		lblPass.setBounds(486, 12, 39, 18);
 		panel.add(lblPass);
-
+		
+		
 		scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(630, 75, 210, 397);
 		panel.add(scrollPane_1);
@@ -173,6 +176,7 @@ public class ChatClient extends JFrame implements KeyListener, WindowListener {
 		passField = new JPasswordField();
 		passField.setBounds(539, 9, 112, 24);
 		panel.add(passField);
+		passField.addKeyListener(this);
 
 		this.setVisible(true);
 		// End Gui TODO

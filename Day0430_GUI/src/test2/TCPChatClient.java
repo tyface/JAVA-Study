@@ -1,4 +1,4 @@
-package chatProtocol;
+package test2;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.HashMap;

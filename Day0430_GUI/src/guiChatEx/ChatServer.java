@@ -83,15 +83,12 @@ public class ChatServer {
 	}
 
 	public Protocol join(Account ac) { // 회원가입 메서드
-		ObjectIOManagement io = new ObjectIOManagement(); // 파일 입출력 매니져
+		AccountDao dao = new AccountDao(); // 파일 입출력 매니져
 		Protocol proc = new Protocol(); // 클라이언트에 보낼 프로토콜
 		Map<String, Object> data = new HashMap<String, Object>(); // 프로토콜에 들어갈 데이터맵
 
-		List<Account> acList = io.getList(); // 파일에서 회원리스트를 가져와 acList에 삽입
-
-		if (searchId(acList, ac.getId()) == null) { // ID가 존재하지 않을때 회원가입 진행
-			acList.add(ac); // 파일에서 받아온 리스트에 계정정보를 추가후
-			io.pushList(acList); // 리스트를 파일에 입력
+		if (dao.seleteOne(ac.getId()) == null) { // ID가 존재하지 않을때 회원가입 진행
+			dao.insertaccount(ac); // 리스트를 파일에 입력
 			data.put("msg", "< 회원가입 완료 >");
 		} else { // ID가 존재할 경우 메세지 전송
 			data.put("msg", "< 중복된 ID입니다. >");
@@ -105,13 +102,11 @@ public class ChatServer {
 	}
 
 	public Protocol sign(Account ac, ObjectOutputStream out) { // 로그인 메서드
-		ObjectIOManagement io = new ObjectIOManagement(); // 파일 입출력 매니져
+		AccountDao dao= new AccountDao(); // 파일 입출력 매니져
 		Protocol proc = new Protocol(); // 클라이언트에 보낼 프로토콜
 		Map<String, Object> data = new HashMap<String, Object>(); // 프로토콜에 들어갈 데이터맵
 
-		List<Account> acList = io.getList(); // 파일에서 회원리스트를 가져와 acList에 삽입
-
-		Account searchAccount = searchId(acList, ac.getId()); // 해당 ID를 찾아 searchAccount에 삽입, 없다면 null을 삽입
+		Account searchAccount = dao.seleteOne(ac.getId()); // 해당 ID를 찾아 searchAccount에 삽입, 없다면 null을 삽입
 
 		if (searchAccount == null) { // 회원가입하기전 유효성 검사
 			proc.setType("#signNot");

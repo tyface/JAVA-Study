@@ -1,4 +1,4 @@
-package chatProtocol;
+package test2;
 
 import java.io.Serializable;
 import java.util.HashMap;
