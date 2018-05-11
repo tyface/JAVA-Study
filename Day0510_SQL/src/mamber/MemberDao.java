@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MemberDao {
+import commons.Commons;
+
+public class MemberDao implements IMemberDao {
 
 	Connection conn;
 
@@ -15,7 +17,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		MemberVo vo = new MemberVo();
-		
+
 		try {
 			String sql = "SELECT * FROM member where num = ?";
 
@@ -27,15 +29,64 @@ public class MemberDao {
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
-				vo.setNum(rs.getInt(1));
-				vo.setId(rs.getString(2));
-				vo.setPw(rs.getString(3));
-				vo.setName(rs.getString(4));
-				vo.setEmail(rs.getString(5));
-				vo.setRegDate(rs.getTimestamp(6));
+				vo.setNum(rs.getInt(Commons.Member.NUM));
+				vo.setId(rs.getString(Commons.Member.ID));
+				vo.setPw(rs.getString(Commons.Member.PW));
+				vo.setName(rs.getString(Commons.Member.NAME));
+				vo.setEmail(rs.getString(Commons.Member.EMAIL));
+				vo.setRegDate(rs.getTimestamp(Commons.Member.REG_DATE));
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return vo;
+	}
+
+	public MemberVo selectOne(String id) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		MemberVo vo = new MemberVo();
+
+		try {
+			String sql = "SELECT * FROM member where id = ?";
+
+			conn = ConnectionProvider.getConnection();
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, id);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				vo.setNum(rs.getInt(Commons.Member.NUM));
+				vo.setId(rs.getString(Commons.Member.ID));
+				vo.setPw(rs.getString(Commons.Member.PW));
+				vo.setName(rs.getString(Commons.Member.NAME));
+				vo.setEmail(rs.getString(Commons.Member.EMAIL));
+				vo.setRegDate(rs.getTimestamp(Commons.Member.REG_DATE));
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return vo;
 	}
@@ -43,7 +94,7 @@ public class MemberDao {
 	public List<MemberVo> selectAll() {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
+
 		List<MemberVo> voList = new ArrayList<MemberVo>();
 		try {
 			String sql = "SELECT * FROM member order by num";
@@ -55,25 +106,36 @@ public class MemberDao {
 
 			while (rs.next()) {
 				MemberVo vo = new MemberVo();
-				
-				vo.setNum(rs.getInt(1));
-				vo.setId(rs.getString(2));
-				vo.setPw(rs.getString(3));
-				vo.setName(rs.getString(4));
-				vo.setEmail(rs.getString(5));
-				vo.setRegDate(rs.getTimestamp(6));
-				
+
+				vo.setNum(rs.getInt(Commons.Member.NUM));
+				vo.setId(rs.getString(Commons.Member.ID));
+				vo.setPw(rs.getString(Commons.Member.PW));
+				vo.setName(rs.getString(Commons.Member.NAME));
+				vo.setEmail(rs.getString(Commons.Member.EMAIL));
+				vo.setRegDate(rs.getTimestamp(Commons.Member.REG_DATE));
+
 				voList.add(vo);
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return voList;
 	}
 
-	public void insertMember(MemberVo vo) {
+	public int insertMember(MemberVo vo) {
 		PreparedStatement pstmt = null;
-
+		int rowCount = 0;
 		try {
 			String sql = "INSERT INTO member VALUES(MEMBER_SEQ.nextval,?,?,?,?,sysdate)";
 
@@ -85,17 +147,26 @@ public class MemberDao {
 			pstmt.setString(3, vo.getName());
 			pstmt.setString(4, vo.getEmail());
 
-			pstmt.executeUpdate();
+			rowCount = pstmt.executeUpdate();
 
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-
+		return rowCount;
 	}
 
-	public void updateMember(MemberVo vo) {
+	public int updateMember(MemberVo vo) {
 		PreparedStatement pstmt = null;
-
+		int rowCount = 0;
 		try {
 			String sql = "UPDATE member SET id = ?, pw = ?, name = ?, email = ?, regDate = ? where num = ?";
 
@@ -109,17 +180,26 @@ public class MemberDao {
 			pstmt.setTimestamp(5, vo.getRegDate());
 			pstmt.setInt(6, vo.getNum());
 
-			pstmt.executeUpdate();
+			rowCount = pstmt.executeUpdate();
 
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-
+		return rowCount;
 	}
 
-	public void deleteMember(int num) {
+	public int deleteMember(int num) {
 		PreparedStatement pstmt = null;
-
+		int rowCount = 0;
 		try {
 			String sql = "DELETE FROM member where num = ?";
 
@@ -128,12 +208,21 @@ public class MemberDao {
 
 			pstmt.setInt(1, num);
 
-			pstmt.executeUpdate();
+			rowCount = pstmt.executeUpdate();
 
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-
+		return rowCount;
 	}
 
 }
