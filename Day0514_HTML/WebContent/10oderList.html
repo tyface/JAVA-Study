@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <style type="text/css">
+  div{
+
+    width: 800px;
+    margin: 0 auto;
+  }
+  fieldset legend {
+    font-size: 20px;
+    font-weight: bold;
+    color: purple;
+  }
+  ul {
+    list-style: none;
+  }
+  li {
+    margin-bottom: 10px;
+  }
+  </style>
+  <meta charset="UTF-8">
+  <title>주문서 작성하기</title>
+</head>
+<body>
+
+  <div>
+    <h1>상품주문서</h1>
+    <form action="">
+
+    <fieldset>
+      <legend>개인 정보</legend>
+      <ul>
+        <li>
+          <label for="name">이름</label>
+          <input type="text" name="name" id="name" value="">
+        </li>
+        <li>
+          <label for="contect">주소</label>
+          <input type="text" name="contect" id="contect" value="">
+        </li>
+      </ul>
+    </fieldset>
+
+    <fieldset>
+      <legend>배송지 정보</legend>
+      <ul>
+        <li><label>주소 <input type="text" name="addr" id=""></label></li>
+        <li><label>전화번호 <input type="text" name="phone" id=""></label></li>
+        <li><label>메모 <textarea name="" id="" cols="30" rows="5"></textarea></label></li>
+      </ul>
+    </fieldset>
+
+    <fieldset>
+      <legend>주문 정보</legend>
+      <ul>
+        <li><label><input type="checkbox">과태말라 안티구아(100g)<input type="text" name="" value="">개</label></li>
+        <li><label><input type="checkbox">인도네시아 만델링(100g)<input type="text" name="" value="">개</label></li>
+        <li><label><input type="checkbox">탐나는도다 블렌딩(100g)<input type="text" name="" value="">개</label></li>
+      </ul>
+    </fieldset>
+  </form>
+  </div>
+
+</body>
+</html>

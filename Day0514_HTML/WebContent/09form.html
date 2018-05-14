@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <style>
+  ul{
+    list-style: none;
+  }
+  </style>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <h2>수강신청</h2>
+  <form action="">
+    <h3>수강분야(중복선택 가능)</h3>
+    <ul>
+      <li><label><input type="text" name="study" value="grammer">문법</label></li>
+      <li><label><input type="checkbox" name="study" value="grammer">문법</label></li>
+      <li><label><input type="checkbox" name="study" value="grammer">문법</label></li>
+    </ul>
+    <h3>수강분야(중복선택 불가능)</h3>
+    <ul>
+      <li><label><input type="radio" name="study" value="grammer">문법</label></li>
+      <li><label><input type="radio" name="study" value="grammer">문법</label></li>
+      <li><label><input type="radio" name="study" value="grammer">문법</label></li>
+    </ul>
+    <h3>학습단계 선택</h3>
+    <select name="level" id="">
+      <option value="basic">초급</option>
+      <option value="mideum">중급</option>
+      <option value="abvanced">고급</option>
+    </select>
+  </ul>
+</form>
+</body>
+</html>
