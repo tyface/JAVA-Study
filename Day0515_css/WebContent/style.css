@@ -1,0 +1,10 @@
+@charset "UTF-8";
+h1 {
+  color:red;
+  font-size: 30px;
+  font-family: 돋움;
+}
+ul {
+  color: blue;
+  list-style: square;
+}

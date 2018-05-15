@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <script type="text/javascript" src"prefixfree.min.js">
+  </script>
+  <style type="text/css">
+  /* prefix
+  css3 이전에 작성된 브라우저의 경우에 새로운 웹표준의 문법을 지원하지 않는 경우가 있음
+  브라우저마다 문법을 다르게 해석하는 경우가 있음
+  특정 문법을 사용할 때, 브라우저별로 설정을 따로 해주어야 한다.
+  */
+  .box {
+    border: 2px solid green;
+    text-align: center;
+    width: 100px;
+    height: 60px;
+    padding-top: 30px;
+    position: absolute;
+    top: 100px;
+    left: 100px;
+  }
+  .box:hover {
+    /* 15도 기울이기
+    특정한 웹브라우저에서 동작하지 않는다면, prefix를 설정해야 한다.
+    -webkit- : 사파리, 크롬
+    -moz-    : 모질라, 파이어폭스
+    -o-      : 오페라
+    -ms-     : 익스플로러 */
+    transform:rotate(15deg);
+  }
+  </style>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <div class="box">
+    Mouse Over
+  </div>
+
+</body>
+</html>
