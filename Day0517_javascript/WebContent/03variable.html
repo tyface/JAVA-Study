@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>자바스크립트 변수</title>
+  <script type="text/javascript">
+  //변수의 선언
+  var str;
+  str = "<h1>Hello!!</h1>";
+  document.write(str);
+
+  /*
+  자바스크립트에서의 변수
+  변수 선언 후, 데이터 타입과는 상관없이 대입연산자를 이용해서 대입하면 됨
+  숫자, 문자열, 논리형, Null, Undefined, 배열, 함수, 객체
+  기초자료형
+  Number
+  String
+  Boolean
+  Null
+  Undefined
+  참조자료형
+  배열(Array),객체(Object),함수(function)등 : 참조 자료형
+  */
+
+  var str = "문자열";
+  var str1 = '문자열';
+  var str2 = "문자열 안에 ''를 쓰고 싶으면 문자열을 쌍따옴표로 감싸면 된다.";
+  var str3 = '"문자열 안에서 쌍따옴표도 사용가능하다." ';
+  var str4 = "쌍따옴표 안에서 쌍따옴표를 쓰고 싶으면 \"를 쓰면 된다. ";
+
+  document.write(str,"<br>");
+  document.write(str1,"<br>");
+  document.write(str2,"<br>");
+  document.write(str3,"<br>");
+  document.write(str4,"<br>");
+  document.write("<hr>");
+
+  var a; //undefined
+  var b = null; //null
+  var c = true; //boolean
+  var d = 10<5; //boolean
+  var e = 100; // number
+  var f = "100"; //String
+
+  document.write(a,"<br>");
+  document.write(b,"<br>");
+  document.write(c,"<br>");
+  document.write(d,"<br>");
+  document.write(e,"<br>");
+  document.write(f,"<br>");
+  document.write("<hr>");
+
+  //typeof : 지정한 데이터나 변수의 데이터 형을 알고 싶을 때 사용
+  document.write("e type : " + typeof e,"<br>");
+  document.write("f type : " + typeof f,"<br>");
+
+  var num1 = 10;
+  var num2 = Number("10"); //문자열 10을 숫자로 변환해서 저장
+  var num3 = Number(10);
+
+  document.write(num1,"<br>");
+  document.write(num2,"<br>");
+  document.write(num3,"<br>");
+  document.write("<hr>");
+
+
+  //논리형 데이터  Boolean(데이터)
+  // 0,null,undefined : false   나머지 전부: true
+
+  var bool1 = Boolean(a); //undefined
+  var bool2 = Boolean(b); //null
+  var bool3 = Boolean(c); //true
+  var bool4 = Boolean(0); //숫자 0
+  var bool5 = Boolean(1); //숫자 1
+  var bool6 = Boolean("아무문자열"); //나머지 데이터
+
+  document.write("undefined : "+bool1,"<br>");
+  document.write("null : "+bool2,"<br>");
+  document.write("true : "+bool3,"<br>");
+  document.write("숫자 0 : "+bool4,"<br>");
+  document.write("숫자 1 : "+bool5,"<br>");
+  document.write("아무데이터 : "+bool6,"<br>");
+  document.write("<hr>");
+
+  //숫자 데이터 : 소수점, toFixed(): 소수점 자리 지정
+
+  var x = 3.145427;
+
+  document.write("x type : " + typeof x ,"<br>");
+  document.write("toFixed(0): " + x.toFixed(0),"<br>");
+  document.write("toFixed(2): " + x.toFixed(2),"<br>");
+  document.write("toFixed(4): " + x.toFixed(4),"<br>");
+  document.write("toFixed(6): " + x.toFixed(6),"<br>");
+  document.write("<hr>");
+
+  var txt = "ABCDEFGHIJKCDLMN";
+  document.write("txt.length : " + txt.length,"<br>");
+  document.write("txt.indexOf : " + txt.indexOf("CD"),"<br>");
+  document.write("txt.lastindexOf : " + txt.lastIndexOf("CD"),"<br>");
+
+</script>
+</head>
+<body>
+</body>
+</html>

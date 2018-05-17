@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>속성선택자 예제</title>
+<style type="text/css">
+	ul {
+		list-style: none;
+	}
+	li {
+		display: inline;
+	}
+	li a {
+		padding: 20px;
+		font-size: 1.5em;
+		text-decoration: none;
+		color: blue;
+	}
+	a[title |= "us"] {
+		/* background: url("img/us.png") no-repeat left; */
+	}
+	a[title ^= "jap"] {
+		background: url("img/jp.png") no-repeat left;
+	}
+	a[title $= "glish"] {
+		background: url("img/us.png") no-repeat left;
+	}
+	a[title $= "ch"] {
+		background: url("img/ch.png") no-repeat left;
+	}
+	a[class ~= "button"] {
+	 	border: 1px solid black;
+	}
+/*	1. title이 'us'이거나 'us-'로 시작하는 a 요소 선택  성조기 달기
+		2. title이  'jap'로 시작하는 요소 선택해서 일장기 달기
+		3. title이 'glish'로 끝나는 요소 선택 후 성조기 달기
+		4. class속성에 'button' 이라는 단어가 독립적으로 포함되면
+			 border 1px solid black
+		5. title이 ch로 끝나는 요소 5성홍기 달기
+	 */
+
+</style>
+</head>
+<body>
+	<ul>
+		<li><a href="#" title = "us-english">영어</a></li>
+		<li><a href="#" title = "japanese">일본어</a></li>
+		<li><a href="#" class = "button" title="btn_ch">중국어</a></li>
+		<li><a href="#" class = "en button">영어</a></li>
+	</ul>
+</body>
+</html>

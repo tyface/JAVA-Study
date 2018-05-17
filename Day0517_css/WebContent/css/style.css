@@ -1,0 +1,25 @@
+.navi{
+	padding-top: 10px;
+	background-color: navy;
+}
+.navi ul{
+	list-style: none;
+	height: 40px;
+	text-align: center;
+}
+.navi ul li{
+	display: inline-block;
+
+}
+.navi a {
+  padding: 20px;
+  font-weight: bold;
+}
+.navi a:link, .navi a:visited{
+  color: white;
+  text-decoration: none;
+}
+.navi a:hover, .navi a:focus {
+  color: orange;
+  text-decoration: underline;
+}

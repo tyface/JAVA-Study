@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <style type="text/css">
+  ul li {
+    /* border: 1px dotted purple; */
+  }
+  section > ul {
+    /* border: 1px dotted purple; */
+  }
+  #li2 ~ li{
+    /* border: 1px dotted purple; */
+  }
+  :root {
+    /* border: 1px dotted purple; */
+  }
+  section > ul:first-child {
+    /* border: 1px dotted purple; */
+  }
+  ul > li :nth-child(1){
+    border: 1px dotted purple;
+  }
+  </style>
+  <meta charset="UTF-8">
+  <title>연결선택자</title>
+</head>
+<body>
+  <section>
+    <ul id="ul1">
+      <li>예약방법
+        <ul>
+          <li>전화통화: 010-0000-0000</li>
+          <li>문자남기기</li>
+        </ul>
+      </li>
+      <li id="li1">요금1
+        <ul>
+          <li>1인:40000</li>
+          <li>2인:60000</li>
+          <li>3인:80000</li>
+          <li>4인:100000</li>
+        </ul>
+      </li>
+      <li id="li2">요금2
+        <ul>
+          <li>1인:40000</li>
+          <li>2인:60000</li>
+          <li>3인:80000</li>
+        </ul>
+      </li>
+      <li id="li3">요금3
+        <ul>
+          <li>1인:40000</li>
+          <li>2인:60000</li>
+          <li>3인:80000</li>
+        </ul>
+      </li>
+      <li id="li4">요금4
+        <ul>
+          <li>1인:40000</li>
+          <li>2인:60000</li>
+          <li>3인:80000</li>
+        </ul>
+      </li>
+    </ul>
+    <ol>
+      <li>예약방법2
+        <ul>
+          <li>전화통화: 010-0000-0000</li>
+          <li>문자남기기</li>
+        </ul>
+      </li>
+      <li>요금
+        <ul>
+          <li>1인:40000</li>
+          <li>2인:60000</li>
+          <li>3인:80000</li>
+        </ul>
+      </li>
+    </ol>
+    <ol>
+      <li>예약방법3
+        <ul>
+          <li>전화통화: 010-0000-0000</li>
+          <li>문자남기기</li>
+        </ul>
+      </li>
+      <li>요금
+        <ul>
+          <li>1인:40000</li>
+          <li>2인:60000</li>
+          <li>3인:80000</li>
+        </ul>
+      </li>
+    </ol>
+  </section>
+</body>
+</html>

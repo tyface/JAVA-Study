@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <style type="text/css">
+  #container{
+    width: 300px;
+    height: 300px;
+    border: 1px solid black;
+    position: relative;
+  }
+  .box{
+    width: 50px;
+    height: 50px;
+    border: 1px solid gray;
+    background-color: aqua;
+    text-align: center;
+    position:absolute;
+  }
+  #box1{
+  top:0;
+  left:0;
+  }
+  #box2{
+    top:0;
+    right:0;
+  }
+  #box3{
+    bottom:0;
+    right:0;
+  }
+  #box4{
+    bottom:0;
+    left:0;
+  }
+  #box5{
+    top:125px;
+    left:125px;
+  }
+
+  </style>
+  <meta charset="UTF-8">
+  <title>요소배치방법</title>
+</head>
+<body>
+  <div id="container">
+    <div class="box" id="box1">박스1</div>
+    <div class="box" id="box2">박스2</div>
+    <div class="box" id="box3">박스3</div>
+    <div class="box" id="box4">박스4</div>
+    <div class="box" id="box5">박스5</div>
+  </div>
+</body>
+</html>

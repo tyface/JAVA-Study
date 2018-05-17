@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>마진 상쇄(마진 병합)</title>
+  <style type="text/css">
+  /* 마진상쇄: 인접한 요소간에 특정 조건이 만족하면, 상하 마진이 상쇄되는 경우가 발생
+  1. 인접 형제 요소간 마진상
+  2. 부모-자식 (맏이, 막내) 요소간 상쇄
+  */
+
+  .outter {
+    margin: 10px;
+    background-color: orange;
+    width: 400px;
+    height: 300px;
+    /* border-top: 1px solid transparent; */
+
+    /* overflow: 컨텐츠의 내용이 너무 많아서 범위를 벗어 날때 어떻게 처리할지 결정하는
+    속성이기 때문에 크기의 확정이 필요, 요소의 크기를 정하고 나면  자식요소가 부모요소의 경계를 인식할 수 있다.
+     */
+    overflow:auto;
+  }
+  .inner {
+    margin: 10px;
+    background-color: aqua;
+    width: 300px;
+    height: 200px;
+    /* border-top: 1px solid transparent; */
+    overflow:auto;
+  }
+  p{
+    margin: 10px;
+    background-color: yellow;
+    padding: 10px
+  }
+  </style>
+</head>
+<body>
+  <div class="outter">
+    <div class="inner">
+      <p>컨텐츠입니다.컨텐츠입니다.컨텐츠입니다.컨텐츠입니다.컨텐츠입니다.컨텐츠입니다.</p>
+    </div>
+  </div>
+</body>
+</html>
