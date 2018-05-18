@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Insert title here</title>
+  <script type="text/javascript">
+  window.onload = function(){
+    /*
+    처리해야할 작업
+    : 버튼이 눌리면, 비밀번호를 입력하는 input에서 각각 비밀번호 가져와서
+    비교해보고, 결과를 출력 요소에 출력
+
+    */
+    //요소선택
+    var btnCheck = document.getElementById('btnCheck');
+    var pw1 = document.getElementById('firstPw');
+    var pw2 = document.getElementById('secondPw');
+    var res = document.getElementById('checkResult');
+
+    btnCheck.onclick = function(){
+      if(pw1.value == pw2.value){
+        res.innerHTML = "같음!";
+      }else {
+        res.innerHTML = "다름!";
+      }
+    }
+
+  }
+  </script>
+</head>
+<body>
+  <!-- 두 개의 비밀번호를 입력받아서
+  버튼을 누르면 일치하는지 안하는지 확인하는 프로그램
+-->
+<h1 id = "title">비밀번호 확인</h1>
+<p><label>비번<input type="password" id = "firstPw"></label></p>
+<p><label>확인<input type="password" id = "secondPw"></label></p>
+<p><button id="btnCheck">체크</button></p>
+<h2 id = "checkResult">결과는 여기에</h2>
+
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Math</title>
+  <script type="text/x-ecmascript">
+
+  var str =  prompt("가위,바위,보 중 하나를 입력해주세요");
+  var num;
+  switch (str) {
+    case "가위":
+
+    num = 1;
+    break;
+    case "바위":
+    num = 2;
+    break;
+    case "보":
+    num = 3;
+    break;
+    default:
+    alert("잘못 입력 하셨습니다");
+  }
+
+  document.write("<img src=img/math_img_" + num + ".jpg alt=이미지/>");
+  var ranNum = Math.ceil(Math.random()*3)
+   // alert(ranNum);
+  document.write("<p>VS<p>");
+  document.write("<img src=img/math_img_" + ranNum + ".jpg alt=이미지 style=filter:fliph()/>");
+  switch (ranNum) {
+    case 1:
+      if(num == 1) {
+        alert("컴퓨터가 가위를 내어 비겼습니다.");
+      } else if (num == 2){
+        alert("컴퓨터가 가위를 내어 이겼습니다.");
+      } else if (num == 3){
+        alert("컴퓨터가 가위를 내어 졋습니다.");
+      }
+      break;
+    case 2:
+      if(num == 1) {
+        alert("컴퓨터가 바위를 내어 졋습니다.");
+      } else if (num == 2){
+        alert("컴퓨터가 바위를 내어 비겼습니다.");
+      } else if (num == 3){
+        alert("컴퓨터가 바위를 내어 이겼습니다.");
+      }
+      break;
+    case 3:
+      if(num = ranNum) {
+        alert("컴퓨터가 보자기를 내어 이겼습니다.");
+      } else if (num = 2){
+        alert("컴퓨터가 보자기를 내어 졋습니다.");
+      } else if (num = 3){
+        alert("컴퓨터가 보자기를 내어 비겼습니다.");
+      }
+      break;
+    default:
+    alert("예외발생");
+  }
+
+
+</script>
+</head>
+<body>
+  <!-- Math : 수학관련 함수들을 제공하는 내장객체
+  최대값, 최소값, 반올림, 올림, 제곱, 난수
+  abs() : 절대값
+  max() :  최대값
+  min() : 최소값
+  pow() : 제곱
+  random() : 난수발생
+  round() : 반올림
+  floor() : 내림
+  ceil() : 올림
+
+-->
+</body>
+</html>

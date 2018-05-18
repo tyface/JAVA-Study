@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>달력만들기</title>
+  <script type="text/javascript">
+  // 오늘 날짜가 포함된 달력 그리기
+  // Date 객체 만들고, 년, 월, 일 구하고
+  // 표시할 달력의 줄 수계산, 해당월의 시작요일 구하기
+  // 달력 그리기
+
+  var day = new Date(); //현재일 객체 생성
+  var year = day.getFullYear();
+  // var year2 = date.getYear();
+  // alert(year);
+  // alert(year2);
+  var month = day.getMonth();
+  var date = day.getDate();
+  var firstDay = new Date(year,month,1);
+  var lastDate = new Date(year,month+1,0).getDate();
+  var firstDayOfWeek = firstDay.getDay();
+  //달력의 줄수
+  var row = Math.ceil((firstDayOfWeek+lastDate)/7);
+
+  document.write("<h1>"+year+"년"+(month+1)+"월</h1>");
+
+
+  var calendar = "<table border='1'>";
+  calendar += "<tr>";
+  calendar += "<th>일</th>";
+  calendar += "<th>월</th>";
+  calendar += "<th>화</th>";
+  calendar += "<th>수</th>";
+  calendar += "<th>목</th>";
+  calendar += "<th>금</th>";
+  calendar += "<th>토</th>";
+  calendar += "</tr>";
+
+  //나머지 달력그리기
+  var num = 1;
+  for(var i=0;i<row;i++){
+    for(var j = 0;j<7;j++) {
+      if(i==0&& j<firstDayOfWeek||num > lastDate){
+        calendar += "<td>&nbsp;</td>";
+      } else {
+        calendar += "<td>" + num++ + "</td>";
+      }
+    }
+    calendar += "</tr>";
+  }
+  document.write(calendar);
+
+  </script>
+</head>
+<body>
+
+</body>
+</html>

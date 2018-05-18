@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>문서객체</title>
+	<script type="text/javascript">
+		//문서가 모두 로딩되고 나서 스크립트 실행해라...
+		//문서가 로딩되고나서 function을 실행해라
+		window.onload = function(){
+		 	/* 문서객체 이용해서 html 요소 선택해서 속성 변경 */
+	 	 	var title = document.getElementById("title");
+	 	 	title.style.color = "green";
+
+		 	var contents = document.getElementsByTagName("p");
+		 	contents[0].style.color = "red";
+		 	contents[1].style.color = "orange";
+		 	contents[2].style.color = "yellow";
+		 	contents[3].style.color = "green";
+
+		};
+	 </script>
+</head>
+<body>
+	<!--
+		문서 객체 모델(DOM:Document Object Model)
+		:HTML문서 그 자체의 정보를 가지고 있음
+		document
+		html,head, body 등 구성요소를 가짐
+		html문서를 구성하고 있는 요소들을 node라고 한다.
+
+		자바스크립트의 역할은 html 요소들에 프로그래밍 요소를 추가하는 것
+		:자바스크립트에서 각각의 요소를 직접적으로 조작할 수 있어야 한다.
+		:자바스크립트에서 요소를 직접 선택해서 객체를 얻어올 수 있다.
+
+		1. 선택자를 이용해서 html요소 선택하고
+		2. 선택된 요소의 속성 변경
+	 -->
+	 <h1 id = "title">선택자</h1>
+	 <div id = "box">
+	 	<p>내용1</p>
+	 	<p>내용2</p>
+	 </div>
+	 <p>내용3</p>
+	 <p>내용4</p>
+
+
+</body>
+</html>

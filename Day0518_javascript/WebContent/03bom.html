@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>BOM</title>
+	<script type="text/javascript">
+		/* window 객체 사용하기
+			open() : 새창열기
+			alert() : 경고창
+			prompt() : 질의응답창
+			confirm() : 확인/취소
+			setInterval() : 일정시간 간격을 두고 지속적으로 문장 실행
+			setTimeout() : 일정 시간 뒤에 문장 실행
+			clearInterval(인터벌 변수) : 실행중 인 interval 멈추기
+		*/
+		console.log("안녕하세요??");
+
+// 		var i=0;
+
+		//setInterval(실행할 문장,인터벌);
+// 		 var auto = setInterval("console.log(i++);",500);
+		//setTimeout(실행할문장,인터벌)
+// 		setTimeout("console.log(i);",3000);
+// 		var auto = setTimeout("console.log(i);",3000);
+
+
+		//새창 띠우기 open(uri 경로, 창이름, 옵션 );
+
+// 		window.open("http://www.naver.com");
+		window.open("04winpopup.html","pop1","width=320px,height=240px");
+	</script>
+</head>
+<body>
+	<!-- BOM (Browser Object Model)
+		브라우저 정보를 가지고 있는 객체
+		계층적인 구조로 이루어져 있다.
+		window: BOM에서 최상위 객체
+		document,screen,location,history,navigator
+	-->
+	<button onclick="clearInterval(auto)">정지</button>
+</body>
+</html>
