@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>속성 변경하기</title>
+  <script type="text/javascript">
+
+  window.onload = function() {
+
+    setTimeout(function() {
+      // document.getElementById('img1').setAttribute('src','img/pic_2.jpg')
+      document.getElementById('img2').innerHTML = "<img src=img/pic_4.jpg id=img4 alt=이미지>"
+    },3000);
+
+  }
+  </script>
+</head>
+<body>
+  <!--
+  1.html코드로 요소생성
+  2.자바스크립트에서 요소 선택
+  3.자바스크립트에서 선택한 요소의 속성 변경
+
+  이미지 요소의 src속성 바꾸기
+-->
+<h1>이미지 바꾸기</h1>
+<!-- <img src="img/pic_1.jpg" id="img1" alt="이미지"> -->
+<div id="img2">
+  <img src="img/pic_1.jpg" id="img1" alt="이미지">
+  <img src="img/pic_3.jpg" id="img3" alt="이미지">
+</div>
+
+</body>
+</html>

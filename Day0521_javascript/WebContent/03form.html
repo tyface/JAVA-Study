@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>form 요소 선택하기 </title>
+	<script type="text/javascript">
+		/* form 요소의 경우에는 이름(name)속성으로 요소를 선택할 수 있다.
+		    form 요소의 하위요소도 이름으로 선택가능
+		*/
+		window.onload = function(){
+			//loginForm 이름을 가지는 form 요소에 submit 이벤트가 발생하면 실행할 문장
+		 	document.loginForm.onsubmit = function(){
+		 		/* id랑 비밀번호 가져와서 alert 해보기 */
+		 		var id = document.loginForm.userId.value;
+		 		var pw = document.loginForm.userPw.value;
+
+		 		alert("id : " + id);
+		 		alert("pw : " + pw);
+		 	};
+      var check1 = document.loginForm.check1;
+      var check2 = document.loginForm.check2;
+      var check3 = document.loginForm.check3;
+
+      check1.onclick = function() {
+        check1.checked = true;
+        check2.checked = false;
+        check3.checked = false;
+      }
+      check2.onclick = function() {
+        check1.checked = false;
+        check2.checked = true;
+        check3.checked = false;
+      }
+      check3.onclick = function() {
+        check1.checked = false;
+        check2.checked = false;
+        check3.checked = true;
+      }
+		};
+	</script>
+</head>
+<body>
+	<form name = "loginForm" action="#">
+		<fieldset>
+			<legend>회원 로그인</legend>
+			<p>
+				<label for="user_id">아이디</label>
+				<input type="text" name="userId" id="user_id">
+			</p>
+			<p>
+				<label for="user_pw">비밀번호</label>
+				<input type="password" name="userPw" id = "user_pw">
+			</p>
+		</fieldset>
+		<p><input type="submit" value="로그인"></p>
+
+		<p>
+			<label for = "check1">값1</label>
+			<input type="checkbox" name = "check1"
+			      id = "check1" value = "v1">
+
+			<label for = "check2">값2</label>
+			<input type="checkbox" name = "check2"
+			      id = "check2" value = "v2">
+
+			<label for = "check3">값3</label>
+			<input type="checkbox" name = "check3"
+			      id = "check3" value = "v3">
+		</p>
+	</form>
+</body>
+</html>
