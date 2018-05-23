@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>차량견적</title>
+  <style>
+  *{
+    margin: 0;
+    padding: 0;
+  }
+  h1{
+    text-align: center;
+  }
+
+  table{
+    border: 1px solid gray;
+    border-collapse: collapse;
+  }
+
+
+  body{
+    font-size: 12px;
+    font-family: dotum;
+  }
+  #carZone{
+    width: 600px;
+    margin: 0 auto;
+  }
+
+  #carZone td{
+    text-align: center;
+  }
+
+
+
+  #estimate{
+    width: 100%;
+  }
+  #estimate th, td{
+    border: 1px solid gray;
+    height: 30px;
+  }
+
+  #estimate th{
+    background-color: #333;
+    color: white;
+  }
+
+  #total {
+
+    border: none;
+    background:  none;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+  }
+  </style>
+
+  <script type="text/javascript">
+
+  function car() {
+    var optList = new Array();
+    optList[0] =  document.getElementById('opt1');
+    optList[1] = document.getElementById('opt2');
+    optList[2] = document.getElementById('opt3');
+    var total = document.getElementById('total');
+    var price = Number(total.defaultValue);
+
+    for(var i in optList) {
+      if(optList[i].checked){
+        price += Number(optList[i].value);
+      }
+      total.value = price;
+    }
+  }
+
+</script>
+
+</head>
+<body>
+  <!-- 차량견적을 계산하는 페이지 -->
+  <h1>자동차 견적</h1>
+  <div id = "carZone"> <!-- 자동차 옵션정보가 표시 -->
+    <img src = "img/car1.jpg" alt="자동차">
+    <table id = "estimate">
+      <colgroup>
+        <col width="380px"/>
+        <col width="160px"/>
+        <col width="*"/>
+      </colgroup>
+      <thead>
+        <tr>
+          <th>옵션</th>
+          <th>추가 가격</th>
+          <th>선택</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><label for="opt1">인조가죽시트</label></td>
+          <td>250000</td>
+          <td>
+            <input type = "checkbox" name ="opt1" id="opt1"
+            value = "250000" onclick = "car(this);"/>
+          </td>
+        </tr> <!-- 옵션1 -->
+        <tr>
+
+
+          <td><label for="opt2">내비게이션</label></td>
+          <td>250000</td>
+          <td>
+            <input type = "checkbox" name ="opt2" id="opt2"
+            value = "250000" onclick = "car(this);"/>
+          </td>
+
+        </tr> <!-- 옵션2 -->
+        <tr>
+
+          <td><label for="opt3">선루프</label></td>
+          <td>440000</td>
+          <td>
+            <input type = "checkbox" name ="opt3" id="opt3"
+            value = "440000" onclick = "car(this);"/>
+          </td>
+
+        </tr>  <!-- 옵션3 -->
+      </tbody>
+      <tfoot>
+        <tr>
+          <th>(기본)차량가격</th>
+          <td colspan = "2"><input type = "text" name= "total" id = "total"
+            value = "15000000" readonly="readonly" /></td>
+          </tr>  <!-- (기본)차량가격 -->
+        </tfoot>
+
+      </table>
+    </div>
+
+  </body>
+  </html>
