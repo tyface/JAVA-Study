@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>closure</title>
+  <script type="text/javascript">
+  /* 클로저
+  :클로저는 함수와 함수가 선언된 어휘적 환경의 조합
+  클로저는 함수인데, 선언되는 시점의 상태값을 같이 가지고 있는 함수
+  클로저는 함수가 선언되는 시점에서 동등한 위치에 선언된 변수들을 가지고 사용할 수 있음
+  */
+
+  // 		function outter(){
+  // 			var name = "홍길동";
+  // 			function displayName(){
+  // 				alert("이름:" + name);
+  // 			}
+  // 			return displayName;   //함수 반환
+  // 		}
+
+  // // 		alert(name);
+  // 		var func = outter();
+  // 		func();
+
+  // window.onload = function(){
+  // 	for(var i =1;i<=4;i++){
+  // 		var btn = document.getElementById("btn"+i);
+  // 		btn.addEventListener("click", function() {
+  // 			alert("버튼" + i +"클릭!!");
+  // 			//버튼5 클릭!! 이라고 출력됨>>클로저 때문
+  // 			//alert은 나중에 실행<< 얘가 문제
+  // 		});
+  // 	}
+  // };
+
+  window.onload = function(){
+    for(var i =1;i<=4;i++){
+      (function(m){
+        var btn = document.getElementById("btn"+m);
+        btn.addEventListener("click", function() {
+          alert("버튼" + m +"클릭!!");
+          //버튼5 클릭!! 이라고 출력됨>>클로저 때문
+          //alert은 나중에 실행<< 얘가 문제
+        });
+      })(i);
+    }
+  };
+
+
+
+  </script>
+</head>
+<body>
+  <button id="btn1">버튼1</button>
+  <button id="btn2">버튼2</button>
+  <button id="btn3">버튼3</button>
+  <button id="btn4">버튼4</button>
+</body>
+</html>

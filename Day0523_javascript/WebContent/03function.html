@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>callback</title>
+	<script type="text/javascript">
+		/*
+			자바스크립트에서는 변수타입을 지정하지 않고,
+			함수도 하나의 객체, 따라서 함수를 파라미터로 전달 할수 있음
+			콜백(callback)함수: 파라미터로 전달되는 함수
+		*/
+		//메서드가 호출될 때 실제로 동작할 메서드가 결정됨
+		//callThreeTimes는 어떤 동작을 할지 모름:
+		//	어떤 메서드가 실행될지 결정되지 않아서..
+		//파라미터로 들어오는 인자함수에 따라서 실제 동작이 달라짐
+		//동적바인딩과 비슷하게 동작한다.
+
+// 		function callThreeTimes(callback){
+// 			//콜백함수를 세번 실행하는 함수
+// 			for(var i=0;i<3;i++){
+// 				callback();
+// 			}
+// 		};
+
+
+// 		var myFunc1 = function(){
+// 			alert("myFunc1");
+// 		};
+// 		var myFunc2 = function(){
+// 			alert("myFunc2");
+// 		};
+
+// 		callThreeTimes(myFunc2);
+
+	//addFunc(a,b) : 인자 값 2개를 받아서 더한다음 결과를 반환
+	//multFunc(a,b) : 인자 값 2개를 받아서 곱한다음 결과를 반환
+	//printResult(func) : 전달 받은 함수를 실행하고 결과를 alert()
+
+	var printResult = function(func){
+		var result = func(2,4);
+		alert(result);
+	};
+
+	var addFunc = function(a,b){
+		return a+b;
+	};
+
+	var multFunc = function(a,b){
+		return a*b;
+	};
+
+// 	printResult(addFunc);
+// 	printResult(multFunc);
+
+/* 로봇으로 만들어 봅시다...*/
+
+var gundamFight = function(attack,move){
+	attack();
+	move();
+	attack();
+}
+
+var punch = function(){
+	alert("주먹공격!!");
+}
+var missile = function(){
+	alert("미사일 공격!!!");
+}
+var walk = function(){
+	alert("걸어서 이동!!");
+}
+var fly = function(){
+	alert("날아서 이동!!");
+}
+gundamFight(missile,fly);
+
+
+
+
+
+
+	</script>
+</head>
+<body>
+
+</body>
+</html>

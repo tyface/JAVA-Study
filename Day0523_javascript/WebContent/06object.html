@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>객체</title>
+	<script type="text/javascript">
+// 	var arr = []; // 배열
+// 	arr[1]  1번 인덱스에 있는 값,
+	//객체는 map과 같은 형태로.. key-value로 구성되고
+	// key에 해당하는 속성은 문자열
+// 	var object = {
+// 		"name" : "홍길동",
+// 		"age" : 20,
+// 		"kor" : 100,
+// 		"eng" : 0,
+// 		"math": 100
+// 	};
+
+// 	alert(object.name);
+// 	alert(object["math"]);
+
+// 	var lee = {};
+// 	lee.name = "이순신";
+// 	lee.age = 30;
+// 	lee.math = 60;
+// 	lee.kor = 60;
+// 	lee.eng = 60;
+
+// 	alert(lee.name);
+
+	//미리 자바에서 사용하는 생성자 처럼 함수를 선언해서 사용할 수 있다.
+	function makeStudent(name,age,kor,eng,math){
+		var student = {
+			"name" : name,
+			"age" : age,
+			"kor" : kor,
+			"eng" : eng,
+			"math": math
+		};
+		return student;
+	};
+	var hong = makeStudent("홍길동", 20, 100, 100, 100);
+
+
+	alert("이름 : " + hong.name);
+	alert("나이 : " + hong.age);
+	alert("국어 : " + hong.kor);
+	alert("영어 : " + hong.eng);
+	alert("수학 : " + hong.math);
+
+	//function 생성자 를 이용해서 객체 만들수도 있다.
+	function Student(name,age,kor,eng,math){
+		this.name = name;
+		this.age = age;
+		this.kor = kor;
+		this.eng = eng;
+		this.math = math;
+		this.getAverage = function(){
+			return (kor+eng+math)/3
+		};
+	}
+
+	var s1 = new Student("신사임당",25,100,70,100);
+	alert(s1.name + "의 평균은 "+ s1.getAverage()+ "점 입니다.");
+
+	/*
+		function 생성자를 이용해서 만든 함수는 closure를 만들지 않음
+		함수는 전역으로 생성되고
+		실행할 때, 함수는 지역변수 및 전역변수에만 접근할 수 있다.
+	*/
+
+	</script>
+
+</head>
+<body>
+
+</body>
+</html>

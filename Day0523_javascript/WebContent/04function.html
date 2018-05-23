@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>반환</title>
+	<script type="text/javascript">
+		/* 함수도 반환할 수 있음 */
+		var myFunc = function(){
+			alert("함수를 반환할 거에요!!!");
+			return function(){
+				alert("반환 된 함수 입니다!!!!!");
+				return function(){
+					alert("반환 된 함수의 반환 함수 입니다!!");
+				}
+			}
+		};
+		//myFunc()의 결과를 returnedFunc에 넣는다.
+		//var returnedFunc = myFunc();
+		//returnedFunc도 함수이기 때문에 호출가능
+		//returnedFunc();
+		//myFunc 호출 후, 결과(function)를 다시 호출
+		var result = myFunc()();
+		result();
+
+	</script>
+</head>
+<body>
+
+</body>
+</html>

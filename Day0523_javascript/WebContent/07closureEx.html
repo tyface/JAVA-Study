@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+
+	/* 클로저에 의해서 발생하는 문제 : 나중에 실행되는 함수가 변수를 참조할 때,
+	   변수의 값이 변하면 함수 선언시 사용한 변수값이 아니라, 나중에 바뀐 변수의 값을 참조하는 현상
+	*/
+
+	window.onload = function() {
+		function showHelp(help){
+			//파라미터로 문자열 받아와서
+			//help 요소의 innerHTML 변경하기
+			document.getElementById("help").innerHTML=help;
+		};
+
+		function makeHelpCallBack(help){
+			return function(){
+				showHelp(help);
+			}
+		}
+
+
+		function setHelp() {
+			//help 요소에 텍스트 집어 넣기
+			var helpText = [];
+			helpText[0] = {
+				"id" : "email",
+				"help" : "이메일을 입력하세요"
+			}
+			helpText[1] = {
+				"id" : "name",
+				"help" : "이름을 입력하세요"
+			}
+			helpText[2] = {
+				"id" : "age",
+				"help" : "나이를 입력하세요"
+			}
+
+			/* 각각의 요소들에 이벤트 리스너 설정하기 */
+
+			for(var i=0;i<helpText.length;i++){
+				//반복문 돌면서 각각의 요소에 이벤트 핸들러 등록하기
+// 				(function(m){
+					var item = helpText[i];
+// 					document.getElementById(item.id).onfocus = function(){
+// 						//help에 적절한 문구 넣기
+// 						//document.getElementById("help").innerHTML = item.help;
+// 						showHelp(item.help);
+// 					}
+					document.getElementById(item.id).onfocus
+					= makeHelpCallBack(item.help);
+
+// 				})(i);
+			}
+		};
+
+		setHelp(); //help 요소에 텍스트 설정하기
+	};
+</script>
+</head>
+<body>
+	<p id="help">여기에 도움말이 표시됩니다.</p>
+	<p>
+		이메일 : <input type="text" id="email">
+	</p>
+	<p>
+		이름 : <input type="text" id="name">
+	</p>
+	<p>
+		나이 : <input type="text" id="age">
+	</p>
+</body>
+</html>

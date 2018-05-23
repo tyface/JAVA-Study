@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>이벤트 객체</title>
+<script type="text/javascript">
+		/* 이벤트 객체
+		: 이벤트가 발생하면 이벤트에대한 정보를 가지고 있는 객체가 발생
+		이벤트객체가 가지고 있는 속성을 가져와서 사용해보기
+
+		마우스 이벤트 객체
+		:clientX,clientY : 마우스가 이벤트가 발생한 X,Y 좌표, 스크롤바 이동너비,높이 무시
+		:pageX,pageY : 마우스가 이벤트가 발생한 X,Y 좌표, 스크롤바 이동너비,높이 포함
+		:screenX,screenY : 모니터 기준 x,y
+		:layerX,layerY : position이 적용된 요소 기준 x,y
+
+		키보드 이벤트 객체
+		keycode : 이벤트가 발생한 키에 대한 유니코드
+		altkey : alt키가 눌러져 있으면 true, 아니면 false
+		ctrlkey : ctrl키가 눌러져 있으면 true, 아니면 false
+		shiftkey : shift키가 눌러져 있으면 true, 아니면 false
+		*/
+		window.onload = function(){
+			/* 문서위에서 마우스 위치 가져오기  */
+			var form1 = document.f1;
+			var form2 = document.f2;
+
+			//문서위에서 마우스가 움직이는 이벤트가 발생하면 실행
+			document.onmousemove = function(e){
+				//이벤트 핸들러 파라미터를 선언하여  이벤트 객체를 받아올 수 있다.
+				var cx = e.clientX;
+				var cy = e.clientY;
+				form1.clientX.value = cx;
+				form1.clientY.value = cy;
+				var px = e.pageX;
+				var py = e.pageY;
+				form1.pageX.value = px;
+				form1.pageY.value = py;
+			}
+
+			form2.key.onkeydown = function(e){
+
+				form2.code.value = e.keyCode;
+				//단축키 만들기 ctrl + a 가 눌리면 : 단축키 실행!!
+        if (e.keyCode == 65 && e.ctrlKey) {
+          alert("단축키 실행!!")
+        }
+			}
+
+		};
+
+
+
+
+	</script>
+</head>
+<body>
+	<div>
+		<h1>마우스 이벤트 객체 속성</h1>
+		<form name = "f1" action="#">
+			<fieldset>
+				<legend>마우스 커서 위치 출력</legend>
+				<div>
+					<label for="clientX">clientX : </label><input type="text" name="clientX" id ="clientX">
+				</div>
+				<div>
+					<label for="clientY">clientY : </label><input type="text" name="clientY" id ="clientY">
+				</div>
+				<div>
+					<label for="pageX">pageX : </label><input type="text" name="pageX" id ="pageX">
+				</div>
+				<div>
+					<label for="pageY">pageY : </label><input type="text" name="pageY" id ="pageY">
+				</div>
+			</fieldset>
+		</form>
+
+
+		<h1>키보드 이벤트 객체 속성</h1>
+		<form name="f2" action="#">
+			<fieldset>
+				<legend>키 코드 출력</legend>
+				<div>
+					<label for="key">입력키보드 : </label><input type="text" name="key" id ="key">
+				</div>
+				<div>
+					<label for="code">유니코드 : </label><input type="text" name="code" id ="code">
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</body>
+</html>

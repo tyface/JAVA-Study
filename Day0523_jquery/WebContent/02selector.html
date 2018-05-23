@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>선택자</title>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  <script type="text/javascript">
+  	/* $("선택자")
+  	전체선택자: $("*")
+  	아이디선택자 : $("#아이디")
+  	클래스선택자 : $(".클래스")
+  	태그선택자 : $("태그이름")
+  	그룹선택자 : $("요소1,요소2,요소3,요소4,......,요소n")
+
+  	jQuery의 대부분의 메서드 메서드체이닝 기법을 적용할 수 있도록
+  	작성되어있음(메서드 호출후,  해당 요소자체를 반환 )
+  	*/
+  	$(function(){
+  	  	$("*").css("border","1px solid blue");
+  	  	$("#title").css("border","1px solid red")
+  	  	.css("backgroundColor","yellow");
+  	  	$(".direct").css("background-color","aqua");
+  	  	$("h1,h2,h3").css("font-size","3em");
+  	});
+
+  </script>
+</head>
+<body>
+	<h1>제이쿼리</h1>
+	<h2 id= "title">선택자의 종류</h2>
+	<h3 class="direct">직접선택자</h3>
+	<h4>관계선택자</h4>
+</body>
+</html>
