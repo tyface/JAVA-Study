@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>갤러그</title>
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  <script type="text/javascript" src = "js/ship.js"></script>
+  <script type="text/javascript" src = "js/bullet.js"></script>
+  <script type="text/javascript" src = "js/enemy.js"></script>
+  <script type="text/javascript">
+  $(function(){
+    var content = $("#content");
+    content.css("backgroundColor","pink")
+    .width("1000px").height("700px");
+    content.css("backgroundImage","url('img/bg.png')");
+
+    //배경이동 : 일정 시간마다 같은 간격으로 이동
+    var bgPosition = 0;
+    var boss = false;
+
+    var check1 = setInterval(function(){
+      bgPosition += 5;
+      content.css("backgroundPositionY",bgPosition+"px");
+
+      if(enemies.length==0 && boss==true){
+        alert("1단계 클리어");
+        clearInterval(check1);
+      }
+      if(enemies.length==0 && boss==false){
+
+        ePosX = 400;
+        var king = new Enemy(content,ePosX,50,31*6,31*6,"img/king.jpg",10);
+        king.init();
+        ePosX = ePosX + (eGap + 31*2);
+        enemies.push(king);
+        boss = true;
+
+      }
+    },30);
+
+
+    //비행기 그리기
+    //비행기에 대한 위치정보를 저장하고, 초기 요소를 작성하는 함수 작성 Ship
+    //>>외부 스크립트로 작성
+    var posX = 1000/2 - 31/2;  //중간
+    //아래쪽에서 비행기 높이 만큼 띄우고, 50px 만큼 더 띄움
+    var posY = 700-33-50;
+    var ship = new Ship(content,posX,posY,31,33);
+    ship.init();
+    ship.move();
+
+    var ePosX =100;
+    var eGap = 20;
+
+    var enemies =[];
+
+
+
+    for(var i = 0;i<5;i++){
+      var blue = new Enemy(content,ePosX,50,31*2,31*2,"img/blue_king.png",3);
+      blue.init();
+      ePosX = ePosX + (eGap + 31*2);
+      enemies.push(blue);
+    }
+    for(var i = 0;i<5;i++){
+      var green = new Enemy(content,ePosX,50,31*2,31*2,"img/green_king.png",3);
+      green.init();
+      ePosX = ePosX + (eGap + 31*2);
+      enemies.push(green);
+    }
+
+    ePosX = 100;
+    for(var i = 0;i<16;i++){
+      var enemy1 = new Enemy(content,ePosX,160,31,31,"img/enemy1.png",1);
+      enemy1.init();
+      ePosX = ePosX + (eGap + 31);
+      enemies.push(enemy1);
+    }
+    ePosX = 100;
+    for(var i = 0;i<16;i++){
+      var enemy2 = new Enemy(content,ePosX,250,31,31,"img/enemy2.png",1);
+      enemy2.init();
+      ePosX = ePosX + (eGap + 31);
+      enemies.push(enemy2);
+    }
+
+    /* 총알 맞는거 처리 하기
+    총알이 날아가다가 적 영역과 겹치면, 맞았다라고 판단, 적의 hp를 1 줄임
+    적의 hp가 0이면 적 지우기
+    총알이 하나 움직일 때 마다 적이랑 부딪혔는지 검사
+    */
+
+
+
+    // var keypress = {};
+    //
+    // setInterval(function(){ // 주기적으로 검사
+    //   if(keypress['37'] == true){
+    //     ship.stepX = -5
+    //   };
+    //   if(keypress['39'] == true){
+    //     ship.stepX = 5;
+    //   };
+    // }, 10);
+    //
+    // //키보드 이벤트 처리
+    // $(document).on({
+    //   "keydown":function(e){
+    //     keypress[e.keyCode] = true;
+    //
+    //     // switch(e.keyCode){
+    //     //   case 37:
+    //     //   //좌측이동(left)
+    //     //   //배의 위치 조정 값 음수
+    //     //   // 				alert("123");
+    //     //   ship.stepX = -5;
+    //     //   break;
+    //     //   case 39:
+    //     //   //우측이동
+    //     //   //배의 위치 조정 값 양수
+    //     //   ship.stepX = 5;
+    //     //   break;
+    //     //   case 32:
+    //     //   //총알 만들기 //x좌표 비행기의 중간 높이는 비행기 높이
+    //     //   var bX = (ship.posX+(ship.width/2));
+    //     //   var bullet = new Bullet(content,bX,posY,7,17,enemies);
+    //     //   bullet.init();
+    //     //   bullet.move();
+    //     //   break;
+    //     // }
+    //   },
+    //   "keyup":function(e){
+    //     keypress[e.keyCode] = false;
+    //   }
+    // });//on end
+
+    $(document).on({
+      "keydown":function(e){
+        //어떤 키가 눌렸는지 알기 위해서 이벤트 객체가 필요
+        switch(e.keyCode){
+          case 37:
+          //좌측이동(left)
+          //배의 위치 조정 값 음수
+          // 				alert("123");
+          ship.stepX = -5;
+          break;
+          case 39:
+          //우측이동
+          //배의 위치 조정 값 양수
+          ship.stepX = 5;
+          break;
+          case 32:
+          //총알 만들기 //x좌표 비행기의 중간 높이는 비행기 높이
+          var bX = (ship.posX+(ship.width/2));
+          var bullet = new Bullet(content,bX,posY,7,17,enemies);
+          bullet.init();
+          bullet.move();
+          break;
+        }
+      },
+      "keyup":function(e){
+
+        var key = e.keyCode;
+        if(key == 37 || key == 39 ){
+          ship.stepX = 0;
+        }
+      }
+    });//on end
+
+
+  });
+</script>
+</head>
+<body>
+  <!-- 비행기 및 적들이 표시될 화면 -->
+  <div id = "content">
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+	crossorigin="anonymous"></script>
+<script type="text/javascript">
+	/*
+		change(): 선택한 입력요소의 값이 변경되었을 때 이벤트 발생
+		scroll(): 스크롤바가 움직일 때 이벤트 발생
+	*/
+	$(function(){
+		$("#site").change(function(){
+			//site 아이디를 가지는 요소의 value 가져와서
+			//txt 아이디를 가지는 요소의 text 설정
+			$("#txt").text($("#site").val());
+		});
+	});
+
+	//스크롤 이벤트 처리>>문서보다 먼저생기는 객체
+	//스크롤에 접근하기 위해선 window 객체를 이용
+	//$(function(){ 안에 들어갈 필요 X
+	$(window).scroll(function(){
+		//window.scrollTop() : 스크롤 상단 부분의 위치값 가져오기
+		$("#txt1").text($(this).scrollTop());
+	});
+</script>
+<style type="text/css">
+	body{
+		height: 2000px;
+	}
+
+	#txt1{
+		position: fixed;
+		top: 100px;
+		left : 50px;
+	}
+
+
+</style>
+
+</head>
+<body>
+	<select id = "site">
+		<option value = "">사이트 선택</option>
+		<option value = "www.naver.com">네이버</option>
+		<option value = "www.google.com">구글</option>
+		<option value = "www.daum.net">다음</option>
+	</select>
+	<p id = "txt"></p>
+	<p id = "txt1">0</p>
+
+</body>
+</html>
