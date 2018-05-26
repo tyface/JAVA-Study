@@ -1,0 +1,60 @@
+
+웹 환경에서 동작하는 자바 프로그래밍을 작성하기 위해서 필요한 기능??
+: 클라이언트로 부터 요청을 받고 요청에 해당하는 동작, 응답을 만들어 내는 기능이 필요
+Servlet : 자바로 웹프로그래밍을 하기위한 규약 또는 그 규약을 지켜서 작성한 프로그램
+HttpServlet : Servlet 규약에 맞워 작성된 클래스, 요청을 받고 응답할 수 있는 클래스
+저희는 HttpServlet을 상속받아서 작성 : Tomcat 이라는 Servlet 컨테이너가 제공
+
+웹 서버 : 클라이언트가 요청한 웹문서를 찾아서 전달하는 기능
+     : 요청한 파일이 없거나 요청에 문제가 발생하면 코드로 응답을 대신
+Web Application : 사용자의 요청을 처리하기 위한 로직을 실행하는 프로그램
+WAS(Web Application Server) : 웹 서버의 기능을 구조적으로 분리해서 처리하기 위해 만들어졌다.
+상용 WAS : 웹 서버의 기능 웹 컨테이너 기능을 제공,이 외에 트랜잭션, 보안, DB 연결관리,
+                    사용자관리 등의 기능을 제공
+
+apache-tomcat <> 이클립스  연결하기
+window -> preferences -> server -> runtime enviroment -> add
+
+서버 만들기
+new -> server -> 연동해놓은 server 선택
+
+프로젝트 톰캣라이브러리 사용하기
+프로젝트 우클릭 > properties > java build path > library 탭 > add library
+> server runtime > 톰캣 선택
+
+
+JSP/Servlet
+먼저 만들어 진것은 Servlet:
+자바를 이용한 프로그램이 웹에서 동작할 수 있도록 작성된 표준
+>>>자바코드안에 html 코드를 포함하는 형태
+pw.write("<h1>hello!!</h1>");
+
+화면을 만들어내는데 불편함
+JSP : JavaServer Page, 화면을 쉽게 만들어 내기 위해서 Servlet을 기반으로 제안됨
+JSP는 Html 코드 안에 자바가 포함된 형태
+jsp를 작성하고 실행하면, jsp가 servlet으로 변환되서 변환 servlet이 실행됨
+
+JSP 구성요소 및 사용방법
+
+디렉티브 : JSP 페이지 내에서 페이지 설정
+스크립트 : JSP 페이지 내에서 java코드를 사용하도록 하는 부분
+JSP 내장객체 : JSP가 제공하는 기본 객체(pageContext,session,request,applicationContext 등)
+표현언어 : 변수값을 화면에 쉽게 표현할 수 있도록 만들어 주는 언어
+액션태그 : JSP 에서 자주 사용되는 복잡한 기능들을 사용하기 쉽게 미리 만들어 놓은 태그
+JSTL  : 자주 사용되는 태그들의 기능을 모아놓은 라이브러리
+
+디렉티브 지시자:
+<%@ 디렉티브이름  속성="값" 속성 = "값"  %>
+ex) page속성을 설정하겠다.
+<%@ page  ....... %>
+자주 사용되는 page 디렉티브 속성
+charSet : 현재 페이지에서 작성할 문자인코딩에 대한 선언
+contentType : 생성할 문서에 대한 타입
+import : 외부클래스 사용하기 위한 선언
+pageEncoding : 웹 컨테이너가 jsp를 읽을 때 encoding을 지정
+
+
+스크립트 : JSP 내에서 자바를 사용할 때 작성
+선언부,표현부,스크립트릿
+선언부:자바코드에서 선언문(변수나, 메서드 선언시)을 작성할 때 사용
+<%!       %>
