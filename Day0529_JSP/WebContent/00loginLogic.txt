@@ -8,75 +8,38 @@ ex) 액션태그 예
  %>
 
  <jsp:useBean id = "s" class = "Student">
-
+ 
  액션태그의 종류
  <jsp:forward> : 포워딩 방식으로 다른 페이지 이동할 때 사용
  <jsp:include> : 페이지의 모듈화를 위해 사용, 페이지내에 모듈 페이지 삽입
- <jsp:param>   : <jsp:forward>,<jsp:include> 등과 함께 사용,
+ <jsp:param>   : <jsp:forward>,<jsp:include> 등과 함께 사용, 
                                      파라미터를 추가하기 위해 사용
  <jsp:useBean> : bean을 생성하고 사용하기 위한 태그
  <jsp:setProperty> : bean의 속성값을 할당하기 위한 태그
  <jsp:getProperty> : bean의 속성값을 가져오기 위한 태그
-
-페이지 모듈화
-<jsp:include>  액션태그 : 포함되는 페이지가 서블릿으로 변환후 소스에 포함
-<%@ include @> 디렉티브 : 모듈 코드를 부모 코드에 삽입하여 변환 실행
+ 
+페이지 모듈화  
+<jsp:include>
 특정페이지 내에서 다른 페이지를 삽입해서 사용
-
-JSP > 서블릿  > 실행
-작성목록
-main.jsp
-sub.jsp
-header.jsp
-footer.jsp
-
-main과 sub에 동일한 header와 footer를 삽입
-
-includer.jsp : 모듈코드를 포함할 소스
-includee.jsp : 모듈 코드
-
-----------------------------------------
-Board 모델클래스
-name : 작성자 이름 : 문자열
-pass : 게시글 비밀번호 : 문자열
-email: 작성자 이메일 : 문자열
-title : 게시글 제목 : 문자열
-content : 게시글 내용 : 문자열
-
-writeForm.jsp
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ 
+ 
+ 
+ 
+ 
+ 
  
