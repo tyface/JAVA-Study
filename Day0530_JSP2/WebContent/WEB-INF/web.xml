@@ -4,14 +4,14 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	version="3.1">
 	<display-name>Day0530_JSP2</display-name>
-	<welcome-file-list>
+	<!-- <welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.htm</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
 		<welcome-file>default.html</welcome-file>
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
-	</welcome-file-list>
+	</welcome-file-list> -->
 
 	<servlet>
 		<servlet-name>memberServlet</servlet-name>
@@ -21,6 +21,17 @@
 		<servlet-name>memberServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-
+	<filter>
+		<filter-name>loginCheckFilter</filter-name>
+		<filter-class>filter.LoginCheckFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>loginCheckFilter</filter-name>
+		<url-pattern>/logout</url-pattern>
+		<url-pattern>/main</url-pattern>
+		<url-pattern>/memberList</url-pattern>
+		<url-pattern>/modifyForm</url-pattern>
+		<url-pattern>/modify</url-pattern>
+	</filter-mapping>
 </web-app>
 

@@ -11,12 +11,14 @@ import javax.servlet.http.HttpSession;
 
 import model.Member;
 import service.MemberService;
+import service.MessageService;
 
 public class MemberServlet extends HttpServlet {
 
 	private MemberService service;
 	private Member member;
-
+	private MessageService messageService;
+	
 	public MemberServlet() {
 		service = new MemberService();
 	}
@@ -76,13 +78,10 @@ public class MemberServlet extends HttpServlet {
 			resp.sendRedirect("loginForm");
 			break;
 		case "/main":
-				resp.sendRedirect("main.jsp");
-//				dispatcher = req.getRequestDispatcher("main.jsp");
-//				dispatcher.forward(req, resp);
-//				req.setAttribute("msg", "로그인후 이용 해주세요");
-//				req.setAttribute("pass", "loginForm.jsp");
-//				dispatcher = req.getRequestDispatcher("result.jsp");
-//				dispatcher.forward(req, resp);
+				messageService.getAllMessage();
+				dispatcher = req.getRequestDispatcher("main.jsp");
+				dispatcher.forward(req, resp);
+		
 			break;
 		case "/memberList":
 			req.setAttribute("memberList", service.getMemberList());
