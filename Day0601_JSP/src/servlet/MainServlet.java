@@ -10,16 +10,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.Member;
+import model.Message;
 import service.MemberService;
 import service.MessageService;
 
-public class MemberServlet extends HttpServlet {
+public class MainServlet extends HttpServlet {
 
 	private MemberService service;
 	private Member member;
 	private MessageService messageService;
+	private Message message;
 	
-	public MemberServlet() {
+	public MainServlet() {
 		service = new MemberService();
 	}
 
@@ -44,7 +46,7 @@ public class MemberServlet extends HttpServlet {
 		String pattern = uri.replace(conPath, "");
 		HttpSession session = req.getSession();
 		RequestDispatcher dispatcher;
-		
+
 		////////////// log
 		System.out.println("URI: " + req.getRequestURI());
 		System.out.println("Context: " + req.getContextPath());
@@ -62,7 +64,8 @@ public class MemberServlet extends HttpServlet {
 		case "/login":
 
 			if (service.login(req.getParameter("userId"), req.getParameter("userPw"))) {
-				session.setAttribute("userId", req.getParameter("userId"));
+				
+				session.setAttribute("member", service.getMember(req.getParameter("userId")));
 				System.out.println("로그인 완료");
 				resp.sendRedirect("main");
 			} else {
@@ -78,10 +81,13 @@ public class MemberServlet extends HttpServlet {
 			resp.sendRedirect("loginForm");
 			break;
 		case "/main":
-				messageService.getAllMessage();
-				dispatcher = req.getRequestDispatcher("main.jsp");
-				dispatcher.forward(req, resp);
-		
+			messageService = new MessageService();
+			
+			req.setAttribute("messageList", messageService.getAllMessage());
+
+			dispatcher = req.getRequestDispatcher("main.jsp");
+			dispatcher.forward(req, resp);
+
 			break;
 		case "/memberList":
 			req.setAttribute("memberList", service.getMemberList());
@@ -89,7 +95,8 @@ public class MemberServlet extends HttpServlet {
 			dispatcher.forward(req, resp);
 			break;
 		case "/modifyForm":
-			req.setAttribute("member", service.getMember((String)session.getAttribute("userId")));
+			Member member = (Member)session.getAttribute("member");
+			req.setAttribute("member", service.getMember(member.getId()));
 			dispatcher = req.getRequestDispatcher("modifyForm.jsp");
 			dispatcher.forward(req, resp);
 			break;
@@ -99,7 +106,7 @@ public class MemberServlet extends HttpServlet {
 			member.setPw(req.getParameter("userPw"));
 			member.setName(req.getParameter("userName"));
 			member.setEmail(req.getParameter("userEmail"));
-			
+
 			if (service.modify(member)) {
 				System.out.println("회원정보 수정 성공");
 				req.setAttribute("msg", "회원정보 수정 완료");
@@ -139,11 +146,39 @@ public class MemberServlet extends HttpServlet {
 				dispatcher.forward(req, resp);
 			}
 			break;
+		case "/write":
+			message = new Message();
+			
+			message.setPw(req.getParameter("password"));
+			message.setName(req.getParameter("userName"));
+			message.setMessage(req.getParameter("message"));
+			message.setUserNum(((Member)session.getAttribute("member")).getNum());
+			
+			
+			if(messageService.regMessage(message)==1) {
+				messageService = new MessageService();
+				
+				req.setAttribute("messageList", messageService.getAllMessage());
+				
+				System.out.println("메세지등록 완료");
+				req.setAttribute("msg", "메세지등록 완료");
+				req.setAttribute("pass", "main");
+				dispatcher = req.getRequestDispatcher("result.jsp");
+				dispatcher.forward(req, resp);
+			}else {
+				System.out.println("메세지등록 실패");
+				req.setAttribute("msg", "메세지등록 실패");
+				req.setAttribute("pass", "main");
+				dispatcher = req.getRequestDispatcher("result.jsp");
+				dispatcher.forward(req, resp);
+			}
+			
+			break;
 		default:
 			System.out.println("예외 패턴");
 			resp.sendRedirect("err.jsp");
 			break;
 		}
-		
+
 	}
 }

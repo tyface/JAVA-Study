@@ -18,6 +18,8 @@ public class MessageDao implements IMessageDao {
 		PreparedStatement pstmt = null;
 		int rowCount = 0;
 		try {
+			System.out.println("userNum:" + message.getUserNum());
+			System.out.println(message);
 			String sql = "INSERT INTO message VALUES(MESSAGE_SEQ.nextval,?,?,?,?)";
 
 			conn = ConnectionProvider.getConnection();
@@ -153,14 +155,16 @@ public class MessageDao implements IMessageDao {
 
 		List<Message> messageList = new ArrayList<Message>();
 		try {
-			String sql = "SELECT * FROM message order by ?";
+			String sql = "SELECT mes.ID,mes.PASSWORD,mem.NAME,mes.MESSAGE,mes.USER_NUM "
+					   + "FROM message mes, MEMBER mem "
+					   + "WHERE mes.USER_NUM = mem.NUM "
+					   + "ORDER BY ID DESC";
 
 			conn = ConnectionProvider.getConnection();
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, Commons.Message.ID);
 			rs = pstmt.executeQuery();
-
+			
 			while (rs.next()) {
 				message = new Message();
 				message.setId(rs.getInt(Commons.Message.ID));
@@ -170,6 +174,7 @@ public class MessageDao implements IMessageDao {
 				message.setUserNum(rs.getInt(Commons.Message.USER_NUM));
 				messageList.add(message);
 			}
+			
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		} finally {

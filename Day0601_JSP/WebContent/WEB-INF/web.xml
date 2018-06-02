@@ -25,11 +25,11 @@
 	<url-pattern>/*</url-pattern>
 </filter-mapping>-->
 	<servlet>
-		<servlet-name>memberServlet</servlet-name>
-		<servlet-class>servlet.MemberServlet</servlet-class>
+		<servlet-name>mainServlet</servlet-name>
+		<servlet-class>servlet.MainServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>memberServlet</servlet-name>
+		<servlet-name>mainServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	<filter>
@@ -43,5 +43,6 @@
 		<url-pattern>/memberList</url-pattern>
 		<url-pattern>/modifyForm</url-pattern>
 		<url-pattern>/modify</url-pattern>
+		<url-pattern>/write</url-pattern>
 	</filter-mapping>
 </web-app>

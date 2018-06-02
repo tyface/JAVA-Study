@@ -19,7 +19,7 @@ public class ServiceTest {
 //		message.setPw("a1234");
 //		message.setUserNum(1);
 //		System.out.println(service.regMessage(message));
-		System.out.println(service.removeMessage(5));
+//		System.out.println(service.removeMessage(5));
 //		System.out.println("테스트단");
 //		System.out.println(service.getMessage(2));
 		

@@ -3,11 +3,19 @@ package model;
 import java.sql.Timestamp;
 
 public class Member {
+	private int num;
 	private String id;
 	private String pw;
 	private String name;
 	private String email;
 	private Timestamp regDate;
+	
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
+	}
 	
 	public String getId() {
 		return id;

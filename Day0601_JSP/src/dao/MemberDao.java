@@ -121,6 +121,7 @@ public class MemberDao implements IMemberDao {
 
 			if (rs.next()) {
 				member = new Member();
+				member.setNum(rs.getInt(Commons.Member.NUM));
 				member.setId(rs.getString(Commons.Member.ID));
 				member.setPw(rs.getString(Commons.Member.PW));
 				member.setName(rs.getString(Commons.Member.NAME));
@@ -159,7 +160,8 @@ public class MemberDao implements IMemberDao {
 
 			while (rs.next()) {
 				Member member = new Member();
-
+				
+				member.setNum(rs.getInt(Commons.Member.NUM));
 				member.setId(rs.getString(Commons.Member.ID));
 				member.setPw(rs.getString(Commons.Member.PW));
 				member.setName(rs.getString(Commons.Member.NAME));

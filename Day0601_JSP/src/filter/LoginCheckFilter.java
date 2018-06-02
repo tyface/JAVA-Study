@@ -28,7 +28,7 @@ public class LoginCheckFilter implements Filter{
 		HttpServletRequest httpReq = (HttpServletRequest)req;
 		HttpSession session = httpReq.getSession();
 		
-		if(session.getAttribute("userId")==null) {
+		if(session.getAttribute("member")==null) {
 			httpReq.setAttribute("msg", "로그인후 이용 해주세요");
 			httpReq.setAttribute("pass", "loginForm.jsp");
 			dispatcher = httpReq.getRequestDispatcher("result.jsp");

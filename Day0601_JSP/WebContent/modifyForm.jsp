@@ -29,19 +29,19 @@ form{
 		<table>
 			<tr>
 				<th>아이디:</th>
-				<td><input type="text" name="userId" value="<%=member.getId()%>" readonly/></td>
+				<td><input type="text" name="userId" value="${member.id}" readonly/></td>
 			</tr>
 			<tr>
 				<th>비밀번호:</th>
-				<td><input type="password" name="userPw"></td>
+				<td><input type="password" name="userPw" value="${member.pw}"></td>
 			</tr>
 			<tr>
 				<th>이름:</th>
-				<td><input type="text" name="userName" value="<%=member.getName()%>"></td>
+				<td><input type="text" name="userName" value="${member.name}"></td>
 			</tr>
 			<tr>
 				<th>이메일:</th>
-				<td><input type="text" name="userEmail" value="<%=member.getEmail()%>"></td>
+				<td><input type="text" name="userEmail" value="${member.email}"></td>
 			</tr>
 
 		</table>
