@@ -1,7 +1,5 @@
 package model;
 
-import java.util.List;
-
 public class Loan {
 	
 	//회차별 대충 상환정보를 저장할 수 있는 클래스

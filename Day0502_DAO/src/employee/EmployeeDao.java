@@ -23,10 +23,8 @@ public class EmployeeDao {
 			System.out.println("DB연결 완료");
 
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
