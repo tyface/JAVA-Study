@@ -12,8 +12,20 @@ import model.Message;
 
 public class MessageDao implements IMessageDao {
 
-	Connection conn;
+	private Connection conn;
+	private static MessageDao INSTANCE;
 
+	private MessageDao() {
+		
+	}
+	
+	public static MessageDao getInstance() {
+		if(INSTANCE == null) {
+			INSTANCE = new MessageDao();
+		}
+		return INSTANCE;
+	}
+	
 	public int insertMessage(Message message) {
 		PreparedStatement pstmt = null;
 		int rowCount = 0;
@@ -192,5 +204,84 @@ public class MessageDao implements IMessageDao {
 		return messageList;
 	}
 
+	public List<Message> selectBetween(int firstRow, int endRow) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Message message = null;
+
+		List<Message> messageList = new ArrayList<Message>();
+		try {
+			String sql ="SELECT * " 	
+					   +"FROM (SELECT rownum as rnum, id, password, name, message, user_num "
+					   + 	  "FROM (SELECT mes.ID,mes.PASSWORD,mem.NAME,mes.MESSAGE,mes.USER_NUM "
+					   + 	  	    "FROM message mes, member mem "
+					   + 	  	    "WHERE mes.USER_NUM = mem.NUM "
+					   + 	  	    "ORDER BY mes.ID desc))"
+					   + "WHERE rnum BETWEEN ? AND ?";
+			
+			conn = ConnectionProvider.getConnection();
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, firstRow);
+			pstmt.setInt(2, endRow);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				message = new Message();
+				message.setId(rs.getInt(Commons.Message.ID));
+				message.setPw(rs.getString(Commons.Message.PASSWORD));
+				message.setName(rs.getString(Commons.Message.NAME));
+				message.setMessage(rs.getString(Commons.Message.MESSAGE));
+				message.setUserNum(rs.getInt(Commons.Message.USER_NUM));
+				messageList.add(message);
+			}
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return messageList;
+	}
 	
+	public int selectCount() {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int count = 0;
+		try {
+			String sql = "SELECT count(*) FROM message";
+
+			conn = ConnectionProvider.getConnection();
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				count = rs.getInt(1);
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return count;
+	}
 }

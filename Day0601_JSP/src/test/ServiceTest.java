@@ -2,6 +2,7 @@ package test;
 
 import org.junit.Test;
 
+import dao.MessageDao;
 import model.Message;
 import service.MessageService;
 
@@ -11,8 +12,8 @@ public class ServiceTest {
 	
 	@Test
 	public void testService() {
-		service = new MessageService();
-		
+//		service = new MessageService();
+		MessageDao dao = MessageDao.getInstance();
 //		message = new Message();
 //		message.setMessage("키키키키 메세지 2");
 //		message.setName("하하");;
@@ -24,8 +25,8 @@ public class ServiceTest {
 //		System.out.println(service.getMessage(2));
 		
 		
-		for (Message m : service.getAllMessage()) {
-			System.out.println(m);
-		}
+//		for (Message m : service.getAllMessage()) {
+//			System.out.println(m);
+//		}
 	}
 }

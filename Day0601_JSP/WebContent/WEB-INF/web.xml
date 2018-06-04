@@ -44,5 +44,7 @@
 		<url-pattern>/modifyForm</url-pattern>
 		<url-pattern>/modify</url-pattern>
 		<url-pattern>/write</url-pattern>
+		<url-pattern>/conformDeletion</url-pattern>
+		<url-pattern>/pwCheck</url-pattern>
 	</filter-mapping>
 </web-app>

@@ -9,10 +9,19 @@ public class MemberService {
 	// Dao 객체를 멤버로 가지면서 사용
 	MemberDao dao;
 
-	public MemberService() {
-		dao = new MemberDao();
+	private static MemberService INSTANCE;
+
+	private MemberService() {
+		dao = MemberDao.getInstance();
 	}
 
+	public static MemberService getInstance() {
+		if(INSTANCE == null) {
+			INSTANCE = new MemberService();
+		}
+		return INSTANCE;
+	}
+	
 	public boolean join(Member member) {
 		
 		if (dao.selectOne(member.getId()) == null && dao.selectEmail(member.getEmail())==null) {

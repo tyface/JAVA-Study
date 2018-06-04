@@ -12,8 +12,21 @@ import model.Member;
 
 public class MemberDao implements IMemberDao {
 
-	Connection conn;
+	private Connection conn;
 
+	private static MemberDao INSTANCE;
+
+	private MemberDao() {
+		
+	}
+	
+	public static MemberDao getInstance() {
+		if(INSTANCE == null) {
+			INSTANCE = new MemberDao();
+		}
+		return INSTANCE;
+	}
+	
 	public int insertMember(Member member) {
 		PreparedStatement pstmt = null;
 		int rowCount = 0;
