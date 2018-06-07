@@ -104,26 +104,27 @@
 
 				for ( var i in data) {
 					var tr = $("<tr>");
-					var button = $("<button type=\"button\" class=\"btn\">");
+					var btn = $("<input type=\"button\" class=\"btn\"  value=\"삭제\">");
 					
 					$("<td>").text(data[i].id).appendTo(tr);
 					$("<td>").text(data[i].email).appendTo(tr);
 					$("<td>").text(data[i].name).appendTo(tr);
-					button.text("삭제").appendTo(tr)
-					tr.on("click","button", function() {
-						var id = $(this).prev().prev().prev().text();
+					$("<td>").append(btn).appendTo(tr)
+					
+					btn.on("click", function() {
+						var id = $(this).parent().prev().prev().prev().text();
 						$.ajax({
 							url : "member?command=deleteMember",
 							type : "post",
 							data : {"userid" : id},
 							dataType : "text",
 							success : function(result) {
-								createList();
-								if (result) {
-									alert("회원삭제성공");
+								if (result == "true") {
+									alert("회원삭제 성공");
 								} else {
-									alert("회원삭제실패");
+									alert("회원삭제 실패");
 								}
+								createList();
 							}
 						});
 					});

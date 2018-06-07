@@ -78,9 +78,7 @@ public class MemberServlet extends HttpServlet{
 			break;
 		case "deleteMember":
 			id = req.getParameter("userid");
-			
 			result = mSvc.deleteMember(id);
-			
 			resp.getWriter().print(result);
 			break;
 		default:

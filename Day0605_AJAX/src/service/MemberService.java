@@ -53,7 +53,6 @@ public class MemberService {
 	}
 	
 	public boolean deleteMember(String id) {
-
 		if(dao.deleteMember(id)>0) {
 			return true;
 		}
