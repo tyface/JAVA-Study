@@ -140,7 +140,7 @@
 </head>
 <body>
 
-	<form name="joinForm" method="post" id=joinForm>
+	<form name="joinForm" method="post" id="joinForm">
 		<input type="hidden" name="command" value="join">
 		<table border="1">
 			<tr bgcolor="gray">

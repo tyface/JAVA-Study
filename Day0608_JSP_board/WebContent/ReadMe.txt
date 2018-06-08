@@ -18,12 +18,34 @@ boardModify.jsp
 boardCheckPass.jsp
 result.jsp
 -----------데이터-----------
-글 번호 : 정수, 자동증가(sequence 이용)
-글 제목 : 문자열
-글 쓴이 : 문자열
-비밀번호 : 문자열
-전자우편 : 문자열
-내용 : 문자열
-조회수 : 정수
-게시일 : 날짜
---------------------------
+            board_seq
+글 번호 : 정수, 자동증가(sequence 이용) 	num primary key
+글 제목 : 문자열 					   	title varchar2(50) not null
+글 쓴이 : 문자열						name  varchar2(30) not null
+비밀번호 : 문자열						pass  varchar2(50) not null
+전자우편 : 문자열						email varchar2(50) not null unique
+내용 : 문자열						content varchar2(1000)
+조회수 : 정수						readCount number(10) 초기값 0
+게시일 : 날짜 						writeDate date  초기값 sysdate
+----------요청 목록----------------
+1. 게시글 목록보기
+   board_list
+2. 글쓰기
+   board_write_form : 글쓰기 양식 요청
+   board_write      : 글 등록 요청
+3. 상세글보기
+   board_view       : 게시글 상세보기 요청
+4. 글 수정/삭제
+  4-1 board_check_pass_form  : 비밀번호 확인 양식 요청
+  4-2 board_check_pass       : 비밀번호 확인 요청
+  4-3 수정
+     4-3-1 board_update_form : 게시글 수정 양식 요청
+     4-3-2 board_update      : 게시글 수정 요청
+  4-4 board_delete           : 게시글 삭제 요청
+------------------------------------------------------
+해야할일
+1. 프로젝트 설정하기 : 필요한 라이브러리 다운받고 빌드패스설정
+2. 데이터 베이스 테이블만들기
+3. BoardDao, singleton
+   BoardServlet  커멘드 패턴으로 할건데 약간...다르게 할거라서...클래스만 만들어 주시면 됩니다.
+4. 화면구현

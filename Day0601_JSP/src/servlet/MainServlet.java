@@ -17,6 +17,10 @@ import service.MessageService;
 
 public class MainServlet extends HttpServlet {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private MemberService memberService;
 	private MessageService messageService;
 	private Message message;
@@ -28,13 +32,11 @@ public class MainServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doProc(req, resp);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doProc(req, resp);
 	}
 
@@ -184,7 +186,6 @@ public class MainServlet extends HttpServlet {
 		case "/conformDeletion":
 			messageId = Integer.parseInt(req.getParameter("id"));
 			
-			//TODO
 //			((Member)session.getAttribute("member")).getNum();
 			
 			dispatcher = req.getRequestDispatcher("conformDeletion.jsp");
