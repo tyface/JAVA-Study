@@ -39,20 +39,16 @@
 	<div class="wrap"  align="center">
 	<h1>게시글 수정화면</h1>
     <form action="board" name="frm" method="post" id="frm">
-      <input type="hidden" name="command" value="board_update"/>
-      <input type="hidden" name="num" value="${param.num}"/>
+      <input type="hidden" name="command" value="update"/>
+      <input type="hidden" name="board_idx" value="${board.boardIdx}"/>
         <table>
           <tr>
             <th>작성자</th>
-            <td><input type="text" name="name" value="${board.name}" id="name"></td>
+            <td><input type="text" name="name" value="${board.userId}" id="user_id" readonly="readonly"></td>
           </tr>
           <tr>
             <th>비밀번호</th>
-            <td><input type="password" name="password" value="${board.pass}" id="password"></td>
-          </tr>
-          <tr>
-            <th>이메일</th>
-            <td><input type="text" name="email" value="${board.email}" id="email"></td>
+            <td><input type="password" name="board_pw" value="${board.boardPw}" id="password"></td>
           </tr>
           <tr>
             <th>제목</th>
@@ -68,7 +64,7 @@
       <input type="submit" name="" value="수정"/>
       <input type="reset" name="" value="다시작성"/>
       <input type="button" value="목록"
-			onclick="location.href='board?command=board_list'">
+			onclick="location.href='board?command=list'">
     </form>
   </div>
 </body>

@@ -11,9 +11,7 @@
 	
 	<jsp:include page="layout/header.jsp"/>
 	<jsp:include page="layout/navi.jsp"/>
-	<hr>
 	<h1>메인페이지</h1>
-	<hr>
 	<jsp:include page="layout/footer.jsp"/>	
 </body>
 </html>

@@ -5,9 +5,9 @@
 	//큰화면에서 요청을 진행 하도록 하는 기능
 	var url;
 	if(window.name == "update"){
-		url = "board?command=board_update_form&num=${param.num}";
+		url = "board?command=update-form&board_idx=${param.board_idx}";
 	} else if (window.name == "delete"){
-		url = "board?command=board_delete&num=${param.num}";
+		url = "board?command=delete&board_idx=${param.board_idx}";
 	}
 	window.opener.parent.location.href = url;
 	window.close();	

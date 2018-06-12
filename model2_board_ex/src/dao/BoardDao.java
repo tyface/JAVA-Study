@@ -18,4 +18,8 @@ public interface BoardDao {
 	
 	public int deleteBoard(String boardIdx);
 
+	public int selectCount();
+
+	public List<Board> selectBetween(int firstRow, int endRow);
+
 }

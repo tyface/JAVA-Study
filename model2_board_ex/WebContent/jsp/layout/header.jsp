@@ -2,11 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <h1>header zone</h1>
-
-
 <c:choose>
 	<c:when test="${not empty sessionScope.member}">
-		${sessionScope.member.userName}님 환영합니다.
+		<p>${sessionScope.member.userName}님 환영합니다.</p>
 		<button onclick="location.href='member?command=logout'">로그아웃</button>
 	</c:when>
 	<c:otherwise>
@@ -25,11 +23,12 @@
 					<td>
 						<input type="hidden" name="command" value="login">
 						<input type="submit" name="login" value="로그인" id="login">
-						<input type="button" name="join" value="회원가입" id="join" onclick="location.href='member?command=joinForm'">
+						<input type="button" name="join" value="회원가입" id="join" onclick="location.href='member?command=join-form'">
 					</td>
 				</tr>
 			</table>
 		</form>
 	</c:otherwise>
 </c:choose>
+<hr>
 

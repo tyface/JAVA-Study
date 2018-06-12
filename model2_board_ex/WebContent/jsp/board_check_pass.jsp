@@ -13,8 +13,8 @@
 	<div align="center">
 		<h1>비밀번호 확인</h1>
 		<form action="board" name="frm" method="post">
-			<input type="hidden" name="command" value="board_check_pass">
-			<input type="hidden" name="num" value="${param.num}">
+			<input type="hidden" name="command" value="check-pass">
+			<input type="hidden" name="board_idx" value="${param.board_idx}">
 			<table>
 				<tr>
 					<th>비밀번호</th>

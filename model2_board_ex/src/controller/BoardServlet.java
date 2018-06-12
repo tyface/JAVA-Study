@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import controller.action.Action;
-import controller.action.ActionFactory;
+import controller.action.board.BoardActionFactory;
 
 @WebServlet("/board")
 public class BoardServlet extends HttpServlet {
@@ -30,10 +30,10 @@ public class BoardServlet extends HttpServlet {
 		resp.setCharacterEncoding("utf-8");
 		req.setCharacterEncoding("utf-8");
 
-//		String command = req.getParameter("command");
-//
-//		Action action = ActionFactory.getAction(command);
-//		action.execute(req, resp);
+		String command = req.getParameter("command");
+
+		Action action = BoardActionFactory.getInstance().getAction(command);
+		action.execute(req, resp);
 
 	}
 

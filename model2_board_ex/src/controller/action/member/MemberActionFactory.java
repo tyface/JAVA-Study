@@ -3,8 +3,8 @@ package controller.action.member;
 import controller.action.Action;
 import controller.action.ActionFactory;
 
-public class MemberActionFactory extends ActionFactory{
-	
+public class MemberActionFactory extends ActionFactory {
+
 	private static MemberActionFactory instance;
 
 	public static MemberActionFactory getInstance() {
@@ -17,7 +17,7 @@ public class MemberActionFactory extends ActionFactory{
 	@Override
 	public Action getAction(String command) {
 		Action action = null;
-		switch(command){
+		switch (command) {
 		case "login":
 			action = new LoginAction();
 			break;
@@ -27,19 +27,14 @@ public class MemberActionFactory extends ActionFactory{
 		case "join":
 			action = new JoinAction();
 			break;
-		case "joinForm":
+		case "join-form":
 			action = new JoinFormAction();
 			break;
-//		case:
-//			break;
-//		case:
-//			break;
-//		case:
-//			break;
+		default:
+			break;
 		}
-		
+
 		return action;
 	}
 
-	
 }
