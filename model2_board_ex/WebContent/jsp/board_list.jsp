@@ -10,7 +10,8 @@
 </head>
 <body>
 	<jsp:include page="layout/header.jsp" />
-	<jsp:include page="layout/navi.jsp" />
+	
+	<article>
 	<div class="wrap" align="center">
 		<table id="list">
 
@@ -32,25 +33,29 @@
 			</c:forEach>
 
 		</table>
-			<a href="board?command=list&pageNum=1">[처음]</a>
-			<a href="board?command=list&pageNum=${pageNum-1}">[이전]</a>
-		
+		<c:if test="${pageNum > 1}">
+			<a href="board?command=list&page_num=1">[처음]</a>
+			<a href="board?command=list&page_num=${pageNum - 1}">[이전]</a>
+		</c:if>
 		<c:forEach var="num" begin="${startPage}" end="${endPage}">
 			<c:choose>
 				<c:when test="${pageNum == num}">
 					<b>[${num}]</b>
 				</c:when>
 				<c:otherwise>
-					<a href="board?command=list&pageNum=${num}">[${num}]</a>
+					<a href="board?command=list&page_num=${num}">[${num}]</a>
 				</c:otherwise>
 			</c:choose>
 		</c:forEach>
-		
-			<a href="board?command=list&pageNum=${pageNum + 1}">[다음]</a>
-			<a href="board?command=list&pageNum=${lastPage}">[마지막]</a>
+		<c:if test="${pageNum < lastPage}">
+			<a href="board?command=list&page_num=${pageNum + 1}">[다음]</a>
+			<a href="board?command=list&page_num=${lastPage}">[마지막]</a>
+		</c:if>
 	</div>
 	<hr>
 	<a href="board?command=write-form">게시글 등록</a>
+	</article>
+	<jsp:include page="layout/aside.jsp" />
 	<jsp:include page="layout/footer.jsp" />
 </body>
 </html>

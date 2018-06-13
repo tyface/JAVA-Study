@@ -1,14 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<div id="container">
+<header>
 <h1>header zone</h1>
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/myStyle.css">
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 <c:choose>
 	<c:when test="${not empty sessionScope.member}">
-		<p>${sessionScope.member.userName}님 환영합니다.</p>
-		<button onclick="location.href='member?command=logout'">로그아웃</button>
+		<span class="login_form">${sessionScope.member.userName}님 환영합니다.<button onclick="location.href='member?command=logout'">로그아웃</button></span>
 	</c:when>
 	<c:otherwise>
-		<form action="member" method="post">
+		<form action="member" method="post" class="login_form">
 			<table>
 				<tr>
 					<th>아이디</th>
@@ -30,5 +34,4 @@
 		</form>
 	</c:otherwise>
 </c:choose>
-<hr>
-
+</header>

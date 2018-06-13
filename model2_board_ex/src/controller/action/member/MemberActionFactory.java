@@ -30,6 +30,12 @@ public class MemberActionFactory extends ActionFactory {
 		case "join-form":
 			action = new JoinFormAction();
 			break;
+		case "check-id":
+			action = new CheckIdAction();
+			break;
+		case "check-email":
+			action = new CheckEmailAction();
+			break;
 		default:
 			break;
 		}

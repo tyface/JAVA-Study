@@ -9,7 +9,6 @@ import java.util.List;
 
 import commons.Commons;
 import model.Board;
-import model.Board;
 
 public class BoardDaoImp implements BoardDao {
 	private Connection conn;
