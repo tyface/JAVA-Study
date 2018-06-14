@@ -10,6 +10,19 @@ public class Member {
 	private String userName;
 	private String email;
 	private Date userRegDate;
+	private String profile;
+
+	
+	
+	public Member() {
+		this.userIdx = 0;
+		this.userId = null;
+		this.userPw = null;
+		this.userName = null;
+		this.email = null;
+		this.userRegDate = null;
+		this.profile = null;
+	}
 
 	public int getUserIdx() {
 		return userIdx;
@@ -59,10 +72,19 @@ public class Member {
 		this.userRegDate = userRegDate;
 	}
 
+	public String getProfile() {
+		return profile;
+	}
+
+	public void setProfile(String profile) {
+		this.profile = profile;
+	}
+
 	@Override
 	public String toString() {
 		return "Member [userIdx=" + userIdx + ", userId=" + userId + ", userPw=" + userPw + ", userName=" + userName
-				+ ", email=" + email + ", userRegDate=" + userRegDate + "]";
+				+ ", email=" + email + ", userRegDate=" + userRegDate + ", profile=" + profile + "]";
 	}
+
 
 }

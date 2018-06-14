@@ -16,8 +16,10 @@ public class LoginAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
 		String userId = req.getParameter("user_id");
 		String userPw = req.getParameter("user_pw");
+		String msg = "";
 		String comm = "main";
 		String url = "main";
 
@@ -31,12 +33,13 @@ public class LoginAction implements Action {
 				member.setUserPw(""); // 비밀번호 유출을 막기위해 비밀번호는 세션에 담지않는다.
 				session.setAttribute("member", member);
 			} else {
-				req.setAttribute("msg", "비밀번호가 일치하지 않습니다.");
+				msg = "비밀번호가 일치하지 않습니다.";
 			}
 		} else {
-			req.setAttribute("msg", "아이디가 존재하지 않습니다.");
+			msg = "아이디가 존재하지 않습니다.";
 		}
 		
+		req.setAttribute("msg", msg);
 		req.setAttribute("comm", comm);
 		req.setAttribute("url", url);
 		req.getRequestDispatcher("jsp/result.jsp").forward(req, resp);

@@ -16,7 +16,6 @@ public class CheckIdAction implements Action {
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String userId = req.getParameter("user_id");
-
 		MemberDao memberDao = MemberDaoImp.getInstance();
 		Member member = memberDao.selectId(userId);
 

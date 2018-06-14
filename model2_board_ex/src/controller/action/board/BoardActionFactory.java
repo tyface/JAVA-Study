@@ -27,9 +27,9 @@ public class BoardActionFactory extends ActionFactory {
 		case "check-pass-form":
 			action = new CheckPassFormAction();
 			break;
-		case "check-pass":
-			action = new CheckPassAction();
-			break;
+//		case "check-pass":
+//			action = new CheckPassAction();
+//			break;
 		case "write-form":
 			action = new BoardWriteFormAction();
 			break;

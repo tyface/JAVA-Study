@@ -27,16 +27,18 @@ public class LoginCheckFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {
-
+		
+		resp.setCharacterEncoding("utf-8");
+		req.setCharacterEncoding("utf-8");
 		HttpServletRequest httpReq = (HttpServletRequest) req;
 		HttpSession session = httpReq.getSession();
 
 		String comm = httpReq.getParameter("command");
 
 		String[] commList = { "check-pass-form", "check-pass", "write-form", "write", "update-form", "update",
-				"delete" };
+				"delete","modify-form","view-profile" };
 		Set<String> checkList = new HashSet<String>(Arrays.asList(commList));
-
+		
 		if (session.getAttribute("member") == null && checkList.contains(comm)) {
 			httpReq.setAttribute("msg", "로그인후 이용 해주세요");
 			httpReq.setAttribute("url", "main");

@@ -17,7 +17,6 @@ public class BoardWriteAction implements Action {
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String title = req.getParameter("title");
-		String boardPw = req.getParameter("board_pw");
 		String content = req.getParameter("content");
 
 		BoardDao boardDao = BoardDaoImp.getInstance();
@@ -26,7 +25,6 @@ public class BoardWriteAction implements Action {
 		Member member = (Member) req.getSession().getAttribute("member");
 
 		board.setTitle(title);
-		board.setBoardPw(boardPw);
 		board.setContent(content);
 		board.setUserId(member.getUserId());
 		board.setUserIdx(member.getUserIdx());

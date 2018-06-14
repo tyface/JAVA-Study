@@ -31,16 +31,15 @@ public class BoardDaoImp implements BoardDao {
 		PreparedStatement pstmt = null;
 		int rowCount = 0;
 		try {
-			String sql = "INSERT INTO ex1_board VALUES(EX1_BOARD_SEQ.nextval,?,?,?,?,SYSDATE,?)";
+			String sql = "INSERT INTO ex1_board VALUES(EX1_BOARD_SEQ.nextval,?,?,?,SYSDATE,?)";
 
 			conn = ConnectionProvider.getConnection();
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, board.getContent());
 			pstmt.setString(2, board.getTitle());
-			pstmt.setString(3, board.getBoardPw());
-			pstmt.setInt(4, 0);
-			pstmt.setInt(5, board.getUserIdx());
+			pstmt.setInt(3, 0);
+			pstmt.setInt(4, board.getUserIdx());
 
 			rowCount = pstmt.executeUpdate();
 
@@ -66,7 +65,7 @@ public class BoardDaoImp implements BoardDao {
 		Board board = null;
 
 		try {
-			String sql = "SELECT b.board_idx, b.BOARD_CONTENT, b.BOARD_TITLE, b.BOARD_PW, b.READCOUNT, b.REGDATE, "
+			String sql = "SELECT b.board_idx, b.BOARD_CONTENT, b.BOARD_TITLE, b.READCOUNT, b.REGDATE, "
 					+ "m.USER_IDX, m.USER_ID " + "FROM ex1_board b , ex1_member m "
 					+ "WHERE b.user_idx = m.user_idx AND b.board_idx = ?";
 
@@ -83,12 +82,12 @@ public class BoardDaoImp implements BoardDao {
 				board.setBoardIdx(rSet.getInt(Commons.Board.BOARD_IDX));
 				board.setContent(rSet.getString(Commons.Board.BOARD_CONTENT));
 				board.setTitle(rSet.getString(Commons.Board.BOARD_TITLE));
-				board.setBoardPw(rSet.getString(Commons.Board.BOARD_PW));
 				board.setReadCount(rSet.getInt(Commons.Board.READCOUNT));
 				board.setRegDate(rSet.getDate(Commons.Board.REGDATE));
 				board.setUserIdx(rSet.getInt(Commons.Member.USER_IDX));
 				board.setUserId(rSet.getString(Commons.Member.USER_ID));
 			}
+			System.out.println("123:"+board);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -114,7 +113,7 @@ public class BoardDaoImp implements BoardDao {
 		List<Board> boardList = new ArrayList<Board>();
 
 		try {
-			String sql = "SELECT b.board_idx, b.BOARD_CONTENT, b.BOARD_TITLE, b.BOARD_PW, "
+			String sql = "SELECT b.board_idx, b.BOARD_CONTENT, b.BOARD_TITLE, "
 							+ "b.READCOUNT, b.REGDATE, m.USER_IDX, m.USER_ID " 
 					   + "FROM ex1_board b , ex1_member m " 
 					   + "WHERE b.user_idx = m.user_idx "
@@ -131,7 +130,6 @@ public class BoardDaoImp implements BoardDao {
 				board.setBoardIdx(rSet.getInt(Commons.Board.BOARD_IDX));
 				board.setContent(rSet.getString(Commons.Board.BOARD_CONTENT));
 				board.setTitle(rSet.getString(Commons.Board.BOARD_TITLE));
-				board.setBoardPw(rSet.getString(Commons.Board.BOARD_PW));
 				board.setReadCount(rSet.getInt(Commons.Board.READCOUNT));
 				board.setRegDate(rSet.getDate(Commons.Board.REGDATE));
 				board.setUserIdx(rSet.getInt(Commons.Member.USER_IDX));
@@ -162,16 +160,13 @@ public class BoardDaoImp implements BoardDao {
 		PreparedStatement pstmt = null;
 		int rowCount = 0;
 		try {
-			String sql = "UPDATE ex1_board SET board_content = ?, board_title = ?, board_pw = ? WHERE board_idx = ?";
+			String sql = "UPDATE ex1_board SET board_content = ?, board_title = ? WHERE board_idx = ?";
 			conn = ConnectionProvider.getConnection();
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, board.getContent());
 			pstmt.setString(2, board.getTitle());
-			pstmt.setString(3, board.getBoardPw());
-			pstmt.setInt(4, board.getBoardIdx());
-			System.out.println(board.getBoardIdx());
-			System.out.println(sql);
+			pstmt.setInt(3, board.getBoardIdx());
 			rowCount = pstmt.executeUpdate();
 
 		} catch (ClassNotFoundException | SQLException e) {
@@ -259,8 +254,8 @@ public class BoardDaoImp implements BoardDao {
 		List<Board> boardList = new ArrayList<Board>();
 		try {
 			String sql = "SELECT * "
-						+ "FROM (SELECT rownum as rnum, board_idx, board_content, board_title, board_pw, readcount, regdate, user_idx, user_id "
-							  + "FROM (SELECT  b.board_idx, b.board_content, b.board_title, b.board_pw, b.readcount, b.regdate, m.user_idx, m.user_id "
+						+ "FROM (SELECT rownum as rnum, board_idx, board_content, board_title, readcount, regdate, user_idx, user_id "
+							  + "FROM (SELECT  b.board_idx, b.board_content, b.board_title, b.readcount, b.regdate, m.user_idx, m.user_id "
 							  		+ "FROM ex1_board b, ex1_member m " 
 							  		+ "WHERE b.user_idx = m.user_idx "
 							  		+ "ORDER BY b.board_idx desc))" 
@@ -278,10 +273,10 @@ public class BoardDaoImp implements BoardDao {
 				board.setBoardIdx(rSet.getInt(Commons.Board.BOARD_IDX));
 				board.setContent(rSet.getString(Commons.Board.BOARD_CONTENT));
 				board.setTitle(rSet.getString(Commons.Board.BOARD_TITLE));
-				board.setBoardPw(rSet.getString(Commons.Board.BOARD_PW));
 				board.setReadCount(rSet.getInt(Commons.Board.READCOUNT));
 				board.setRegDate(rSet.getDate(Commons.Board.REGDATE));
 				board.setUserIdx(rSet.getInt(Commons.Board.USER_IDX));
+				board.setUserId(rSet.getString(Commons.Member.USER_ID));
 				boardList.add(board);
 			}
 			

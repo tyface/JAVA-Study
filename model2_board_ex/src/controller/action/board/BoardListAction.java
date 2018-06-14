@@ -68,8 +68,6 @@ public class BoardListAction implements Action {
 
 	public int getEndPage(int pageNum, int totalCount) {
 		int EndPage = ((pageNum - 1) / NUM_OF_NAVI_PAGE) * NUM_OF_NAVI_PAGE + NUM_OF_NAVI_PAGE;
-		System.out.println("EndPage" + EndPage);
-		System.out.println("totalCount" + totalCount);
 		if (EndPage >= totalCount) {
 			EndPage = totalCount;
 		}

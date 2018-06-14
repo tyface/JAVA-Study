@@ -7,7 +7,6 @@ public class Board {
 	private int boardIdx;
 	private String content;
 	private String title;
-	private String boardPw;
 	private int readCount;
 	private Date regDate;
 	private int userIdx;
@@ -35,14 +34,6 @@ public class Board {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public String getBoardPw() {
-		return boardPw;
-	}
-
-	public void setBoardPw(String boardPw) {
-		this.boardPw = boardPw;
 	}
 
 	public int getReadCount() {
@@ -79,8 +70,7 @@ public class Board {
 
 	@Override
 	public String toString() {
-		return "Board [boardIdx=" + boardIdx + ", content=" + content + ", title=" + title + ", boardPw=" + boardPw
-				+ ", readCount=" + readCount + ", regDate=" + regDate + ", userIdx=" + userIdx + ", userId=" + userId
+		return "Board [boardIdx=" + boardIdx + ", content=" + content + ", title=" + title +", readCount=" + readCount + ", regDate=" + regDate + ", userIdx=" + userIdx + ", userId=" + userId
 				+ "]";
 	}
 

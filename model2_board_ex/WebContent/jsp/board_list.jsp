@@ -11,8 +11,7 @@
 <body>
 	<jsp:include page="layout/header.jsp" />
 	
-	<article>
-	<div class="wrap" align="center">
+	<article class="wrap" align="center">
 		<table id="list">
 
 			<tr>
@@ -51,7 +50,6 @@
 			<a href="board?command=list&page_num=${pageNum + 1}">[다음]</a>
 			<a href="board?command=list&page_num=${lastPage}">[마지막]</a>
 		</c:if>
-	</div>
 	<hr>
 	<a href="board?command=write-form">게시글 등록</a>
 	</article>

@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import commons.Commons;
@@ -17,50 +18,47 @@ import dao.MemberDaoImp;
 import model.Member;
 
 @MultipartConfig(maxFileSize = 1024 * 1024 * 2, location = "c:\\test")
-public class JoinAction implements Action {
+public class ModifyAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		// Member모델 셋팅
-		String userId = req.getParameter("user_id");
+		int userIdx = Integer.parseInt(req.getParameter("user_idx"));
 		String userPw = req.getParameter("user_pw");
 		String userName = req.getParameter("user_name");
 		String email = req.getParameter("email");
 		String profile = saveFilename(req, resp);
 		Member member = new Member();
-		member.setUserId(userId);
+		member.setUserIdx(userIdx);
 		member.setUserPw(userPw);
 		member.setUserName(userName);
 		member.setEmail(email);
 		member.setProfile(profile);
-		
-		String url = "main";
-		String comm = "main";
+		if (profile != null) {
+			member.setProfile(profile);
+		}
+
+		String msg, url, comm;
 
 		MemberDao memberDao = MemberDaoImp.getInstance();
-		Member tempMember = memberDao.selectId(userId);
-		
-		// 유효성 검사 로직
-		if (tempMember == null) {
-			if (memberDao.selectEmail(email)) {
-				url = "member";
-				comm = "join-form";
-				req.setAttribute("msg", "이메일이 중복 되었습니다."); // 회원가입하기전에 검사하기때문에 정상적인 루트로는 접근되지 않음
-			} else {
-				// 아이디와 이메일 확인후 insert
-				if (memberDao.insertMember(member) > 0) {
-					req.setAttribute("msg", "회원가입 완료.");
-				} else {
-					req.setAttribute("msg", "회원가입 오류.");
-				}
-			}
-		} else {
-			url = "member";
-			comm = "join-form";
-			req.setAttribute("msg", "아이디가 중복 되었습니다."); // 회원가입하기전에 검사하기때문에 정상적인 루트로는 접근되지 않음
-		} // end 유효성검사
+		int rowCount = memberDao.updateMember(member);
 
+		if (rowCount > 0) {
+			HttpSession seesion = req.getSession();
+			member = memberDao.selectOne(req.getParameter("user_idx"));
+			seesion.setAttribute("member", member);
+			
+			msg = "회원정보 수정 완료.";
+			url = "main";
+			comm = "main";
+		} else {
+			msg = "회원정보 수정 실패.";
+			url = "member";
+			comm = "modify-form";
+		}
+
+		req.setAttribute("msg", msg);
 		req.setAttribute("url", url);
 		req.setAttribute("comm", comm);
 		req.getRequestDispatcher("jsp/result.jsp").forward(req, resp);
@@ -71,10 +69,14 @@ public class JoinAction implements Action {
 		// 파일들은 파트들로 분리되서 전송이 되기 때문에 파일들을 모두 모아서 파일로 만들어 저장
 		Collection<Part> parts = req.getParts();
 		String saveName = null;
-		
+
 		for (Part part : parts) {
 			if (part.getHeader("Content-Disposition").contains("filename=")) {
 				String fileName = part.getSubmittedFileName();
+
+				if (fileName.equals("")) {
+					return null;
+				}
 				UUID uuid = UUID.randomUUID();
 
 				saveName = uuid.toString() + "_" + fileName;

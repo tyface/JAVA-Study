@@ -2,9 +2,9 @@ package test;
 
 import org.junit.Test;
 
-import dao.BoardDao;
-import dao.BoardDaoImp;
-import model.Board;
+//import dao.BoardDao;
+//import dao.BoardDaoImp;
+//import model.Board;
 
 public class TempTest {
 
@@ -29,15 +29,15 @@ public class TempTest {
 //		System.out.println(memberDao.updateMember(member));
 //		System.out.println(memberDao.deleteMember("1"));
 		
-		BoardDao boardDao = BoardDaoImp.getInstance();
-		
-		Board board = new Board();
-		board.setBoardIdx(1);
-		board.setContent("내용");
-		board.setTitle("제목");
-		board.setBoardPw("123");
-		board.setUserIdx(2);
-		
+//		BoardDao boardDao = BoardDaoImp.getInstance();
+//		
+//		Board board = new Board();
+//		board.setBoardIdx(1);
+//		board.setContent("내용");
+//		board.setTitle("제목");
+//		board.setBoardPw("123");
+//		board.setUserIdx(2);
+//		
 //		boardDao.insertBoard(board);
 //		System.out.println(boardDao.selectOne("1"));
 //		System.out.println(boardDao.selectAll());

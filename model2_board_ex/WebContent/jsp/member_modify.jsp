@@ -10,15 +10,16 @@
 <body>
 	<jsp:include page="layout/header.jsp" />
 	<article>
-	<form action="member" id="join_form" method="post"
+	<form action="member" id="modify_form" method="post"
 		enctype="multipart/form-data">
 		<fieldset>
-			<legend>회원가입</legend>
+			<legend>회원정보 수정</legend>
 			<table>
 				<tr>
 					<th>아이디 :</th>
-					<td><input type="text" name="user_id" id="user_id" value="">
-						<span id="id_result"></span></td>
+					<td><input type="text" name="user_id" id="user_id"
+						value="${sessionScope.member.userId}" readonly> <span
+						id="id_result"></span></td>
 				</tr>
 				<tr>
 					<th>비밀번호 :</th>
@@ -34,12 +35,13 @@
 				<tr>
 					<th>이름 :</th>
 					<td><input type="text" name="user_name" id="user_name"
-						value=""></td>
+						value="${sessionScope.member.userName}"></td>
 				</tr>
 				<tr>
 					<th>이메일 :</th>
-					<td><input type="text" name="email" id="email" value="">
-						<span id="email_result"></span></td>
+					<td><input type="text" name="email" id="email"
+						value="${sessionScope.member.email}"> <span
+						id="email_result"></span></td>
 				</tr>
 				<tr>
 					<th>사진 :</th>
@@ -53,16 +55,21 @@
 			</table>
 
 		</fieldset>
-		<input type="hidden" name="command" value="join"> <input
-			type="submit" name="" value="전송"> <input type="reset"
-			name="reset" value="초기화"> <input type="button" name="main"
-			value="메인으로" onclick="location.href='main?command=main'">
-		</article>
-		<jsp:include page="layout/aside.jsp" />
-		<jsp:include page="layout/footer.jsp" />
-		<script type="text/javascript">
+		<input type="hidden" name="user_idx"
+			value="${sessionScope.member.userIdx}"> <input type="hidden"
+			name="command" value="modify"> <input type="submit"
+			name="submit" value="전송"> <input type="reset" name="reset"
+			value="초기화"> <input type="button" name="delete"
+			value="회원탈퇴" id="delete_btn"> <input type="button" name="main" value="메인으로"
+			onclick="location.href='main?command=main'">
+	</article>
+	<jsp:include page="layout/aside.jsp" />
+	<jsp:include page="layout/footer.jsp" />
+	<script type="text/javascript">
 	$(function() {
-		var chkId = false, chkPw = false, chkPwDup = false, chkEmail = false;
+		
+		var chkPw = false, chkPwDup = false, chkEmail = false;
+		
 		//비밀번호 유효성 검사
 		$("#user_pw").blur(function() {
 			var pattern = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/;
@@ -90,43 +97,7 @@
 				chkPwDup = false;
 				$("#pwdup_result").text("비밀번호가 일치하지 않습니다.");
 			}
-		});//end 비밀번호 확인
-
-		//아이디 중복검사
-		$("#user_id").blur(function() {
-			var pattern = /^[A-Za-z0-9_]{4,20}$/;
-			var id = $(this).val();
-			
-			if (pattern.test(id)) {
-				$.ajax({
-					url : "member?command=check-id",
-					type : "post",
-					data : {
-						"user_id" : id
-					},
-					dataType : "text",
-					success : function(result) {
-						if (result == "true") {
-							$("#id_result").text("사용가능");
-							chkId = true;
-						} else {
-							chkId = false;
-							$("#id_result").text("사용불가능");
-						}
-					},
-					error : function(request, status, error, result) {
-						alert("request: " + request);
-						alert("status: " + status);
-						alert("error: " + error);
-						alert("erresultror: " + result);
-					}
-
-				});
-			} else {
-				$("#id_result").text("영문,숫자 4~20글자만 사용가능 합니다.");
-			}
-
-		});//end 아이디 중복검사
+		});//end 비밀번호 확인		
 
 		//이메일 중복검사
 		$("#email").blur(function() {
@@ -177,13 +148,20 @@
 			return false;
 		});//end 미리보기
 
-		$("#join_form").submit(function() {
+		$("#modify_form").submit(function() {
 
 			if (!(chkId && chkPw && chkPwDup && chkEmail)) {
 				alert("유효성 검사 실패");
 				return false;
 			}
 		});
+
+		$("#delete_btn").click(function() {
+			confirm
+			alert("삭제");
+			return false;
+		});
+
 	});
 </script>
 </body>

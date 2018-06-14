@@ -32,7 +32,7 @@ public class MemberDaoImp implements MemberDao {
 		int rowCount = 0;
 
 		try {
-			String sql = "INSERT INTO ex1_member VALUES(EX1_MEMBER_SEQ.nextval,?,?,?,?,SYSDATE)";
+			String sql = "INSERT INTO ex1_member VALUES(EX1_MEMBER_SEQ.nextval,?,?,?,?,SYSDATE,?)";
 			conn = ConnectionProvider.getConnection();
 
 			pstmt = conn.prepareStatement(sql);
@@ -40,6 +40,7 @@ public class MemberDaoImp implements MemberDao {
 			pstmt.setString(2, member.getUserPw());
 			pstmt.setString(3, member.getUserName());
 			pstmt.setString(4, member.getEmail());
+			pstmt.setString(5, member.getProfile());
 
 			rowCount = pstmt.executeUpdate();
 
@@ -80,6 +81,7 @@ public class MemberDaoImp implements MemberDao {
 				member.setUserName(rSet.getString(Commons.Member.USER_NAME));
 				member.setEmail(rSet.getString(Commons.Member.EMAIL));
 				member.setUserRegDate(rSet.getDate(Commons.Member.USER_REGDATE));
+				member.setProfile(rSet.getString(Commons.Member.PROFILE));
 			}
 
 		} catch (ClassNotFoundException | SQLException e) {
@@ -155,6 +157,7 @@ public class MemberDaoImp implements MemberDao {
 				member.setUserName(rSet.getString(Commons.Member.USER_NAME));
 				member.setEmail(rSet.getString(Commons.Member.EMAIL));
 				member.setUserRegDate(rSet.getDate(Commons.Member.USER_REGDATE));
+				member.setProfile(rSet.getString(Commons.Member.PROFILE));
 			}
 
 		} catch (ClassNotFoundException | SQLException e) {
@@ -194,6 +197,7 @@ public class MemberDaoImp implements MemberDao {
 				member.setUserName(rSet.getString(Commons.Member.USER_NAME));
 				member.setEmail(rSet.getString(Commons.Member.EMAIL));
 				member.setUserRegDate(rSet.getDate(Commons.Member.USER_REGDATE));
+				member.setProfile(rSet.getString(Commons.Member.PROFILE));
 
 				memberList.add(member);
 			}
@@ -216,19 +220,28 @@ public class MemberDaoImp implements MemberDao {
 	@Override
 	public int updateMember(Member member) {
 		int rowCount = 0;
-
+		String profileStr = "";
 		try {
-			String sql = "UPDATE ex1_member SET user_pw = ?, user_name = ?, email = ? where user_idx = ?";
+			if (member.getProfile() != null) {
+				profileStr = ", profile = ?";
+			}
+			String sql = "UPDATE ex1_member SET user_pw = ?, user_name = ?, email = ?" + profileStr
+					+ " where user_idx = ?";
 			conn = ConnectionProvider.getConnection();
-
+			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, member.getUserPw());
 			pstmt.setString(2, member.getUserName());
 			pstmt.setString(3, member.getEmail());
-			pstmt.setInt(4, member.getUserIdx());
 
+			if (member.getProfile() != null) {
+				pstmt.setString(4, member.getProfile());
+				pstmt.setInt(5, member.getUserIdx());
+			} else {
+				pstmt.setInt(4, member.getUserIdx());
+			}
+			System.out.println(member);
 			rowCount = pstmt.executeUpdate();
-
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		} finally {

@@ -17,7 +17,6 @@ public class BoardUpdateAction implements Action {
 	public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String boardIdx = req.getParameter("board_idx");
 		String title = req.getParameter("title");
-		String boardPw = req.getParameter("board_pw");
 		String content = req.getParameter("content");
 
 		BoardDao boardDao = BoardDaoImp.getInstance();
@@ -27,7 +26,6 @@ public class BoardUpdateAction implements Action {
 
 		board.setBoardIdx(Integer.parseInt(boardIdx));
 		board.setTitle(title);
-		board.setBoardPw(boardPw);
 		board.setContent(content);
 		
 		String msg, url, comm;
