@@ -13,6 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginServlet extends HttpServlet {
 	//'login' 요청 받아서 처리, post 방식으로
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	String myId = "hong123";
 	String myPw = "12345";
 	

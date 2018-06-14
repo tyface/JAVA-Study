@@ -14,7 +14,6 @@ public class BoardCheckPassAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		// 파라미터에서 게시글 번호 와, 비밀번호 가져와서
 		// 해당게시글의 비밀번호와 입력받은 비밀번호가 같으면
 		// 수정화면으로 이동, 아니면, 비밀번호 입력화면으로 이동

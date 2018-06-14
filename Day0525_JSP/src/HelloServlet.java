@@ -16,6 +16,11 @@ public class HelloServlet extends HttpServlet{
 	
 	//doGet메서드 : get방식의 요청을 받아서 처리하겠다.
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//해야 할 일 요청받아서 처리하기 

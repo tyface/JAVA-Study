@@ -2,7 +2,7 @@ package test;
 
 import org.junit.Test;
 
-import dao.MessageDao;
+//import dao.MessageDao;
 import model.Message;
 import service.MessageService;
 
@@ -13,7 +13,7 @@ public class ServiceTest {
 	@Test
 	public void testService() {
 //		service = new MessageService();
-		MessageDao dao = MessageDao.getInstance();
+//		MessageDao dao = MessageDao.getInstance();
 //		message = new Message();
 //		message.setMessage("키키키키 메세지 2");
 //		message.setName("하하");;

@@ -18,6 +18,11 @@ public class LoanServlet extends HttpServlet {
 	//'loanService' 요청 받아서 처리, post 방식으로
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		

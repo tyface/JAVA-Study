@@ -16,6 +16,10 @@ import service.FileService;
 @WebServlet("/file")
 public class FileServlet extends HttpServlet {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	FileService fileSvc;
 
 	public FileServlet() {

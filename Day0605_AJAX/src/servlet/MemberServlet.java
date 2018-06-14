@@ -3,7 +3,6 @@ package servlet;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +16,10 @@ import service.MemberService;
 
 @WebServlet("/member")
 public class MemberServlet extends HttpServlet{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	String data;
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -32,7 +35,6 @@ public class MemberServlet extends HttpServlet{
 		String uri = req.getRequestURI();
 		MemberService mSvc = MemberService.getInstance();
 		
-		RequestDispatcher dispatcher;
 		String command = req.getParameter("command");
 
 		
