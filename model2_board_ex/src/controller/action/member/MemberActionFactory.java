@@ -36,6 +36,9 @@ public class MemberActionFactory extends ActionFactory {
 		case "modify-form":
 			action = new ModifyFormAction();
 			break;
+		case "delete":
+			action = new DeleteAction();
+			break;
 		case "check-id":
 			action = new CheckIdAction();
 			break;

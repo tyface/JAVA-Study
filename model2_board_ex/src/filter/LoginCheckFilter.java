@@ -35,10 +35,13 @@ public class LoginCheckFilter implements Filter {
 
 		String comm = httpReq.getParameter("command");
 
+		//로그인 여부를 확인할 요청 리스트
 		String[] commList = { "check-pass-form", "check-pass", "write-form", "write", "update-form", "update",
-				"delete","modify-form","view-profile" };
+				"delete","modify","modify-form" };
+		// 커멘트 리스트를 셋에 입력
 		Set<String> checkList = new HashSet<String>(Arrays.asList(commList));
 		
+		//세션에 로그인 산태인지 확인과 해당커멘트다 리스트에 존재하는지 확인후 분기 처리
 		if (session.getAttribute("member") == null && checkList.contains(comm)) {
 			httpReq.setAttribute("msg", "로그인후 이용 해주세요");
 			httpReq.setAttribute("url", "main");
@@ -47,7 +50,6 @@ public class LoginCheckFilter implements Filter {
 		} else {
 			chain.doFilter(req, resp);
 		}
-
 	}
 
 	@Override

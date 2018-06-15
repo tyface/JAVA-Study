@@ -1,9 +1,80 @@
-.login_form {
-/* 	position:absolute; */
-	right: 10px;
-	top: 30px;
-}
 #profile_img{
 	width: 30px;
 	height: 30px;
+}
+
+.login_form {
+	
+}
+th {
+	text-align: center;
+}
+.form-control{
+	width: 30%;
+	margin: auto;
+}
+#upload_img {
+	margin: auto;
+}
+
+#borad_list{
+	margin:10px;
+}
+#borad_list tr th{
+	line-height: 3 !important;
+}
+#borad_list tr td{
+	line-height: 2 !important;
+}
+.page-nav{
+	font-size: 15px;
+}
+.write-btn{
+	float:right;
+	margin-right:20px;
+}
+.th_title{
+	width:70%;
+}
+#board-view-tbl{
+	margin:auto;
+	width:700px;
+}
+#board-view-tbl th{
+	width:100px;
+}
+a.button {
+    color: white;
+    box-shadow: white 0 1px 1px 2px inset;
+    width: 50px;
+    height:25px;
+    font-size: 14px;
+    padding: 6px;
+}
+
+a.button:hover {
+    color: rgba(255, 255, 255, 0.85);
+    box-shadow: rgba(30, 22, 54, 0.7) 0 80px 0px 2px inset;
+}
+
+.btn-default {
+    width: 50px;
+    height:30px;
+    font-size: 13px;
+    font-weight: bolder;
+    padding: 2px;
+    margin-left: 4px;
+}
+#login_id {
+	width: 100px;
+    height:30px;
+}
+#login_pw {
+	width: 100px;
+    height:30px;
+}
+
+legend {
+	 color: white;
+	 font-weight: bold;
 }

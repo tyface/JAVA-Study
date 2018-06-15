@@ -67,6 +67,7 @@ public class JoinAction implements Action {
 
 	}
 
+	//리퀘스트로 받은 파일정보로 파일을 저장시키고 UUID를 삽입한 파일 이름을 반환하는 메서드
 	private String saveFilename(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 파일들은 파트들로 분리되서 전송이 되기 때문에 파일들을 모두 모아서 파일로 만들어 저장
 		Collection<Part> parts = req.getParts();

@@ -31,7 +31,7 @@ public class MainServlet extends HttpServlet {
 		String url = "";
 
 		switch (command) {
-		
+
 		case "main":
 			url = "jsp/main.jsp";
 			break;

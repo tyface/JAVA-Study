@@ -34,7 +34,6 @@ public class BoardServlet extends HttpServlet {
 
 		Action action = BoardActionFactory.getInstance().getAction(command);
 		action.execute(req, resp);
-
 	}
 
 }

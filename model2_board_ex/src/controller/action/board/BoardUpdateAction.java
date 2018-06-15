@@ -22,7 +22,6 @@ public class BoardUpdateAction implements Action {
 		BoardDao boardDao = BoardDaoImp.getInstance();
 
 		Board board = new Board();
-		
 
 		board.setBoardIdx(Integer.parseInt(boardIdx));
 		board.setTitle(title);

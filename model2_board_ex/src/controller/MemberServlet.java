@@ -34,7 +34,6 @@ public class MemberServlet extends HttpServlet {
 
 		Action action = MemberActionFactory.getInstance().getAction(command);
 		action.execute(req, resp);
-
 	}
 
 }

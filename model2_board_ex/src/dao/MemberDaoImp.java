@@ -32,7 +32,7 @@ public class MemberDaoImp implements MemberDao {
 		int rowCount = 0;
 
 		try {
-			String sql = "INSERT INTO ex1_member VALUES(EX1_MEMBER_SEQ.nextval,?,?,?,?,SYSDATE,?)";
+			String sql = "INSERT INTO ex1_member VALUES(EX1_MEMBER_SEQ.nextval, ?, ?, ?, ?, SYSDATE, ?)";
 			conn = ConnectionProvider.getConnection();
 
 			pstmt = conn.prepareStatement(sql);
@@ -225,8 +225,9 @@ public class MemberDaoImp implements MemberDao {
 			if (member.getProfile() != null) {
 				profileStr = ", profile = ?";
 			}
-			String sql = "UPDATE ex1_member SET user_pw = ?, user_name = ?, email = ?" + profileStr
-					+ " where user_idx = ?";
+			String sql = "UPDATE ex1_member "
+					   + "SET user_pw = ?, user_name = ?, email = ?" + profileStr
+					  + " WHERE user_idx = ?";
 			conn = ConnectionProvider.getConnection();
 			
 			pstmt = conn.prepareStatement(sql);
@@ -240,7 +241,6 @@ public class MemberDaoImp implements MemberDao {
 			} else {
 				pstmt.setInt(4, member.getUserIdx());
 			}
-			System.out.println(member);
 			rowCount = pstmt.executeUpdate();
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
@@ -258,15 +258,15 @@ public class MemberDaoImp implements MemberDao {
 	}
 
 	@Override
-	public int deleteMember(String userIdx) {
+	public int deleteMember(int userIdx) {
 		int rowCount = 0;
 
 		try {
-			String sql = "DELETE FROM ex1_member where user_idx = ?";
+			String sql = "DELETE FROM ex1_member where user_idx = ? ";
 			conn = ConnectionProvider.getConnection();
 
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, userIdx);
+			pstmt.setInt(1, userIdx);
 
 			rowCount = pstmt.executeUpdate();
 

@@ -30,6 +30,7 @@ public class BoardDaoImp implements BoardDao {
 	public int insertBoard(Board board) {
 		PreparedStatement pstmt = null;
 		int rowCount = 0;
+		
 		try {
 			String sql = "INSERT INTO ex1_board VALUES(EX1_BOARD_SEQ.nextval,?,?,?,SYSDATE,?)";
 
@@ -65,9 +66,9 @@ public class BoardDaoImp implements BoardDao {
 		Board board = null;
 
 		try {
-			String sql = "SELECT b.board_idx, b.BOARD_CONTENT, b.BOARD_TITLE, b.READCOUNT, b.REGDATE, "
-					+ "m.USER_IDX, m.USER_ID " + "FROM ex1_board b , ex1_member m "
-					+ "WHERE b.user_idx = m.user_idx AND b.board_idx = ?";
+			String sql = "SELECT b.board_idx, b.BOARD_CONTENT, b.BOARD_TITLE, b.READCOUNT, b.REGDATE, m.USER_IDX, m.USER_ID " 
+						+ "FROM ex1_board b , ex1_member m "
+						+ "WHERE b.user_idx = m.user_idx AND b.board_idx = ?";
 
 			conn = ConnectionProvider.getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -87,7 +88,6 @@ public class BoardDaoImp implements BoardDao {
 				board.setUserIdx(rSet.getInt(Commons.Member.USER_IDX));
 				board.setUserId(rSet.getString(Commons.Member.USER_ID));
 			}
-			System.out.println("123:"+board);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -113,8 +113,7 @@ public class BoardDaoImp implements BoardDao {
 		List<Board> boardList = new ArrayList<Board>();
 
 		try {
-			String sql = "SELECT b.board_idx, b.BOARD_CONTENT, b.BOARD_TITLE, "
-							+ "b.READCOUNT, b.REGDATE, m.USER_IDX, m.USER_ID " 
+			String sql = "SELECT b.board_idx, b.borad_content, b.board_title, b.readcount, b.regdate, m.user_idx, m.user_id " 
 					   + "FROM ex1_board b , ex1_member m " 
 					   + "WHERE b.user_idx = m.user_idx "
 					   + "ORDER BY b.board_idx DESC";
@@ -159,6 +158,7 @@ public class BoardDaoImp implements BoardDao {
 	public int updateBoard(Board board) {
 		PreparedStatement pstmt = null;
 		int rowCount = 0;
+		
 		try {
 			String sql = "UPDATE ex1_board SET board_content = ?, board_title = ? WHERE board_idx = ?";
 			conn = ConnectionProvider.getConnection();

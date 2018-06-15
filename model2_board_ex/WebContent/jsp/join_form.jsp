@@ -1,66 +1,51 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<jsp:include page="layout/header.jsp" />
-	<article>
-	<form action="member" id="join_form" method="post"
-		enctype="multipart/form-data">
-		<fieldset>
-			<legend>회원가입</legend>
-			<table>
-				<tr>
-					<th>아이디 :</th>
-					<td><input type="text" name="user_id" id="user_id" value="">
-						<span id="id_result"></span></td>
-				</tr>
-				<tr>
-					<th>비밀번호 :</th>
-					<td><input type="password" name="user_pw" id="user_pw"
-						value=""> <span id="pw_result"></span></td>
-				</tr>
-				<tr>
-					<th>비밀번호 확인 :</th>
-					<td><input type="password" name="password_dup"
-						id="password_dup" value=""> <span id="pwdup_result"></span>
-					</td>
-				</tr>
-				<tr>
-					<th>이름 :</th>
-					<td><input type="text" name="user_name" id="user_name"
-						value=""></td>
-				</tr>
-				<tr>
-					<th>이메일 :</th>
-					<td><input type="text" name="email" id="email" value="">
-						<span id="email_result"></span></td>
-				</tr>
-				<tr>
-					<th>사진 :</th>
-					<td><input type="file" name="user_img" id="upload_img">
-					</td>
-				</tr>
-				<tr>
-					<th>미리보기 :</th>
-					<td id="holder"></td>
-				</tr>
-			</table>
-
-		</fieldset>
-		<input type="hidden" name="command" value="join"> <input
-			type="submit" name="" value="전송"> <input type="reset"
-			name="reset" value="초기화"> <input type="button" name="main"
-			value="메인으로" onclick="location.href='main?command=main'">
-		</article>
-		<jsp:include page="layout/aside.jsp" />
-		<jsp:include page="layout/footer.jsp" />
-		<script type="text/javascript">
+<jsp:include page="layout/header.jsp" />
+<article>
+	<form action="member" id="join_form" method="post" enctype="multipart/form-data" >
+		<h3>회원가입</h3>
+		<hr>
+		<div class="form-group">
+		    <label for="user_id">아이디 :</label>
+		    <input type="text" name="user_id" class="form-control" id="user_id">
+		    <span id="id_result"></span>
+		</div>
+		<div class="form-group">
+			<label for="user_pw">비밀번호 :</label>
+			<input type="password" name="user_pw" class="form-control" id="user_pw"> <span id="pw_result"></span>
+		</div>
+		<div class="form-group">
+			<label for="pwdup_result">비밀번호 확인 :</label>
+			<input type="password" name="password_dup" class="form-control" 
+				id="password_dup" > <span id="pwdup_result"></span>
+		</div>
+		<div class="form-group">
+			<label for="user_name">이름 :</label>
+			<input type="text" name="user_name" class="form-control" id="user_name"
+				value="">
+		</div>
+		<div class="form-group">
+			<label for="email">이메일 :</label>
+			<input type="email" name="email" class="form-control" id="email" value="">
+				<span id="email_result"></span>
+		</div>
+		<div class="form-group">
+			<label for="user_img">사진 :</label>
+			<input type="file" name="user_img" id="upload_img">
+			
+		</div>
+		<div class="form-group">
+			<label for="holder">미리보기 :</label>
+			<div id="holder"></div>
+		</div>
+		<input type="hidden" name="command" value="join" class="btn btn-default"> 
+		<input type="submit" name="submit" value="Submit" class="btn btn-default"> 
+		<input type="reset" name="reset" value="Reset" class="btn btn-default"> 
+		<input type="button" name="main" value="Main" onclick="location.href='main?command=main'" class="btn btn-default">
+	</form>	
+</article>
+<jsp:include page="layout/footer.jsp" />
+<script type="text/javascript">
 	$(function() {
 		var chkId = false, chkPw = false, chkPwDup = false, chkEmail = false;
 		//비밀번호 유효성 검사
@@ -158,7 +143,6 @@
 		});//end 이메일 중복검사
 
 		//미리보기 소스 (ie는 10이상부터 지원)
-
 		$("#upload_img").change(function(e) {
 			var holder = $("#holder")[0];
 			e.preventDefault();
@@ -177,6 +161,7 @@
 			return false;
 		});//end 미리보기
 
+		//서버에 보내기전 전체값들이 유효성 검사를 통과했는지 확인후 보냄
 		$("#join_form").submit(function() {
 
 			if (!(chkId && chkPw && chkPwDup && chkEmail)) {

@@ -12,34 +12,31 @@ import dao.MemberDao;
 import dao.MemberDaoImp;
 import model.Member;
 
-public class LoginAction implements Action {
+public class DeleteAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		String userId = req.getParameter("user_id");
-		String userPw = req.getParameter("user_pw");
-		String msg = "";
 
+		String msg, url, comm;
 		MemberDao memberDao = MemberDaoImp.getInstance();
-		Member member = memberDao.selectId(userId);
-
 		HttpSession session = req.getSession();
 
-		if (member != null) {
-			if (member.getUserPw().equals(userPw)) {
-				member.setUserPw(""); // 비밀번호 유출을 막기위해 비밀번호는 세션에 담지않는다.
-				session.setAttribute("member", member);
-			} else {
-				msg = "비밀번호가 일치하지 않습니다.";
-			}
+		Member member = (Member) session.getAttribute("member");
+
+		if (memberDao.deleteMember(member.getUserIdx()) > 0) {
+			msg = "회원삭제 완료";
+			url = "main";
+			comm = "main";
+			session.invalidate();
 		} else {
-			msg = "아이디가 존재하지 않습니다.";
+			msg = "회원삭제 실패";
+			url = "member";
+			comm = "modify-form";
 		}
 		
 		req.setAttribute("msg", msg);
-		req.setAttribute("comm", "main");
-		req.setAttribute("url", "main");
+		req.setAttribute("url", url);
+		req.setAttribute("comm", comm);
 		req.getRequestDispatcher("jsp/result.jsp").forward(req, resp);
 
 	}

@@ -11,19 +11,7 @@ public class Member {
 	private String email;
 	private Date userRegDate;
 	private String profile;
-
 	
-	
-	public Member() {
-		this.userIdx = 0;
-		this.userId = null;
-		this.userPw = null;
-		this.userName = null;
-		this.email = null;
-		this.userRegDate = null;
-		this.profile = null;
-	}
-
 	public int getUserIdx() {
 		return userIdx;
 	}

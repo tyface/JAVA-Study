@@ -18,6 +18,6 @@ public interface MemberDao {
 
 	public int updateMember(Member member);
 
-	public int deleteMember(String userIdx);
+	public int deleteMember(int userIdx);
 
 }

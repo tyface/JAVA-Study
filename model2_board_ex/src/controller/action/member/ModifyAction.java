@@ -35,6 +35,7 @@ public class ModifyAction implements Action {
 		member.setUserName(userName);
 		member.setEmail(email);
 		member.setProfile(profile);
+
 		if (profile != null) {
 			member.setProfile(profile);
 		}
@@ -45,10 +46,11 @@ public class ModifyAction implements Action {
 		int rowCount = memberDao.updateMember(member);
 
 		if (rowCount > 0) {
+			// 회원정보수정이 정상처리 됬다면 세션도 재설정
 			HttpSession seesion = req.getSession();
 			member = memberDao.selectOne(req.getParameter("user_idx"));
 			seesion.setAttribute("member", member);
-			
+
 			msg = "회원정보 수정 완료.";
 			url = "main";
 			comm = "main";
@@ -65,6 +67,7 @@ public class ModifyAction implements Action {
 
 	}
 
+	// 리퀘스트로 받은 파일정보로 파일을 저장시키고 UUID를 삽입한 파일 이름을 반환하는 메서드
 	private String saveFilename(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 파일들은 파트들로 분리되서 전송이 되기 때문에 파일들을 모두 모아서 파일로 만들어 저장
 		Collection<Part> parts = req.getParts();
@@ -73,10 +76,6 @@ public class ModifyAction implements Action {
 		for (Part part : parts) {
 			if (part.getHeader("Content-Disposition").contains("filename=")) {
 				String fileName = part.getSubmittedFileName();
-
-				if (fileName.equals("")) {
-					return null;
-				}
 				UUID uuid = UUID.randomUUID();
 
 				saveName = uuid.toString() + "_" + fileName;

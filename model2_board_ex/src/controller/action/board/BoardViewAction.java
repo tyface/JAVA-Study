@@ -15,11 +15,17 @@ public class BoardViewAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String boardIdx = req.getParameter("board_idx");
 		BoardDao boardDao = BoardDaoImp.getInstance();
+
+		String boardIdx = req.getParameter("board_idx");
+		String pageNum = req.getParameter("page_num");
+		
 		Board board = boardDao.selectOne(boardIdx);
+
 		boardDao.updateReadCount(boardIdx);
+
 		req.setAttribute("board", board);
+		req.setAttribute("pageNum", pageNum);
 		req.getRequestDispatcher("jsp/board_view.jsp").forward(req, resp);
 
 	}

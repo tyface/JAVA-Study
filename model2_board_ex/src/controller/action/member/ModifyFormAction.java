@@ -12,6 +12,7 @@ public class ModifyFormAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
 		req.getRequestDispatcher("jsp/member_modify.jsp").forward(req, resp);
 	}
 

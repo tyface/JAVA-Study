@@ -1,20 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Main Page</title>
-</head>
-<body>
-	
-	<jsp:include page="layout/header.jsp"/>
-	<article>
-	<h1>메인페이지</h1>
-	</article>
-	<jsp:include page="layout/aside.jsp" />
-	<jsp:include page="layout/footer.jsp"/>	
-
-</body>
-</html>
-    
+<jsp:include page="layout/header.jsp"/>
+	<div class="inner cover">
+	  <h1 class="cover-heading">호빵님의 블로그에 오신것을 환영합니다.</h1>
+	  <br>
+	  <p class="lead">호빵님의 사적인 프라이빗 공간 입니다아아아아앙.</p>
+	  <p class="lead">딱히 적을 말은 없네요.....</p>
+	  <p class="lead">하하하하하하하하하하하하하하하하하하</p>
+	</div>
+<jsp:include page="layout/footer.jsp"/>

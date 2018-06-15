@@ -15,6 +15,7 @@ public class LogoutAction implements Action {
 	public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
 		session.invalidate();
+		
 		req.setAttribute("msg", "로그아웃 되었습니다.");
 		req.setAttribute("comm", "main");
 		req.setAttribute("url", "main");
