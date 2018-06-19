@@ -78,10 +78,14 @@ public class ModifyAction implements Action {
 				String fileName = part.getSubmittedFileName();
 				UUID uuid = UUID.randomUUID();
 
-				saveName = uuid.toString() + "_" + fileName;
+				if (fileName.equals("")) {
+					return saveName;
+				} else {
+					saveName = uuid.toString() + "_" + fileName;
 
-				if (part.getSize() > 0) {
-					part.write(Commons.DEFAULT_FILE_PASS + saveName);
+					if (part.getSize() > 0) {
+						part.write(Commons.DEFAULT_FILE_PASS + saveName);
+					}
 				}
 			}
 		}
