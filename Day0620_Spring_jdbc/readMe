@@ -1,0 +1,8 @@
+Maven dependency 설정
+Spring  : core, context, jdbc
+ oracle : ojdbc
+ 
+ Spring jdbc
+ 
+ 
+ 
