@@ -5,8 +5,6 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
-	
-	
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
 		<property name="url" value="jdbc:oracle:thin:@localhost:1521:XE" />
@@ -14,12 +12,9 @@
 		<property name="password" value="0000" />
 	</bean>
 
-	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-		<property name="dataSource" ref="dataSource"/>
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg ref="dataSource"/>
 	</bean>
 	
-<!-- 	<bean id="messageDao" class="dao2.MessageDaoImp"> -->
-<!-- 		<constructor-arg ref="jdbcTemplate"/> -->
-<!-- 	</bean> -->
-	<context:component-scan base-package="dao2"/>
+	<context:component-scan base-package="dao3"/>
 </beans>

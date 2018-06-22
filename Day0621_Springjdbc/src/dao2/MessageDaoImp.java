@@ -6,11 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
+@Component("messageDao")
 public class MessageDaoImp implements MessageDao {
 
+	@Autowired
 	private JdbcTemplate jt;
 
 	public MessageDaoImp(JdbcTemplate jt) {
@@ -38,25 +42,28 @@ public class MessageDaoImp implements MessageDao {
 	@Override
 	public Map<String, Object> selectOne(int id) {
 		String sql = "select * from message where id = ?";
-		return jt.queryForObject(sql, rowMap, id);
+//		return jt.queryForObject(sql, rowMap, id);
+		return jt.queryForMap(sql,id);
 	}
 
 	@Override
 	public List<Map<String, Object>> selectAll() {
 		String sql = "select * from message";
-		return jt.query(sql, rowMap);
+		return jt.queryForList(sql);
 	}
 
 	RowMapper<Map<String, Object>> rowMap = new RowMapper<Map<String, Object>>(){
 
 		@Override
 		public Map<String, Object> mapRow(ResultSet rs, int rowNum) throws SQLException {
+			
 			Map<String, Object> rsMap = new HashMap<String, Object>(); 
 			rsMap.put("id", rs.getInt("id"));
 			rsMap.put("password", rs.getString("password"));
 			rsMap.put("name", rs.getString("name"));
 			rsMap.put("message", rs.getString("message"));
 			rsMap.put("user_num", rs.getInt("user_num"));
+			
 			return rsMap;
 		}
 	};

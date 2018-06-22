@@ -79,8 +79,7 @@ public class StudentDao implements IStudentDao{
 		}
 		
 	};
-	RowMapper<Map<String, Object>> studentMapper2
-	 = new RowMapper<Map<String,Object>>() {
+	RowMapper<Map<String, Object>> studentMapper2 = new RowMapper<Map<String,Object>>() {
 		
 		@Override
 		public Map<String, Object> mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -90,7 +89,6 @@ public class StudentDao implements IStudentDao{
 			result.put("sname",rs.getString("sname"));
 			result.put("sgrade",rs.getInt("sgrade"));
 			result.put("rowNum",rowNum);
-			
 			
 			return result;
 		}
