@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Update;
 import model.Member;
 
 public interface IMemberDao {
-
+	
 	@Insert("INSERT INTO member "
 			+ "VALUES (member_seq.nextval, #{id}, #{pw}, #{name}, #{email}, sysdate)")
 	public int insertMember(Member member);

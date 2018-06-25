@@ -11,7 +11,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import model.Member;
 
-public class MemberDao implements IMemberDao{
+public class MemberDao implements IMemberDao {
 
 	SqlSessionFactory sqlSessionFactory;
 
