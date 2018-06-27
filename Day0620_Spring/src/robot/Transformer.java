@@ -2,8 +2,6 @@ package robot;
 
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 public class Transformer extends Robot {
 	
 	public Transformer() {

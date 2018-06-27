@@ -6,10 +6,9 @@ import java.util.Map;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
-import model.Student;
-
 public class StudentDaoTest {
 	public static void main(String[] args) {
+		@SuppressWarnings("resource")
 		ApplicationContext context
 		= new GenericXmlApplicationContext("dao/applicationContext.xml");
 		

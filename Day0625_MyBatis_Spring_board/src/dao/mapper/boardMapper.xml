@@ -5,16 +5,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="dao.BoardDao">
 	<insert id="insertBoard" parameterType="board">
 		INSERT INTO board_ex
-		VALUES (board_seq.nextval, #{title}, #{name}, #{pass}, #{email}, #{content}, 0, sysdate)
+		VALUES (board_seq.nextval, #{title}, <include refid="name"/>, #{pass}, #{email}, #{content}, 0, sysdate)
 	</insert>
 	<update id="updateBoard" parameterType="board">
 		UPDATE board_ex
-		SET title = #{title}, name = #{name}, pass = #{pass}, email = #{email}, content = #{content}
+		SET title
+		= #{title}, name = #{name}, pass = #{pass}, email = #{email}, content
+		= #{content}
 		WHERE num = #{num}
 	</update>
 	<delete id="deleteBoard" parameterType="int">
 		DELETE board_ex
-		FROM num = #{num}
+		FROM num =
+		#{num}
 	</delete>
 	<select id="selectOne" parameterType="int" resultType="board">
 		SELECT *
@@ -25,4 +28,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT *
 		FROM board_ex
 	</select>
+	<select id="searchBoard" parameterType="board" resultType="board">
+		SELECT * 
+		FROM board_ex 
+		WHERE 1=0 
+		<if test="title != null">
+			or title like '%${title}%' 
+		</if>
+		<if test="name != null">
+			or name like '%${name}%' 
+		</if>
+		<if test="content != null">
+			or content like '%${content}%' 
+		</if>
+		
+	</select>
+
+
+	<sql id="name">
+		<choose>
+			<when test="name != null">
+				#{name}
+			</when>
+			<otherwise>
+				'이름없음'
+			</otherwise>
+		</choose>
+	</sql>
 </mapper>

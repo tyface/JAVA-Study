@@ -10,8 +10,8 @@ public class DaoTest {
 		ApplicationContext context 
 		 = new GenericXmlApplicationContext("lifecycle2/applicationContext.xml");
 		
-		StudentDao dao1 = context.getBean("studentDao",StudentDao.class); 
-		StudentDao2 dao2 = context.getBean("studentDao2",StudentDao2.class);
+//		StudentDao dao1 = context.getBean("studentDao",StudentDao.class); 
+//		StudentDao2 dao2 = context.getBean("studentDao2",StudentDao2.class);
 		
 //		if(dao1 == dao2) {
 //			System.out.println("같음");

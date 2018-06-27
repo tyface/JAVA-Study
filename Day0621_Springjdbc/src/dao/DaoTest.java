@@ -7,6 +7,7 @@ import model.Member;
 
 public class DaoTest {
 	public static void main(String[] args) {
+		@SuppressWarnings("resource")
 		ApplicationContext context
 		 = new GenericXmlApplicationContext("dao/appContext.xml");
 		

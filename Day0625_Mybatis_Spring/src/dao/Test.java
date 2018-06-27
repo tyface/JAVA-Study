@@ -5,6 +5,7 @@ import org.springframework.context.support.GenericXmlApplicationContext;
 
 public class Test {
 	public static void main(String[] args) {
+		@SuppressWarnings("resource")
 		ApplicationContext context = new GenericXmlApplicationContext("dao/appContext.xml");
 		
 		

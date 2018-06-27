@@ -5,6 +5,7 @@ import org.springframework.context.support.GenericXmlApplicationContext;
 
 public class RobotTest {
 	public static void main(String[] args) {
+		@SuppressWarnings("resource")
 		ApplicationContext context
 		 = new GenericXmlApplicationContext("robot/applicationContext.xml");
 		

@@ -1,0 +1,51 @@
+1. Maven 설정
+   Spring : core, context, jdbc
+   Mybatis : Mybatis, Mybatis-spring
+   oracle : ojdbc
+   
+2. 패키지 만들기 
+   dao : 작성할 Dao의 interface
+   dao.mapper : 작성할 Dao에서 사용할 sql을 포함하는 mapper.xml
+           1) ******mapper의 namespace는 매퍼의 짝궁 인터페이스 경로로 작성
+           2) mapper안에  sql 들의 id는 인터페이스의 메서드이름과 일치해야 한다.
+                                인터페이스의 메서드가 호출되면 일치하는 이름의 sql을 이용해서 실행한다.   
+            
+3. spring 컨테이너 설정파일 작성
+   dataSource : db접속정보
+   sqlSessionFactory : mybatis를 이용한 DAO 작성을 위해 bean 등록
+   boardDao : mybatis-spring에서 제공하는 MapperFactoryBean 을 이용한
+              정형화된 dao를 생성(개발자가  dao 인터페이스를 구현하지 않고도 메서드 사용가능)            
+            
+4. Test            
+            
+            
+ 동적쿼리 : 상황에 맞게 특정한 sql을 만들어 낼 수 있는 기능을 제공 
+ex) insert 할 때 이름이 없다면 '이름없음' 이라고 insert 하기 
+1. <choose>  조건에 따라 작성할 sql 문을 선택할 때 사용 
+2. <sql>    반복되는 sql을 따로 작성해서 불러 사용하기 위해 사용
+   <include> 를 이용해서 <sql>에 작성된 sql을 불러서 사용	
+3. <if> 특정 조건일 때 실행할 문장을 작성
+            
+
+제목검색, 이름검색, 제목+이름검색, 내용 검색
+searchBoard()
+검색어, 검색 종류
+
+검색 type
+1. 제목검색 titile
+2. 이름검색 name
+3. 제목+이름검색 title, name
+4. 내용검색 content
+
+1. select * from board where 1=0  or title = 'title'
+2. select * from board where 1=0  or name = 'name'
+3. select * from board where 1=0  or title = 'title or name = 'name'
+4. select * from board where 1=0  or content = 'content'
+5. select * from board where 1=0  or 1=1
+
+            
+            
+            
+            
+            
+            

@@ -5,6 +5,7 @@ import java.util.List;
 import model.Board;
 
 public interface BoardDao {
+
 	public int insertBoard(Board board);
 
 	public int updateBoard(Board board);
@@ -14,5 +15,7 @@ public interface BoardDao {
 	public Board selectOne(int num);
 
 	public List<Board> selectAll();
+	
+	public List<Board> searchBoard(Board board);
 
 }
