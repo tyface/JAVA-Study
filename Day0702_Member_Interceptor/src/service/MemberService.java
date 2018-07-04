@@ -10,4 +10,5 @@ public interface MemberService {
 	public Member getMemberById(String id);
 	public boolean insertMember(Member member);
 	public boolean updateMember(Member member);
+	public boolean join(Member member);
 }

@@ -18,7 +18,7 @@
 		</c:when>
 		<c:otherwise>
 			<button type="button" onclick="location.href='login-form'">로그인</button>
-			<button type="button" onclick="location.href='join-form'">회원가입</button>
+			<button type="button" onclick="location.href='member/join-form'">회원가입</button>
 			<hr>
 		</c:otherwise>
 	</c:choose>
