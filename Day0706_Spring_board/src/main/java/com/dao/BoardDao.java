@@ -1,6 +1,7 @@
 package com.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.model.Board;
 
@@ -15,4 +16,8 @@ public interface BoardDao {
 	public Board selectOne(int num);
 
 	public List<Board> selectAll();
+	
+	public List<Board> searchBoard(Map<String, Object> params);
+	
+	public int insertAttach(Map<String, Object> params);
 }

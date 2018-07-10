@@ -26,8 +26,7 @@
 	<!-- 새 글쓰기 양식 작성 -->
 	<div class="wrap" align = "center">
 		<h1>게시글 등록</h1>
-		<form name= "frm" action="write" id="writeForm">
-			<input type="hidden" name="command" value="board_write">
+		<form name= "frm" action="write" id="writeForm" method="post" enctype="multipart/form-data">
 			<table>
 				<tr>
 					<th>작성자</th>
@@ -40,6 +39,10 @@
 				<tr>
 					<th>이메일</th>
 					<td><input type="text" name="email">*필수</td>
+				</tr>
+				<tr>
+					<th>첨부파일</th>
+					<td><input type="file" name = "file"></td>
 				</tr>
 				<tr>
 					<th>제목</th>

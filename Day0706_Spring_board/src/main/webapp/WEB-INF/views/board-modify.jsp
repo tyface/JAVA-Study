@@ -10,13 +10,12 @@
 <body>
 	<div class="wrap" align = "center">
 		<h1>게시글 수정</h1>
-		<form name= "frm" action="board" id = "modifyForm">
-			<input type="hidden" name="command" value="board_update">
+		<form name= "frm" action="modify" id = "modifyForm" method="post">
 			<input type="hidden" name="num" value="${board.num}">
 			<table>
 				<tr>
 					<th>작성자</th>
-					<td><input type="text" name="name" value="${board.name}" readonly="readonly">*필수</td>
+					<td><input type="text" name="name" value="${board.name}" readonly="readonly"></td>
 				</tr>
 				<tr>
 					<th>비밀번호</th>
@@ -24,18 +23,16 @@
 				</tr>
 				<tr>
 					<th>이메일</th>
-					<td><input type="text" name="email" value ="${board.email }" readonly="readonly">*필수</td>
+					<td><input type="text" name="email" value ="${board.email}" readonly="readonly"></td>
 				</tr>
 				<tr>
 					<th>제목</th>
-					<td><input type="text" name="title" value ="${board.title }"></td>
+					<td><input type="text" name="title" value ="${board.title}"></td>
 				</tr>
 				<tr>
 					<th>내용</th>
 					<td>
-						<textarea rows="15" cols="70" name="content" >
-							${board.title }
-						</textarea>
+						<textarea rows="15" cols="70" name="content" >${board.content}</textarea>
 					</td>
 				</tr>
 			</table>

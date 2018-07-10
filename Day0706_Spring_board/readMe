@@ -50,8 +50,22 @@ result.jsp
    BoardServlet  커멘드 패턴으로 할건데 약간...다르게 할거라서...클래스만 만들어 주시면 됩니다.
 4. 화면구현  
 
-
-
+----------------------------------------
+/board
+	/boardList : 게시글 목록보기
+	/view : 게시글 상세보기
+	/write, method = get : 게시글 작성 양식 요청
+	/write, method = post : 게시글 작성 요청
+	/modifyForm : 수정양식 요청
+	/modify : 수정요청
+	/delete : 게시글 삭제요청
+	/boardCheckPassForm : 비밀번호 확인 약식 요청
+	/boardCheckPass : 비밀번호 확인 요청
+	/download : 첨부파일 다운로드
+	/replies post: 등록
+	/replies/{replyNum post}: 수정 
+	/replies/{replyNum delete}: 삭제 
+	/replies/{replyNum get}: 목록 
 
 
 

@@ -28,4 +28,8 @@ http://www.springframework.org/schema/context/spring-context.xsd ">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
 		<property name="mapperInterface" value="com.dao.BoardDao"></property>
 	</bean>
+	<bean id = "replyDao" class= "org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+		<property name="mapperInterface" value="com.dao.ReplyDao"></property>
+	</bean>
 </beans>

@@ -12,6 +12,24 @@ public class Board {
 	private String content;
 	private int readCount;
 	private Date writeDate;
+	private String fullName;
+	private int replyCount;
+
+	public int getReplyCount() {
+		return replyCount;
+	}
+
+	public void setReplyCount(int replyCount) {
+		this.replyCount = replyCount;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
 
 	public int getNum() {
 		return num;
@@ -80,6 +98,8 @@ public class Board {
 	@Override
 	public String toString() {
 		return "Board [num=" + num + ", title=" + title + ", name=" + name + ", pass=" + pass + ", email=" + email
-				+ ", content=" + content + ", readCount=" + readCount + ", wireteDate=" + writeDate + "]";
+				+ ", content=" + content + ", readCount=" + readCount + ", writeDate=" + writeDate + ", fullName="
+				+ fullName + ", replyCount=" + replyCount + "]";
 	}
+
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="dao.ReplyDao">
+<mapper namespace="com.dao.ReplyDao">
 	<insert id="insertReply" parameterType="reply">
 		insert into reply
 		  values(reply_seq.nextval,
@@ -25,7 +25,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectByBoardNum" parameterType="int" resultType="reply">
 		select * from reply where boardNum = #{boardNum}
 	</select>
-	
+	<select id="getCount" parameterType="int" resultType="int">
+		select count(*)
+		from reply
+		where boardnum = #{boardNum}
+	</select> 
 </mapper>
 
 

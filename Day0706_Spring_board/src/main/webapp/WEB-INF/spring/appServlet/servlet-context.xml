@@ -21,8 +21,9 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
 		in the /WEB-INF/views directory -->
-	<beans:bean
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+	</beans:bean>
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
@@ -33,6 +34,6 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Repository" />
 	</context:component-scan>
-
+	
 
 </beans:beans>

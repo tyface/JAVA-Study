@@ -4,12 +4,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dao.BoardDao">
 	<insert id="insertBoard" parameterType="board">
+		<!-- insert시 자동생성되는 key가져오기 -->
+		<selectKey keyProperty="num" order="BEFORE" resultType="int">
+			SELECT board_seq.nextval FROM dual 
+		</selectKey>
 		INSERT INTO board_ex
-		VALUES (board_seq.nextval, #{title}, #{name}, #{pass}, #{email}, #{content}, 0, sysdate)
+		VALUES (#{num}, #{title}, #{name}, #{pass}, #{email}, #{content}, 0, sysdate)
 	</insert>
 	<update id="updateBoard" parameterType="board">
 		UPDATE board_ex
-		SET title = #{title}, email =  #{email}, content = #{content} 
+		SET title = #{title}, content = #{content} , pass = #{pass}, readCount = #{readCount}
 		WHERE num = #{num}
 	</update>
 	<delete id="deleteBoard" parameterType="int">
@@ -18,12 +22,54 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE num = #{num}
 	</delete>
 	<select id="selectOne" parameterType="int" resultType="board">
-		SELECT *
-		FROM board_ex
-		WHERE num = #{num}
+		SELECT b.*, a.fullname 
+		  FROM board_ex b
+     LEFT JOIN attach a
+	        ON b.num = a.num
+		 WHERE b.num = #{num}
 	</select>
 	<select id="selectAll" resultType="board">
-		SELECT *
-		FROM board_ex
+		SELECT b.num, b.title, b.content,b.email,b.name,b.readcount,b.writedate, count(r.replynum) as replycount 
+  		  FROM board_ex b left join reply r
+            ON b.num = r.boardnum
+         GROUP BY (b.num, b.title, b.content,b.email,b.name,b.readcount,b.writedate)
 	</select>
+	<select id="selectBoard" parameterType="int" resultType="board">
+		select * 
+  		  from (select rownum as rnum,
+				       b1.num,
+				       b1.title,
+				       b1.content,
+				       b1.email,
+				       b1.name,
+				       b1.readcount,
+				       b1.writedate,
+				       b1.rcount  
+	             from ( select b.num, 
+	              			   b.title, 
+	              			   b.content,
+	              			   b.email,
+	              			   b.name,
+	              			   b.readcount,
+	              			   b.writedate, 
+	              			   count(r.replynum) as rcount 
+				  		  from board_ex b left join reply r
+				            on b.num = r.boardnum
+				            where 1=0
+							 <if test="TITLE !=null"> or title like '%${TITLE}%' </if>
+							 <if test="NAME !=null"> or name like '%${NAME}%' </if>
+							 <if test="CONTENT !=null"> or name like '%${CONTENT}%' </if>
+							 <if test="type == 0 "> or 1=1 </if>
+				         group by (b.num, b.title, b.content,b.email,b.name,b.readcount,b.writedate)
+				         order by num desc
+				         ) b1 
+			   )   
+          where  rnum between #{firstRow} and #{endRow}
+	</select>
+	<!-- 파일 업로드후 파일이름 저장 -->
+	<insert id="insertAttach" parameterType="map">
+		INSERT INTO attach
+		VALUES(#{FULLNAME}, #{NUM}, sysdate)
+	</insert>
+	
 </mapper>

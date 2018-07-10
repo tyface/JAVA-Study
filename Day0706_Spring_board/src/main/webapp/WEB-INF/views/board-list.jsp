@@ -28,7 +28,7 @@
 			<c:forEach items="${boardList}" var="board">
 				<tr>
 					<td>${board.num}</td>
-					<td><a href="board-view?num=${board.num}">${board.title}</a></td>
+					<td><a href="board-view?num=${board.num}">${board.title} <c:if test="${board.replyCount > 0}"> [${board.replyCount}]</c:if></a></td>
 					<td>${board.name}</td>
 					<td>${board.writeDate}</td>
 					<td>${board.readCount}</td>
