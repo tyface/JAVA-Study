@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- DB접속정보    :  enviroments
+		 모델클래스 정보 : typealiases
+		 매퍼파일 위치 정보 : mappers
+	 -->
+	 <!-- 특정 클래스를 별명으로 사용하겠다는 설정 -->
+	<typeAliases>
+		<typeAlias type="vo.EntInfo" alias="entInfo"/>
+		<typeAlias type="vo.EntDetailInfo" alias="entDetailInfo"/>
+	</typeAliases>
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="MANAGED">
+			</transactionManager>
+			<dataSource type="POOLED">
+				<property name="driver" value="org.mariadb.jdbc.Driver"/>
+				<property name="url" value="jdbc:mariadb://mydb.cl5rwvs2v45j.ap-northeast-2.rds.amazonaws.com:3306/publicdata_db"/>
+				<property name="username" value="master"/>
+				<property name="password" value="wnsdl345#$%"/>
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<mappers>
+		<mapper resource="dao/mapper/publicdata-mapper.xml"/>
+	</mappers>
+</configuration>
+
+
+
+
+
+
+
+
+
+

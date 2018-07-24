@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.mapper.publicdata-mapper">
+	<!-- namespace : sql문이 포함될 이름공간 , sql문을 구분하기 위해 사용 -->
+	<!-- sql 작성 -->
+
+	<insert id="insertEntInfo" parameterType="entInfo">
+		INSERT
+		INTO     ENTERPRISE_INFO_TB
+		VALUES
+		<foreach collection="list" item="item" separator=" , ">
+			(#{item.seq}, 
+			 #{item.entIdx}, 
+			 #{item.wkplNm}, 
+			 #{item.dataCrtYm},
+			 #{item.bzowrRgstNo}, 
+			 #{item.wkplRoadNmDtlAddr}, 
+			 #{item.wkplJnngStcd},
+			 #{item.wkplStylDvcd}, 
+			 #{item.ldongAddrMgplDgCd},
+			 #{item.ldongAddrMgplSgguCd}, 
+			 #{item.ldongAddrMgplSgguEmdCd})
+		</foreach>
+	</insert>
+
+	<update id="updateResult" parameterType="map">
+		UPDATE   ENTERPRISE_LIST_TB
+		SET      RESULT = #{RESULT}
+		WHERE    ENT_IDX = #{ENT_IDX}
+	</update>
+
+	<select id="selectAll" resultType="map">
+		SELECT   ENT_IDX,ENT_NM,ADDR_BCITY_CD,ADDR_SIGNGU_CD
+		FROM     ENTERPRISE_LIST_TB
+		WHERE    ENT_ST = 'N' and RESULT is null
+		ORDER BY ENT_IDX
+	</select>
+
+
+	<insert id="insertEntDetailInfo" parameterType="entDetailInfo">
+		INSERT
+		INTO     ENTERPRISE_DTLS_TB
+		VALUES (#{seq},
+				#{entIdx},
+				#{wkplNm},
+				#{vldtVlKrnNm},
+				#{adptDt},
+				#{scsnDt},
+				#{jnngpCnt},
+				#{crrmmNtcAmt},
+				#{bzowrRgstNo},
+				#{wkplRoadNmDtlAddr},
+				#{wkplJnngStcd},
+				#{wkplStylDvcd},
+				#{ldongAddrMgplDgCd},
+				#{ldongAddrMgplSgguCd},
+				#{ldongAddrMgplSgguEmdCd},
+				#{wkplIntpCd})
+	</insert>
+
+	<insert id="insertPeriodInfo" parameterType="map">
+		INSERT
+		INTO     PER_INFO_TB
+		VALUES 	   (#{seq},
+					#{entIdx},
+					#{nwAcqzrCnt},
+					#{lssJnngpCnt})
+	</insert>
+	<!-- jdbctemplate에서는 rowMapper , mybatis에서는 resultMap 사용 칼럼명과, 모델클래스의 프로퍼티 
+		이름이 다를 때, 결과 매핑을 위해서 사용한다. resultMap type="반환할 타입,모델" id="맵의 이름" -->
+	<!-- <resultMap type="student" id="studentMap"> -->
+	<!-- <result property="snum" column="snum"/> -->
+	<!-- <result property="sname" column="sname"/> -->
+	<!-- <result property="sgrade" column="sgrade"/> -->
+	<!-- </resultMap> -->
+
+
+</mapper>
+
+
+
+
+
